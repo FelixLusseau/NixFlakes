@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Plymouth-Felix
+Description=Theme for RetroPie retro gaming distribution with pacman loading bar
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/plymouth-felix
+ScriptFile=/usr/share/plymouth/themes/plymouth-felix/plymouth-felix.script
