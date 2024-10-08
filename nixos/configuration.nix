@@ -12,7 +12,13 @@
   boot.loader.timeout = 2;
 
   # Plymouth splash screen
-  boot.plymouth.enable = true;
+  boot.plymouth = {
+    enable = true;
+    theme = "plymouth-felix";
+    themePackages = [
+      pkgs.splash-boot
+    ];
+  };
 
   networking.hostName = "flnix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

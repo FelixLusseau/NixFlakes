@@ -15,7 +15,7 @@
     # splash.url =  "path:./modules/splash";
   };
 
-  outputs = { self, nixpkgs, home-manager, plasma-manager, splash }@inputs:
+  outputs = { self, nixpkgs, home-manager, plasma-manager, /* splash */ }@inputs:
     let
       # inherit (splash.inputs) nixpkgs;
     in {
@@ -28,7 +28,7 @@
 
           modules = [
             ./hosts/flnix.nix
-            # ./modules/splash
+            ./modules/splash
             # splash.packages
             home-manager.nixosModules.home-manager
             {
