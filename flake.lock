@@ -78,23 +78,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "plasma-manager": "plasma-manager",
-        "splash": "splash"
-      }
-    },
-    "splash": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-PuBSsRE6LS9XEfKEX6y0ujUO5jcjxVoHXLKkQs7ZetI=",
-        "path": "./modules/splash",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/splash",
-        "type": "path"
+        "plasma-manager": "plasma-manager"
       }
     }
   },

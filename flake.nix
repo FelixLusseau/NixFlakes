@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    splash.url =  "path:./modules/splash";
+    # splash.url =  "path:./modules/splash";
   };
 
   outputs = { self, nixpkgs, home-manager, plasma-manager, splash }@inputs:
@@ -28,6 +28,7 @@
 
           modules = [
             ./hosts/flnix.nix
+            # ./modules/splash
             # splash.packages
             home-manager.nixosModules.home-manager
             {
