@@ -12,12 +12,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    # splash.url =  "path:./modules/splash";
   };
 
-  outputs = { self, nixpkgs, home-manager, plasma-manager, /* splash */ }@inputs:
+  outputs = { self, nixpkgs, home-manager, plasma-manager }@inputs:
     let
-      # inherit (splash.inputs) nixpkgs;
     in {
       nixosConfigurations = {
         flnix = nixpkgs.lib.nixosSystem {
@@ -29,7 +27,6 @@
           modules = [
             ./hosts/flnix.nix
             ./modules/splash
-            # splash.packages
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
