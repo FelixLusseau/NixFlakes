@@ -12,7 +12,7 @@
   home.packages = with pkgs; [
     vscode
     discord
-    fastfetch
+    # fastfetch
 
     nixpkgs-fmt # nix formatting tool
 
@@ -36,11 +36,11 @@
     spotify
 
     # Terminal
-    tree
+    # tree
     nnn # terminal file manager
-    bat # replacement for cat
-    eza # A modern replacement for ‘ls’
-    fzf # A command-line fuzzy finder
+    # bat # replacement for cat
+    # eza # A modern replacement for ‘ls’
+    # fzf # A command-line fuzzy finder
 
     wl-clipboard
     wf-recorder
@@ -55,9 +55,9 @@
     brightnessctl # control screen brightness
 
     # Other
-    cowsay
+    # cowsay
     xclip
-    ripgrep
+    # ripgrep
 
     signal-desktop
     element-desktop
@@ -171,33 +171,33 @@
     fzf.enable = true; # enables zsh integration by default
     starship.enable = true;
 
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
+    # zsh = {
+    #   enable = true;
+    #   enableCompletion = true;
+    #   autosuggestion.enable = true;
+    #   syntaxHighlighting.enable = true;
 
-      shellAliases = {
-        nixswitch = "sudo nixos-rebuild switch";
-        nixconfig = "$EDITOR /etc/nixos/";
-        cd = "z";
-        ls = "eza --icons --group-directories-first";
-        ll = "eza --icons -l --group-directories-first";
-        tree = "eza --tree --icons";
-        cat = "bat";
-        clip = "wl-copy";
-        whatismyip = "curl https://ipinfo.io/ip";
-        mtr = "mtr -e -b -t -z";
-      };
+    #   shellAliases = {
+    #     nixswitch = "sudo nixos-rebuild switch";
+    #     nixconfig = "$EDITOR /etc/nixos/";
+    #     cd = "z";
+    #     ls = "eza --icons --group-directories-first";
+    #     ll = "eza --icons -l --group-directories-first";
+    #     tree = "eza --tree --icons";
+    #     cat = "bat";
+    #     clip = "wl-copy";
+    #     whatismyip = "curl https://ipinfo.io/ip";
+    #     mtr = "mtr -e -b -t -z";
+    #   };
 
-      initExtra = "fastfetch\nfiglet -c FLNix | lolcat\n";
+    #   initExtra = "fastfetch\nfiglet -c FLNix | lolcat\n";
 
-      oh-my-zsh = {
-        enable = true;
-        plugins = [ "git" "node" "npm" ];
-        theme = "af-magic";
-      };
-    };
+    #   oh-my-zsh = {
+    #     enable = true;
+    #     plugins = [ "git" "node" "npm" ];
+    #     theme = "af-magic";
+    #   };
+    # };
 
     zoxide = {
       enable = true;

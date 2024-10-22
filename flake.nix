@@ -29,10 +29,17 @@
             ./modules/splash
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
-              home-manager.users.felix = import ./home-manager/home.nix;
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+                users.felix = {
+                  import = [
+                    ./home-manager/home.nix
+                    ./modules/shell/zsh
+                  ];
+                };
+              };
             }
           ];
         };
