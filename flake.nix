@@ -34,7 +34,7 @@
                 useUserPackages = true;
                 sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
                 users.felix = {
-                  import = [
+                  imports = [
                     ./home-manager/home.nix
                     ./modules/shell/zsh
                   ];
