@@ -17,17 +17,17 @@ with types;
       ];
 
       programs.command-not-found.enable = true;
-      environment.systemPackages = with pkgs; [
-        bat
-        ripgrep
-        fzf
-        libnotify
-        difftastic
-        fastfetch
-        eza
-        tree
-        cowsay
-      ];
+      # environment.systemPackages = with pkgs; [
+      #   bat
+      #   ripgrep
+      #   fzf
+      #   libnotify
+      #   difftastic
+      #   fastfetch
+      #   eza
+      #   tree
+      #   cowsay
+      # ];
       programs = {
         zsh = {
           enable = true;
