@@ -5,8 +5,8 @@ in
 with lib;
 with types;
 {
-  # config = mkMerge [
-    # (mkIf cfg.enable {
+  config = mkMerge [
+    (mkIf cfg.enable {
       nixpkgs.overlays = [
         (self: super: {
           zsh-forgit              = super.callPackage ./plugin/zsh-forgit.nix { };
@@ -17,17 +17,17 @@ with types;
       ];
 
       programs.command-not-found.enable = true;
-      # environment.systemPackages = with pkgs; [
-      #   bat
-      #   ripgrep
-      #   fzf
-      #   libnotify
-      #   difftastic
-      #   fastfetch
-      #   eza
-      #   tree
-      #   cowsay
-      # ];
+      environment.systemPackages = with pkgs; [
+        bat
+        ripgrep
+        fzf
+        libnotify
+        difftastic
+        fastfetch
+        eza
+        tree
+        cowsay
+      ];
       programs = {
         zsh = {
           enable = true;
@@ -94,6 +94,6 @@ with types;
         defaultUserShell = pkgs.zsh;
         #users.root.shell = pkgs.zsh;
       };
-    # })
-  # ];
+    })
+  ];
 }
