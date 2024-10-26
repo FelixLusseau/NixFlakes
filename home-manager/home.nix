@@ -30,6 +30,7 @@
     btop # replacement of htop/nmo
     iotop # io monitoring
     iftop # network monitoring
+    ncdu
 
     ani-cli
     spicetify-cli
