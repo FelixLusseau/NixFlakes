@@ -12,7 +12,7 @@
   home.packages = with pkgs; [
     vscode
     discord
-    # fastfetch
+    fastfetch
 
     nixpkgs-fmt # nix formatting tool
 
@@ -37,11 +37,12 @@
     spotify
 
     # Terminal
-    # tree
+    tree
     nnn # terminal file manager
-    # bat # replacement for cat
-    # eza # A modern replacement for ‘ls’
-    # fzf # A command-line fuzzy finder
+    bat # replacement for cat
+    eza # A modern replacement for ‘ls’
+    fzf # A command-line fuzzy finder
+    broot
 
     wl-clipboard
     wf-recorder
