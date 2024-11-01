@@ -96,9 +96,18 @@
       overrideConfig = true;
 
       workspace = {
-        theme = "breeze-dark";
-        colorScheme = "breeze-dark";
-        lookAndFeel = "org.kde.breezedark.desktop";
+        theme = "Vivid-Dark-Plasma"; #"breeze-dark";
+        colorScheme ="VividCyanDarkColorscheme"; #"breeze-dark";
+        # lookAndFeel = "Vivid-Dark-Global-6"; #"org.kde.breezedark.desktop"
+        iconTheme = "Vivid-Dark-Icons";
+        windowDecorations = {
+          theme = "__aurorae__svg__Gently-Blur-Dark-Aurorae-6";
+          library = "org.kde.kwin.aurorae";
+        };
+        splashScreen = { 
+          theme = "Vivid-Dark-Global-6";
+        };
+        wallpaper = "/home/felix/.local/share/wallpapers/Vivid-Line-Wallpaper-With-Plasma-Logo.png";
       };
 
       panels = [
@@ -121,6 +130,7 @@
           location = "bottom";
           floating = true;
           lengthMode = "fit";
+          height = 48;
           widgets = [
             {
               iconTasks = {
