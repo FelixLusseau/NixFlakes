@@ -92,6 +92,9 @@
     #media-session.enable = true;
   };
 
+  # Custom SDDM theme
+  services.displayManager.sddm.theme = "sddm-vivid-theme-dialog";
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -131,6 +134,7 @@
     wireguard-tools
     conky
     tcpdump
+    (callPackage ../home-manager/sddm.nix {})
   ];
 
   # Set the default editor to vim

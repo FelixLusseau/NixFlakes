@@ -15,6 +15,7 @@
     fastfetch
 
     nixpkgs-fmt # nix formatting tool
+    nix-prefetch-git
 
     direnv # environment variable manager
 
