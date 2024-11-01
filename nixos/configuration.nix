@@ -135,6 +135,10 @@
     conky
     tcpdump
     (callPackage ../home-manager/sddm.nix {})
+    (callPackage ../modules/shell/zsh/plugin/zsh-auto-notify.nix {})
+    (callPackage ../modules/shell/zsh/plugin/zsh-autopair.nix {})
+    (callPackage ../modules/shell/zsh/plugin/zsh-forgit.nix {})
+    (callPackage ../modules/shell/zsh/plugin/zsh-fzf-history-search.nix {})
   ];
 
   # Set the default editor to vim
