@@ -167,6 +167,8 @@ fsck_notification.image = ImageToActionText ("");
 
 status = "normal";
 
+progress_bar_y = (Window.GetHeight() / 1.5) + 40;
+
 progress_indicator.bullet_off = Image (progress_dot_off_filename);
 progress_indicator.bullet_on = Image (progress_dot_on_filename);
 progress_indicator.bullet_width = progress_indicator.bullet_off.GetWidth ();
@@ -174,7 +176,7 @@ progress_indicator.bullet_height = progress_indicator.bullet_off.GetHeight ();
 progress_indicator.bullet_hspacing = progress_indicator.bullet_width;
 progress_indicator.width = progress_indicator.bullet_width;
 progress_indicator.height = progress_indicator.bullet_height;
-progress_indicator.y = ((Window.GetHeight() / 1.5));
+progress_indicator.y = (progress_bar_y);
 progress_indicator.x = 0; # logo.x + 26;
 
 # use a fixed string with ascending and descending stems to calibrate the
@@ -209,10 +211,10 @@ maze_sprite_2 = Sprite (resized_maze_image);
 maze_sprite_3 = Sprite (resized_maze_image);
 maze_sprite_4 = Sprite (resized_maze_image);
 
-maze_sprite_1.SetY ((Window.GetHeight() / 1.5) +12);
-maze_sprite_2.SetY ((Window.GetHeight() / 1.5) +15);
-maze_sprite_3.SetY ((Window.GetHeight() / 1.5) -6);
-maze_sprite_4.SetY ((Window.GetHeight() / 1.5) -9);
+maze_sprite_1.SetY (progress_bar_y +12);
+maze_sprite_2.SetY (progress_bar_y +15);
+maze_sprite_3.SetY (progress_bar_y -6);
+maze_sprite_4.SetY (progress_bar_y -9);
 
 
 #----------------------------------------- Pacmanimation --------------------------------
@@ -261,7 +263,7 @@ fun pacman_move() {
 
   if (progress < (local.screen_width / local.rate_ratio) +80) {
     pacman_sprite.SetX(Window.GetWidth() / 2 - pacman_sprite.GetImage().GetWidth() / 2);
-    pacman_sprite.SetY((Window.GetHeight() / 1.5)-4);
+    pacman_sprite.SetY(progress_bar_y-4);
     pacman_sprite.SetZ(5000);
     progress++;
     pacman_sprite.SetX((progress * local.rate_ratio)-8);
@@ -269,28 +271,28 @@ fun pacman_move() {
   }
   if (progress < (local.screen_width / local.rate_ratio) +32) {
     redghostright_sprite.SetX((Window.GetWidth() / 2 - redghostright_sprite.GetImage().GetWidth() / 2));
-    redghostright_sprite.SetY((Window.GetHeight() / 1.5)-4);
+    redghostright_sprite.SetY(progress_bar_y-4);
     redghostright_sprite.SetZ(10000);
     redghostright_sprite.SetX((progress * local.rate_ratio)-32);
     redghostright_sprite.SetImage(redghostright_images[Math.Int(progress / 2) % 2]);
     }
   if (progress < (local.screen_width / local.rate_ratio) +48) {
     pinkghostright_sprite.SetX((Window.GetWidth() / 2 - pinkghostright_sprite.GetImage().GetWidth() / 2));
-    pinkghostright_sprite.SetY((Window.GetHeight() / 1.5)-4);
+    pinkghostright_sprite.SetY(progress_bar_y-4);
     pinkghostright_sprite.SetZ(10000);
     pinkghostright_sprite.SetX((progress * local.rate_ratio)-48);
     pinkghostright_sprite.SetImage(pinkghostright_images[Math.Int(progress / 2) % 2]);
     }
   if (progress < (local.screen_width / local.rate_ratio) +64) {
     cyanghostright_sprite.SetX((Window.GetWidth() / 2 - cyanghostright_sprite.GetImage().GetWidth() / 2));
-    cyanghostright_sprite.SetY((Window.GetHeight() / 1.5)-4);
+    cyanghostright_sprite.SetY(progress_bar_y-4);
     cyanghostright_sprite.SetZ(10000);
     cyanghostright_sprite.SetX((progress * local.rate_ratio)-64);
     cyanghostright_sprite.SetImage(cyanghostright_images[Math.Int(progress / 2) % 2]);
     }
   if (progress < (local.screen_width / local.rate_ratio) +80) {
     orangeghostright_sprite.SetX((Window.GetWidth() / 2 - orangeghostright_sprite.GetImage().GetWidth() / 2));
-    orangeghostright_sprite.SetY((Window.GetHeight() / 1.5)-4);
+    orangeghostright_sprite.SetY(progress_bar_y-4);
     orangeghostright_sprite.SetZ(10000);
     orangeghostright_sprite.SetX((progress * local.rate_ratio)-80);
     orangeghostright_sprite.SetImage(orangeghostright_images[Math.Int(progress / 2) % 2]);
