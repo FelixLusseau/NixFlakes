@@ -27,12 +27,16 @@ with types;
         eza
         tree
         cowsay
+        nnn
+        broot
+        figlet
+        lolcat
       ];
       programs = {
         zsh = {
           enable = true;
           enableCompletion = true;
-          autosuggestion.enable = true;
+          autosuggestions.enable = true;
           syntaxHighlighting.enable = true;
 
           shellAliases = {
@@ -48,7 +52,7 @@ with types;
             mtr = "mtr -e -b -t -z";
           };
 
-          initExtra = "fastfetch\nfiglet -c FLNix | lolcat\n";
+          promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\nfastfetch\nfiglet -c FLNix | lolcat\n";
 
           ohMyZsh = {
             enable = true;
@@ -79,15 +83,10 @@ with types;
             theme = "af-magic";
           };
         };
-
-        # zoxide = {
-        #   enable = true;
-        #   enableZshIntegration = true;
-        # };
       };
-      # environment.etc.zshrc.text = ''
-      #   source ${./zshrc.sh}
-      # '';
+      environment.etc.zshrc.text = ''
+        source ${./zshrc.sh}
+      '';
 
       # Set as user shell.
       users = {

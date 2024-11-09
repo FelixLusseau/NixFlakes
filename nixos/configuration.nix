@@ -135,14 +135,17 @@
     conky
     tcpdump
     (callPackage ../home-manager/sddm.nix {})
-    (callPackage ../modules/shell/zsh/plugin/zsh-auto-notify.nix {})
-    (callPackage ../modules/shell/zsh/plugin/zsh-autopair.nix {})
-    (callPackage ../modules/shell/zsh/plugin/zsh-forgit.nix {})
-    (callPackage ../modules/shell/zsh/plugin/zsh-fzf-history-search.nix {})
+    # (callPackage ../modules/shell/zsh/plugin/zsh-auto-notify.nix {})
+    # (callPackage ../modules/shell/zsh/plugin/zsh-autopair.nix {})
+    # (callPackage ../modules/shell/zsh/plugin/zsh-forgit.nix {})
+    # (callPackage ../modules/shell/zsh/plugin/zsh-fzf-history-search.nix {})
   ];
 
   # Set the default editor to vim
   environment.variables.EDITOR = "vim";
+
+  # Prevent the new user dialog in zsh
+  system.userActivationScripts.zshrc = "touch .zshrc";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -12,7 +12,7 @@
   home.packages = with pkgs; [
     vscode
     discord
-    fastfetch
+    # fastfetch
 
     nixpkgs-fmt # nix formatting tool
     nix-prefetch-git
@@ -38,12 +38,14 @@
     spotify
 
     # Terminal
-    tree
-    nnn # terminal file manager
-    bat # replacement for cat
-    eza # A modern replacement for ‘ls’
-    fzf # A command-line fuzzy finder
-    broot
+    # tree
+    # nnn # terminal file manager
+    # bat # replacement for cat
+    # eza # A modern replacement for ‘ls’
+    # fzf # A command-line fuzzy finder
+    # broot
+    # libnotify
+    # difftastic
 
     wl-clipboard
     wf-recorder
@@ -71,8 +73,8 @@
     # libreoffice
     bruno
     xournalpp
-    figlet
-    lolcat
+    # figlet
+    # lolcat
 
     python3
 
@@ -80,6 +82,15 @@
     plocate
 
   ];
+
+  # nixpkgs.overlays = [
+  #   (self: super: {
+  #     zsh-forgit              = super.callPackage ../modules/shell/zsh/plugin/zsh-forgit.nix { };
+  #     zsh-autopair            = super.callPackage ../modules/shell/zsh/plugin/zsh-autopair.nix { };
+  #     zsh-auto-notify         = super.callPackage ../modules/shell/zsh/plugin/zsh-auto-notify.nix { };
+  #     zsh-fzf-history-search  = super.callPackage ../modules/shell/zsh/plugin/zsh-fzf-history-search.nix { };
+  #   })
+  # ];
 
   programs = {
     # Let Home Manager install and manage itself.
@@ -181,36 +192,60 @@
 
     firefox.enable = true;
     alacritty.enable = true;
-    fzf.enable = true; # enables zsh integration by default
-    starship.enable = true;
+    # fzf.enable = true; # enables zsh integration by default
+    # starship.enable = true;
+    # command-not-found.enable = true;
 
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
+    # zsh = {
+    #   enable = true;
+    #   enableCompletion = true;
+    #   autosuggestion.enable = true;
+    #   syntaxHighlighting.enable = true;
 
-      shellAliases = {
-        nixswitch = "sudo nixos-rebuild switch";
-        nixconfig = "$EDITOR /etc/nixos/";
-        cd = "z";
-        ls = "eza --icons --group-directories-first";
-        ll = "eza --icons -l --group-directories-first";
-        tree = "eza --tree --icons";
-        cat = "bat";
-        clip = "wl-copy";
-        whatismyip = "curl https://ipinfo.io/ip";
-        mtr = "mtr -e -b -t -z";
-      };
+    #   shellAliases = {
+    #     nixswitch = "sudo nixos-rebuild switch";
+    #     nixconfig = "$EDITOR /etc/nixos/";
+    #     cd = "z";
+    #     ls = "eza --icons --group-directories-first";
+    #     ll = "eza --icons -l --group-directories-first";
+    #     tree = "eza --tree --icons";
+    #     cat = "bat";
+    #     clip = "wl-copy";
+    #     whatismyip = "curl https://ipinfo.io/ip";
+    #     mtr = "mtr -e -b -t -z";
+    #   };
 
-      initExtra = "fastfetch\nfiglet -c FLNix | lolcat\n";
+    #   initExtra = "fastfetch\nfiglet -c FLNix | lolcat\n";
 
-      oh-my-zsh = {
-        enable = true;
-        plugins = [ "git" "node" "npm" ];
-        theme = "af-magic";
-      };
-    };
+    #   oh-my-zsh = {
+    #     enable = true;
+    #     plugins = [
+    #       "git"
+    #       "node"
+    #       "npm"
+    #       "sudo"
+    #       "forgit"
+    #       "docker"
+    #       "battery"
+    #       "kubectl"
+    #       "autopair"
+    #       "colorize"
+    #       "auto-notify"
+    #       "colored-man-pages"
+    #       "command-not-found"
+    #       "zsh-interactive-cd"
+    #       "zsh-fzf-history-search"
+    #       "history-substring-search"
+    #     ];
+    #     # customPkgs = with pkgs; [
+    #     #   # zsh-forgit
+    #     #   # zsh-fzf-history-search
+    #     #   # zsh-autopair
+    #     #   # zsh-auto-notify
+    #     # ];
+    #     theme = "af-magic";
+    #   };
+    # };
 
     zoxide = {
       enable = true;
