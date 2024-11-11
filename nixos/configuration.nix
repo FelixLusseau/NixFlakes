@@ -5,11 +5,23 @@
 { config, pkgs, ... }:
 
 {
+  flcraft = {
+    shell = {
+      zsh = {
+        enable = true;
+      };
+    };
+  };
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
-  boot.loader.grub.useOSProber = true;
-  boot.loader.timeout = 2;
+  boot.loader = {
+    grub = {
+      enable = true;
+      device = "/dev/vda";
+      useOSProber = true;
+      gfxmodeEfi = "1920x1080";
+    };
+    timeout = 2;
+  };
 
   # Plymouth splash screen
   boot.plymouth = {
@@ -18,6 +30,7 @@
     themePackages = [
       pkgs.splash-boot
     ];
+    # logo = "Chat-licorne.png";
   };
 
   networking.hostName = "flnix"; # Define your hostname.
@@ -135,10 +148,6 @@
     conky
     tcpdump
     (callPackage ../home-manager/sddm.nix {})
-    # (callPackage ../modules/shell/zsh/plugin/zsh-auto-notify.nix {})
-    # (callPackage ../modules/shell/zsh/plugin/zsh-autopair.nix {})
-    # (callPackage ../modules/shell/zsh/plugin/zsh-forgit.nix {})
-    # (callPackage ../modules/shell/zsh/plugin/zsh-fzf-history-search.nix {})
   ];
 
   # Set the default editor to vim

@@ -1,10 +1,11 @@
 {
   pkgs ? import <nixpkgs> {},
   theme ? "plymouth-felix",
+  logo ? "Chat-licorne.png",
 }:
 pkgs.stdenv.mkDerivation {
   pname = "splash-boot";
-  version = "0.1.0";
+  version = "0.2.0";
 
   src = ./src;
 
@@ -25,6 +26,7 @@ pkgs.stdenv.mkDerivation {
   installPhase = ''
     cd ${theme}
     cp -r . ${theme}.script ${theme}.plymouth $out/share/plymouth/themes/${theme}
+    cp ${logo} $out/share/plymouth/themes/${theme}/logo.png
     sed -i "s@\/usr\/@$out\/@" $out/share/plymouth/themes/${theme}/${theme}.plymouth
   '';
 }
