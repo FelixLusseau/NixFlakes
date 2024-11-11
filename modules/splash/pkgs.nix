@@ -1,7 +1,7 @@
 {
   pkgs ? import <nixpkgs> {},
   theme ? "plymouth-felix",
-  logo ? "Chat-licorne.png",
+  logo ? ./nixos.png,
 }:
 pkgs.stdenv.mkDerivation {
   pname = "splash-boot";

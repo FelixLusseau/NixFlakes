@@ -30,7 +30,7 @@
     themePackages = [
       pkgs.splash-boot
     ];
-    # logo = "Chat-licorne.png";
+    logo = ../modules/splash/Chat-licorne.png;
   };
 
   networking.hostName = "flnix"; # Define your hostname.
