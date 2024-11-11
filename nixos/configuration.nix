@@ -115,7 +115,7 @@
   users.users = {
     felix = {
       isNormalUser = true;
-      description = "Felix";
+      description = "Félix";
       extraGroups = [ "networkmanager" "wheel" ];
       packages = with pkgs; [
         kdePackages.kate
