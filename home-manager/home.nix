@@ -13,6 +13,7 @@
     vscode
     discord
     # fastfetch
+    google-chrome
 
     nixpkgs-fmt # nix formatting tool
     nix-prefetch-git
@@ -149,6 +150,7 @@
                 launchers = [
                   "applications:org.kde.dolphin.desktop"
                   "file://${pkgs.firefox}/share/applications/firefox.desktop"
+                  "file://${pkgs.google-chrome}/share/applications/google-chrome.desktop"
                   "file://${pkgs.systemsettings}/share/applications/systemsettings.desktop"
                   "file://${pkgs.spotify}/share/applications/spotify.desktop"
                   "applications:org.kde.plasma-systemmonitor.desktop"

@@ -26,9 +26,9 @@
 
           modules = [
             ./hosts/flnix.nix
-            ./modules/splash
-            ./modules/shell/zsh
-            # ./modules
+            # ./modules/splash
+            # ./modules/shell/zsh
+            ./modules
             home-manager.nixosModules.home-manager
             {
               home-manager = {

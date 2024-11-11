@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let cfg = { enable = true; }; # config.flnix.shell.zsh;
+let cfg = config.flcraft.shell.zsh;
 in
 with lib;
 with types;
@@ -42,7 +42,7 @@ with types;
           shellAliases = {
             nixswitch = "sudo nixos-rebuild switch";
             nixconfig = "$EDITOR /etc/nixos/";
-            cd = "z";
+            # cd = "z";
             ls = "eza --icons --group-directories-first";
             ll = "eza --icons -l --group-directories-first";
             tree = "eza --tree --icons";
