@@ -11,6 +11,19 @@
         enable = true;
       };
     };
+    system = {
+      ssh = {
+        enable = true;
+      };
+    };
+    gui = {
+      enable = true;
+      pkgs = {
+        messages.enable = true;
+        programming.enable = true;
+        art.enable = true;
+      };
+    };
   };
   # Bootloader.
   boot.loader = {
@@ -30,20 +43,16 @@
     themePackages = [
       pkgs.splash-boot
     ];
-    logo = ../modules/splash/Chat-licorne.png;
+    logo = ../modules/system/splash/Chat-licorne.png;
   };
 
   networking.hostName = "flnix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Enable networking
   networking.networkmanager.enable = true;
 
-  services.gvfs.enable = true; # for Nautilus
+  # services.gvfs.enable = true; # for Nautilus
 
   programs.nix-ld.enable = true; # to run non-nix executables
 
@@ -64,14 +73,6 @@
     LC_TELEPHONE = "fr_FR.UTF-8";
     LC_TIME = "fr_FR.UTF-8";
   };
-
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
   # VM screen resize
   services.spice-vdagentd.enable = true;
@@ -105,9 +106,6 @@
     #media-session.enable = true;
   };
 
-  # Custom SDDM theme
-  services.displayManager.sddm.theme = "sddm-vivid-theme-dialog";
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -119,16 +117,11 @@
       extraGroups = [ "networkmanager" "wheel" ];
       packages = with pkgs; [
         kdePackages.kate
-      #  thunderbird
       ];
       shell = pkgs.zsh;
     };
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
-  programs.zsh.enable = true;
-
+  
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -142,12 +135,7 @@
     wget
     git
     curl
-    gparted
-    duf
-    wireguard-tools
-    conky
-    tcpdump
-    (callPackage ../home-manager/sddm.nix {})
+    # tcpdump
   ];
 
   # Set the default editor to vim

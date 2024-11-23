@@ -31,6 +31,18 @@ with types;
         broot
         figlet
         lolcat
+        direnv
+        ranger # terminal file manager
+        fd # replacement for find
+        zellij # tmux alternative
+        glow # markdown previewer in terminal
+        btop # replacement of htop/nmo
+        iotop # io monitoring
+        iftop # network monitoring
+        ncdu
+        w3m # Display image in terminal
+        plocate
+        duf
       ];
       programs = {
         zsh = {

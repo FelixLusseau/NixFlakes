@@ -3,9 +3,10 @@
 with lib;
 with types;
 {
-    imports = [
+  imports = [
     ./shell
-    ./splash
+    ./system
+    ./gui
   ];
 
   options.flcraft = {
@@ -15,6 +16,17 @@ with types;
       # tmux.enable   = mkEnableOption "Activate tmux advenced config";
       zsh = {
         enable = mkEnableOption "Activate ZSH as default shell";
+      };
+    };
+    system = {
+      ssh.enable = mkEnableOption "Activate SSH server";
+    };
+    gui = {
+      enable = mkEnableOption "Activate GUI";
+      pkgs = {
+        messages.enable = mkEnableOption "Activate messages apps";
+        programming.enable = mkEnableOption "Activate programming";
+        art.enable = mkEnableOption "Activate image and video editing";
       };
     };
   };

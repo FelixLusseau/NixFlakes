@@ -1,11 +1,12 @@
 {config, lib, packages, ...}:
 let
-  cfg = config.flcraft.shell;
+  cfg = config.flcraft.system;
 in
 with lib;
 {
   imports =
   [
-    ./zsh
+    ./splash
+    ./ssh.nix
   ];
 }
