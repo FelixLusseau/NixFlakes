@@ -14,6 +14,7 @@ with types;
             font-manager
             spotify
             nextcloud-client
+            seafile-client
             gparted
             conky
             vlc

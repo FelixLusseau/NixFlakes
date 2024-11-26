@@ -9,5 +9,6 @@ with types;
   imports =
   [
     ./packages.nix
+    ./conky
   ];
 }

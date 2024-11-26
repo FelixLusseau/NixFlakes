@@ -37,6 +37,7 @@ with types;
         zellij # tmux alternative
         glow # markdown previewer in terminal
         btop # replacement of htop/nmo
+        htop
         iotop # io monitoring
         iftop # network monitoring
         ncdu
