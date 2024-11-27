@@ -62,6 +62,17 @@
         wallpaper = "/home/felix/.local/share/wallpapers/Vivid-Line-Wallpaper-With-Plasma-Logo.png";
       };
 
+      # startup = {
+      #   desktopScript = {
+      #     conky = {
+      #       text = ''
+      #         cd /run/current-system/sw/share/conky/themes/auzia-conky
+      #         conky -c conkyrc
+      #       '';
+      #     };
+      #   };
+      # };
+
       panels = [
         # Windows-like panel at the top
         {

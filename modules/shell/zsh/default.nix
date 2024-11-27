@@ -63,6 +63,7 @@ with types;
             clip = "wl-copy";
             whatismyip = "curl https://ipinfo.io/ip";
             mtr = "mtr -e -b -t -z";
+            diff = "difft";
           };
 
           promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\nfastfetch\nfiglet -c FLNix | lolcat\n";
