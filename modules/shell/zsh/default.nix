@@ -74,7 +74,7 @@ with types;
               "git"
               "node"
               "npm"
-              "sudo"
+              "sudo" # Tap ESC ESC to add sudo automatically
               "forgit"
               "docker"
               "battery"
