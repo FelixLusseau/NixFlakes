@@ -12,6 +12,7 @@ with types;
             google-chrome
             nautilus
             font-manager
+            kdePackages.kate
             spotify
             nextcloud-client
             seafile-client

@@ -2,6 +2,17 @@
 
 with lib;
 with types;
+let
+  userModule = { name, config, ... }:
+  {
+    options = {
+      description = mkOption {
+        type = types.str;
+        default = "";
+      };
+    };
+  };
+in
 {
   imports = [
     ./shell
@@ -10,6 +21,9 @@ with types;
   ];
 
   options.flcraft = {
+    users  = mkOption {
+      type = attrsOf ( submodule userModule );
+    };
     shell = {
       # vim.enable    = mkEnableOption "Activate Vim advenced config";
       # nixvim.enable = mkEnableOption "Activate NeoVim advenced config";
@@ -27,6 +41,26 @@ with types;
         messages.enable = mkEnableOption "Activate messages apps";
         programming.enable = mkEnableOption "Activate programming";
         art.enable = mkEnableOption "Activate image and video editing";
+      };
+    };
+  };
+
+  config = {
+    time.timeZone = "Europe/Paris";
+
+    # Internationalisation properties.
+    i18n = {
+      defaultLocale = "fr_FR.UTF-8";
+      extraLocaleSettings = {
+        LC_ADDRESS = "fr_FR.UTF-8";
+        LC_IDENTIFICATION = "fr_FR.UTF-8";
+        LC_MEASUREMENT = "fr_FR.UTF-8";
+        LC_MONETARY = "fr_FR.UTF-8";
+        LC_NAME = "fr_FR.UTF-8";
+        LC_NUMERIC = "fr_FR.UTF-8";
+        LC_PAPER = "fr_FR.UTF-8";
+        LC_TELEPHONE = "fr_FR.UTF-8";
+        LC_TIME = "fr_FR.UTF-8";
       };
     };
   };

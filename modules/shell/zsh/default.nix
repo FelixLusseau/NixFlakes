@@ -17,6 +17,7 @@ with types;
       ];
 
       programs.command-not-found.enable = true;
+      programs.mtr.enable = true;
       environment.systemPackages = with pkgs; [
         bat
         ripgrep
@@ -102,10 +103,14 @@ with types;
         source ${./zshrc.sh}
       '';
 
+      environment.variables = { EDITOR = "vim"; };
+
+      # Prevent the new user dialog in zsh
+      system.userActivationScripts.zshrc = "touch .zshrc";
+
       # Set as user shell.
       users = {
         defaultUserShell = pkgs.zsh;
-        #users.root.shell = pkgs.zsh;
       };
     })
   ];

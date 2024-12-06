@@ -29,16 +29,7 @@
             ./modules
             home-manager.nixosModules.home-manager
             {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
-                users.felix = {
-                  imports = [
-                    ./home-manager/home.nix
-                  ];
-                };
-              };
+              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
             }
           ];
         };
