@@ -21,8 +21,8 @@
     {
       nixosModules = {
         modules = {
-          # Pass inputs into the NixOS module system
-          specialArgs = { inherit inputs; };
+          # # Pass inputs into the NixOS module system
+          # specialArgs = { inherit inputs; };
 
           imports = [
             ./modules
