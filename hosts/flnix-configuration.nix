@@ -5,6 +5,11 @@
     users = {
       felix = {
         description = "Félix";
+        git = {
+          enable = true;
+          userName = "Me";
+          userEmail = "me@mail.com";
+        };
       };
     };
     shell = {

@@ -10,6 +10,17 @@ let
         type = types.str;
         default = "";
       };
+      git = {
+        enable = mkEnableOption "Activate git";
+        userName = mkOption {
+          type = types.str;
+          default = name;
+        };
+        userEmail = mkOption {
+          type = types.str;
+          default = "";
+        };
+      };
     };
   };
 in
