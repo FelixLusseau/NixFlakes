@@ -16,16 +16,15 @@
 
   outputs = { self, nixpkgs, home-manager, plasma-manager }@inputs:
     let
-    in {
-      nixosConfigurations = {
-        flnix = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
+      system = "x86_64-linux";
+    in 
+    {
+      nixosModules = {
+        modules = {
           # Pass inputs into the NixOS module system
           specialArgs = { inherit inputs; };
 
-          modules = [
-            ./hosts/flnix.nix
+          imports = [
             ./modules
             home-manager.nixosModules.home-manager
             {
