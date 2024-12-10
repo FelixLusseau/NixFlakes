@@ -5,8 +5,8 @@ stdenv.mkDerivation rec {
     version = "1.0";
     dontBuild = true;
     installPhase = ''
-        mkdir -p $out/share/plasma
-        cp -aR $src/Vivid\ Plasma\ Themes/ $out/share/plasma/Vivid-Dark-Plasma/
+        mkdir -p $out/share/plasma/desktoptheme
+        cp -aR $src/Vivid\ Plasma\ Themes/ $out/share/plasma/desktoptheme/Vivid-Dark-Plasma/
     '';
     src = fetchFromGitHub {
         owner = "L4ki";
