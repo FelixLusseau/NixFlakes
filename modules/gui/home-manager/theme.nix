@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
         mkdir -p $out/share/plasma/desktoptheme
         cp -aR $src/Vivid\ Plasma\ Themes/ $out/share/plasma/desktoptheme/Vivid-Dark-Plasma/
         mkdir -p $out/share/icons
-        cp -aR $src/Vivid\ Icons\ Themes/ $out/share/icons/Vivid-Dark-Icons/
+        cp -aR $src/Vivid\ Icons\ Themes/Vivid-Dark-Icons/ $out/share/icons/Vivid-Dark-Icons/
     '';
     src = fetchFromGitHub {
         owner = "L4ki";
