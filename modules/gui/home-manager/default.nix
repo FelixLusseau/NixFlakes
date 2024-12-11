@@ -72,7 +72,7 @@ in
               library = "org.kde.kwin.aurorae";
             };
             splashScreen = { 
-              theme = "Vivid-Dark-Global-6";
+              theme = "Vivid-Splash-6";
             };
             wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
           };
