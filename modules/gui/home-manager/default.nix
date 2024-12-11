@@ -74,7 +74,7 @@ in
             splashScreen = { 
               theme = "Vivid-Dark-Global-6";
             };
-            wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
+            wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
           };
 
           # startup = {
