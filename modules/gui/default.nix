@@ -25,6 +25,9 @@ with types;
         # Configure console keymap
         console.keyMap = "fr";
 
+        # Touchpad scrolling
+        services.libinput.touchpad.naturalScrolling = true;
+
         # Fonts
         fonts = {
           fonts = with pkgs; [ fira-code fira-code-symbols noto-fonts-emoji ];
