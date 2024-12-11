@@ -13,6 +13,8 @@ stdenv.mkDerivation rec {
         cp -aR $src/Vivid\ Wallpapers/ $out/share/plasma/wallpapers/
         mkdir -p $out/share/plasma/look-and-feel
         cp -aR $src/Vivid\ Splashscreen/* $out/share/plasma/look-and-feel/
+        mkdir -p $out/share/color-schemes
+        cp -aR $src/Vivid\ Color\ Schemes/* $out/share/color-schemes/
     '';
     src = fetchFromGitHub {
         owner = "L4ki";
