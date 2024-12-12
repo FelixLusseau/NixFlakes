@@ -5,8 +5,8 @@ stdenv.mkDerivation rec {
     version = "1.0";
     dontBuild = true;
     installPhase = ''
-        mkdir -p $out/share/kwin/decorations
-        cp -aR $src/Gently\ Aurorae/Gently-Blur-Dark-Aurorae-6/ $out/share/kwin/decorations/
+        mkdir -p $out/share/aurorae/themes
+        cp -aR $src/Gently\ Aurorae/Gently-Blur-Dark-Aurorae-6/ $out/share/aurorae/themes/
     '';
     src = fetchFromGitHub {
         owner = "L4ki";
