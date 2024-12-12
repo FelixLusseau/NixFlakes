@@ -24,7 +24,8 @@ with types;
             xournalpp
             wireguard-tools
             (callPackage ./sddm.nix {})
-            (callPackage ./home-manager/theme.nix {})
+            (callPackage ./home-manager/theme/vivid.nix {})
+            (callPackage ./home-manager/theme/gently.nix {})
         ];
         programs.firefox.enable = true;
 
