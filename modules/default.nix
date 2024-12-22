@@ -45,6 +45,15 @@ in
     };
     system = {
       ssh.enable = mkEnableOption "Activate SSH server";
+      hardware = {
+        cores-nb = mkOption {
+          type = types.str;
+          default = "8";
+        };
+        wifi-int-name = mkOption {
+          type = types.str;
+        };
+      };
     };
     gui = {
       enable = mkEnableOption "Activate GUI";

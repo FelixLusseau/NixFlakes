@@ -81,8 +81,7 @@ in
           #   desktopScript = {
           #     conky = {
           #       text = ''
-          #         cd /run/current-system/sw/share/conky/themes/auzia-conky
-          #         conky -c conkyrc
+          #         cd /run/current-system/sw/share/conky/themes/auzia-conky ; conky -c conkyrc
           #       '';
           #     };
           #   };
