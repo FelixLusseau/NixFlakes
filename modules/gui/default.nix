@@ -30,7 +30,12 @@ with types;
 
         # Fonts
         fonts = {
-          fonts = with pkgs; [ fira-code fira-code-symbols noto-fonts-emoji ];
+          packages = with pkgs; [ 
+            fira-code 
+            fira-code-symbols 
+            noto-fonts-emoji 
+            pkgs.nerd-fonts.fira-code 
+          ];
           fontconfig.defaultFonts.monospace = [ "Fira Code" ];
           fontconfig.defaultFonts.emoji = [ "Noto Color Emoji" ];
         };
