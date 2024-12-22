@@ -67,7 +67,7 @@ with types;
             diff = "difft";
           };
 
-          promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\nfastfetch\nfiglet -c FLNix | lolcat\n";
+          promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\nfastfetch\nfiglet -c ${config.networking.hostName} | lolcat\n";
 
           ohMyZsh = {
             enable = true;
