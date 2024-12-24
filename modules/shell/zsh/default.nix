@@ -54,8 +54,8 @@ with types;
           syntaxHighlighting.enable = true;
 
           shellAliases = {
-            nixswitch = "sudo nixos-rebuild switch";
-            nixconfig = "$EDITOR /etc/nixos/";
+            nixswitch = "sudo nixos-rebuild switch --flake .#$HOST";
+            nixgc = "sudo nix-collect-garbage -d";
             # cd = "z";
             ls = "eza --icons --group-directories-first";
             ll = "eza --icons -l --group-directories-first";
