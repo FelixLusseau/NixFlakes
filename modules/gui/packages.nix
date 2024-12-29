@@ -10,7 +10,6 @@ with types;
       {
         environment.systemPackages = with pkgs; [
             google-chrome
-            nautilus
             font-manager
             kdePackages.kate
             spotify
@@ -22,7 +21,6 @@ with types;
             keepassxc
             brave
             xournalpp
-            wireguard-tools
             (callPackage ./sddm.nix {})
             (callPackage ./home-manager/theme/vivid.nix {})
             (callPackage ./home-manager/theme/gently.nix {})

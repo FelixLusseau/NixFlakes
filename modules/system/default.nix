@@ -1,4 +1,4 @@
-{config, lib, packages, ...}:
+{config, lib, pkgs, ...}:
 let
   cfg = config.flcraft.system;
 in
@@ -8,5 +8,9 @@ with lib;
   [
     ./splash
     ./ssh.nix
+    ./network-tools.nix
+  ];
+  environment.systemPackages = with pkgs; [
+    wireguard-tools
   ];
 }

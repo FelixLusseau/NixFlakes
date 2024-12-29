@@ -36,15 +36,13 @@ in
       type = attrsOf ( submodule userModule );
     };
     shell = {
-      # vim.enable    = mkEnableOption "Activate Vim advenced config";
-      # nixvim.enable = mkEnableOption "Activate NeoVim advenced config";
-      # tmux.enable   = mkEnableOption "Activate tmux advenced config";
       zsh = {
         enable = mkEnableOption "Activate ZSH as default shell";
       };
     };
     system = {
       ssh.enable = mkEnableOption "Activate SSH server";
+      network-tools.enable = mkEnableOption "Install network tools";
       hardware = {
         cores-nb = mkOption {
           type = types.str;

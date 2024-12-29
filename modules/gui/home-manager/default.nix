@@ -87,6 +87,14 @@ in
           #   };
           # };
 
+          # input = {
+          #   touchpads = [
+          #     {
+          #       naturalScroll = true;
+          #     }
+          #   ];
+          # };
+
           panels = [
             # Windows-like panel at the top
             {
