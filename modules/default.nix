@@ -41,6 +41,7 @@ in
       };
     };
     system = {
+      docker.enable = mkEnableOption "Activate Docker";
       ssh.enable = mkEnableOption "Activate SSH server";
       network-tools.enable = mkEnableOption "Install network tools";
       hardware = {
@@ -51,6 +52,7 @@ in
         wifi-int-name = mkOption {
           type = types.str;
         };
+        fingerprint.enable = mkEnableOption "Activate fingerprint";
       };
     };
     gui = {

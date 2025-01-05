@@ -45,6 +45,7 @@ with types;
         w3m # Display image in terminal
         plocate
         duf
+        zoxide
       ];
       programs = {
         zsh = {
@@ -56,7 +57,7 @@ with types;
           shellAliases = {
             nixswitch = "sudo nixos-rebuild switch --flake .#$HOST";
             nixgc = "sudo nix-collect-garbage -d";
-            # cd = "z";
+            cd = "z";
             ls = "eza --icons --group-directories-first";
             ll = "eza --icons -l --group-directories-first";
             tree = "eza --tree --icons";

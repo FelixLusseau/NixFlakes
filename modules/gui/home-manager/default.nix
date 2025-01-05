@@ -47,6 +47,8 @@ in
         dnsutils
       ];
 
+      xsession.numlock.enable = true; # -> I'm on Wayland...
+
       programs = {
         # Let Home Manager install and manage itself.
         home-manager.enable = true;
@@ -87,13 +89,16 @@ in
           #   };
           # };
 
-          # input = {
-          #   touchpads = [
-          #     {
-          #       naturalScroll = true;
-          #     }
-          #   ];
-          # };
+          input = {
+            touchpads = [
+              {
+                name = "SYNA7DAB:01 06CB:CD40 Touchpad";
+                naturalScroll = true;
+                vendorId = "06cb";
+                productId = "cd40";
+              }
+            ];
+          };
 
           panels = [
             # Windows-like panel at the top
@@ -147,20 +152,26 @@ in
             };
           };
 
-          # kwin = {
-          #   nightLight = {
-          #     enable = true;
-          #     mode = "times";
-          #     temperature = {
-          #       day = 6500;
-          #       night = 4500;
-          #     };
-          #     time = {
-          #       evening = "21:00";
-          #       morning = "07:00";
-          #     };
-          #   };
-          # };
+          kwin = {
+            nightLight = {
+              enable = true;
+              # mode = "times";
+              # temperature = {
+              #   day = 6500;
+              #   night = 4500;
+              # };
+              # time = {
+              #   evening = "21:00";
+              #   morning = "07:00";
+              # };
+              mode = "location";
+              location = { # Paris
+                latitude = "48.862725";
+                longitude = "2.287592";
+              };
+              transitionTime = 5;
+            };
+          };
           configFile = {
             kwinrc.Desktops.Number = {
               value = 9;
@@ -174,11 +185,7 @@ in
 
         firefox.enable = true;
         alacritty.enable = true;
-
-        zoxide = {
-          enable = true;
-          enableZshIntegration = true;
-        };
+        floorp.enable = false;
 
         git = (mkIf cfg.git.enable {
           enable = true;
@@ -186,17 +193,6 @@ in
           userName = cfg.git.userName;
           userEmail = cfg.git.userEmail;
         });
-
-        # helix = {
-        #   enable = true;
-        #   settings = { theme = lib.mkDefault "nord"; };
-        #   themes = {
-        #     nord = {
-        #       inherits = "nord";
-        #       "ui.background" = "none";
-        #     };
-        #   };
-        # };
       };
     });
   };

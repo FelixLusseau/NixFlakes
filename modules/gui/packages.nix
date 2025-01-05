@@ -66,6 +66,7 @@ with types;
         #   darktable
           inkscape
           kdenlive
+          shotwell
         ];
       }
     )
