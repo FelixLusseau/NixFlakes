@@ -16,6 +16,7 @@ with lib;
           wireguard-tools
           pciutils
           usbutils
+          ffmpeg
         ];
       }
     )
