@@ -36,5 +36,6 @@ pkgs.stdenv.mkDerivation {
     sed -i 's/middle_middle/top_right/g' $out/share/conky/themes/${theme}/conkyrc
     sed -i 's/cpu_cores = 4/cpu_cores = ${cores-nb}/g' $out/share/conky/themes/${theme}/settings.lua
     sed -i 's/net_interface = "wlan0"/net_interface = "${wifi-int-name}"/g' $out/share/conky/themes/${theme}/settings.lua
+    sed -i 's/use_public_ip = false/use_public_ip = true/g' $out/share/conky/themes/${theme}/settings.lua
   '';
 }
