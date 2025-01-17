@@ -194,6 +194,9 @@ in
           difftastic.enable = true;
           userName = cfg.git.userName;
           userEmail = cfg.git.userEmail;
+          extraConfig= {
+            pull.rebase = false;
+          };
         });
       };
     });
