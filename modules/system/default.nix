@@ -32,6 +32,7 @@ with lib;
         environment.systemPackages = with pkgs; [
           nmap
           tcpdump
+          ipcalc
         ];
       }
     )
