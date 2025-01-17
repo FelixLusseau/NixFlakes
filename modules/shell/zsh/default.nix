@@ -104,7 +104,10 @@ with types;
         source ${./zshrc.sh}
       '';
 
-      environment.variables = { EDITOR = "vim"; };
+      environment.variables = { 
+        EDITOR = "vim";
+        TERMINAL = "alacritty";
+      };
 
       # Prevent the new user dialog in zsh
       system.userActivationScripts.zshrc = "touch .zshrc";
