@@ -106,7 +106,6 @@ with types;
 
       environment.variables = { 
         EDITOR = "vim";
-        TERMINAL = "alacritty";
       };
 
       # Prevent the new user dialog in zsh
