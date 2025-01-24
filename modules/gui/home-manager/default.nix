@@ -155,6 +155,11 @@ in
           };
 
           kwin = {
+            effects = {
+              wobblyWindows = { 
+                enable = true;
+              };
+            };
             nightLight = {
               enable = true;
               # mode = "times";

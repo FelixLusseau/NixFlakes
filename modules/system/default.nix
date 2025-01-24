@@ -33,6 +33,7 @@ with lib;
           nmap
           tcpdump
           ipcalc
+          dig
         ];
       }
     )

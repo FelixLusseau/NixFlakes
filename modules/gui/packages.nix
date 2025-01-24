@@ -15,7 +15,6 @@ with types;
             spotify
             nextcloud-client
             seafile-client
-            gparted
             conky
             vlc
             keepassxc
@@ -26,6 +25,8 @@ with types;
             (callPackage ./sddm.nix {})
             (callPackage ./home-manager/theme/vivid.nix {})
             (callPackage ./home-manager/theme/gently.nix {})
+            gparted
+            ntfs3g
         ];
         programs.firefox.enable = true;
 
