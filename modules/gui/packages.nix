@@ -27,6 +27,7 @@ with types;
             (callPackage ./home-manager/theme/gently.nix {})
             gparted
             ntfs3g
+            resources
         ];
         programs.firefox.enable = true;
 

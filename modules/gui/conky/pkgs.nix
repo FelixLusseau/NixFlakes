@@ -38,4 +38,5 @@ pkgs.stdenv.mkDerivation {
     sed -i 's/net_interface = "wlan0"/net_interface = "${wifi-int-name}"/g' $out/share/conky/themes/${theme}/settings.lua
     sed -i 's/use_public_ip = false/use_public_ip = true/g' $out/share/conky/themes/${theme}/settings.lua
   '';
+    # sed -i 's/startup_delay = 5/startup_delay = 15/g' $out/share/conky/themes/${theme}/settings.lua
 }

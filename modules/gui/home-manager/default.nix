@@ -65,8 +65,8 @@ in
           overrideConfig = true;
 
           workspace = {
-            theme = "Vivid-Dark-Plasma"; #"breeze-dark";
-            colorScheme ="VividCyanDarkColorscheme"; #"breeze-dark";
+            theme = "Vivid-Dark-Plasma"; 
+            colorScheme ="VividCyanDarkColorscheme"; 
             # lookAndFeel = "Vivid-Dark-Global-6"; #"org.kde.breezedark.desktop"
             iconTheme = "Vivid-Dark-Icons";
             windowDecorations = {
@@ -151,6 +151,7 @@ in
             appearance = {
               alwaysShowClock = true;
               showMediaControls = true;
+              wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
             };
           };
 
