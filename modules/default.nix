@@ -61,6 +61,7 @@ in
         messages.enable = mkEnableOption "Activate messages apps";
         programming.enable = mkEnableOption "Activate programming";
         art.enable = mkEnableOption "Activate image and video editing";
+        gaming.enable = mkEnableOption "Activate games";
       };
     };
   };
