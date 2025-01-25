@@ -147,11 +147,38 @@ in
           ];
 
           kscreenlocker = { 
+            autoLock = true;
+            lockOnResume = true;
+            passwordRequired = true;
             timeout = 15;
             appearance = {
               alwaysShowClock = true;
               showMediaControls = true;
               wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
+            };
+          };
+
+          powerdevil = { 
+            AC = { 
+              whenSleepingEnter = "hybridSleep";
+              autoSuspend = { 
+                action = "nothing";
+              };
+              turnOffDisplay = {
+                idleTimeout = 900;
+                idleTimeoutWhenLocked = "immediately";
+              };
+            };
+            battery = { 
+              whenSleepingEnter = "hybridSleep";
+              autoSuspend = { 
+                action = "sleep";
+                idleTimeout = 900;
+              };
+              turnOffDisplay = {
+                idleTimeout = 300;
+                idleTimeoutWhenLocked = "immediately";
+              };
             };
           };
 
@@ -188,6 +215,8 @@ in
             };
             kwinrc.Desktops.Rows = 3;
           };
+
+          # shortcuts = { };
         };
 
 

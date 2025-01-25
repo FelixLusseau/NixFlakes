@@ -12,6 +12,7 @@ with types;
             google-chrome
             font-manager
             kdePackages.kate
+            kdePackages.kalk
             spotify
             nextcloud-client
             seafile-client
@@ -72,6 +73,13 @@ with types;
           inkscape
           kdenlive
           shotwell
+        ];
+      }
+    )
+    (mkIf cfg.pkgs.gaming.enable
+      {
+        environment.systemPackages = with pkgs; [
+          # minecraft # Broken 25/01/2025
         ];
       }
     )
