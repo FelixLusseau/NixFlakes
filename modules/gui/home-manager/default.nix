@@ -222,6 +222,7 @@ in
 
         firefox.enable = true;
         alacritty.enable = true;
+        kitty.enable = true;
         floorp.enable = false;
 
         git = (mkIf cfg.git.enable {
