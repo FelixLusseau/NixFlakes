@@ -19,6 +19,7 @@
       system = "x86_64-linux";
     in 
     {
+      nixpkgs = nixpkgs; # Allow NixConfig to catch this Nixpkgs
       nixosModules = {
         modules = {
           # # Pass inputs into the NixOS module system
