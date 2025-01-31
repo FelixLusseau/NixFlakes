@@ -130,6 +130,7 @@ in
                       "applications:org.kde.dolphin.desktop"
                       "file://${pkgs.firefox}/share/applications/firefox.desktop"
                       "file://${pkgs.google-chrome}/share/applications/google-chrome.desktop"
+                      "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
                       "file://${pkgs.systemsettings}/share/applications/systemsettings.desktop"
                       "file://${pkgs.spotify}/share/applications/spotify.desktop"
                       "applications:org.kde.plasma-systemmonitor.desktop"
