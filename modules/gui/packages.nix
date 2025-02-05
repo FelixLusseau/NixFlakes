@@ -36,6 +36,7 @@ with types;
         # You can disable this if you're only using the Wayland session.
         # services.xserver.enable = true;
         services.displayManager.sddm.wayland.enable = true;
+        services.displayManager.sddm.autoNumlock = true;
 
         # Enable the KDE Plasma Desktop Environment.
         services.displayManager.sddm.enable = true;
