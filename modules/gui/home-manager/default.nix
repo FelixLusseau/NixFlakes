@@ -228,6 +228,14 @@ in
                 };
               };
             };
+            kcminputrc = {
+              Keyboard = {
+                NumLock = {
+                  value = 0;
+                  immutable = true;
+                };
+              };
+            };
           };
 
           # shortcuts = { };
