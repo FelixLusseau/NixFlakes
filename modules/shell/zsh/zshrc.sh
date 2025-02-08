@@ -24,3 +24,5 @@ then
   fastfetch
   figlet -c $HOST | lolcat
 fi
+
+compdef kubectl=kubecolor

@@ -61,6 +61,9 @@ with lib;
           };
         };
         users.extraGroups.docker.members = [ "felix" ];
+        environment.systemPackages = with pkgs; [
+          dive
+        ];
       }
     )
     (mkIf cfg.virt.enable
@@ -69,6 +72,28 @@ with lib;
         users.groups.libvirtd.members = [ "felix" ];
         virtualisation.libvirtd.enable = true;
         virtualisation.spiceUSBRedirection.enable = true;
+      }
+    )
+    (mkIf cfg.kube.enable 
+      {
+        environment.systemPackages = with pkgs; [
+            kubecm
+            kubectl
+            kubecolor
+            kubectx
+            kube-bench
+            stern
+            (wrapHelm kubernetes-helm {
+              plugins = with pkgs.kubernetes-helmPlugins; [
+                #helm-secrets
+                helm-diff
+                helm-git
+              ];
+            })
+            helmfile
+            azure-cli
+            terraform
+          ];
       }
     )
   ];

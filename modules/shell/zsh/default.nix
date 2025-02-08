@@ -66,6 +66,9 @@ with types;
             whatismyip = "curl https://ipinfo.io/ip";
             mtr = "mtr -e -b -t -z";
             diff = "difft";
+            kctx    = "kubectx";
+            kns     = "kubens";
+            kubectl = "kubecolor";
           };
 
           promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\n"; #fastfetch\nfiglet -c ${config.networking.hostName} | lolcat\n";

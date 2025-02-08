@@ -43,6 +43,7 @@ in
     system = {
       docker.enable = mkEnableOption "Activate Docker";
       virt.enable = mkEnableOption "Activate Virtualisation tools";
+      kube.enable = mkEnableOption "Activate Kubernetes tools";
       ssh.enable = mkEnableOption "Activate SSH server";
       network-tools.enable = mkEnableOption "Install network tools";
       hardware = {
