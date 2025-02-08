@@ -9,7 +9,7 @@ in
   users.users = mapUsers ( name: cfg: if name != "root" then {
       isNormalUser = true;
       description = cfg.description;
-      extraGroups = [ "networkmanager" "wheel" ];
+      extraGroups = [ "networkmanager" "wheel" "disk" ];
       useDefaultShell = true;
   } else {});
   home-manager = {
@@ -47,7 +47,7 @@ in
         dnsutils
       ];
 
-      xsession.numlock.enable = true; # -> I'm on Wayland...
+      # xsession.numlock.enable = true; # -> I'm on Wayland...
 
       programs = {
         # Let Home Manager install and manage itself.
@@ -209,12 +209,25 @@ in
             };
           };
           configFile = {
-            kwinrc.Desktops.Number = {
-              value = 9;
-              # Forces kde to not change this value (even through the settings app).
-              immutable = true;
+            kwinrc.Desktops= {
+              Number = {
+                value = 9;
+                # Forces kde to not change this value (even through the settings app).
+                immutable = true;
+              };
+              Rows = {
+                value = 3;
+                immutable = true;
+              };
             };
-            kwinrc.Desktops.Rows = 3;
+            klipperrc = {
+              General = {
+                MaxClipItems = {
+                  value = 2000;
+                  immutable = true;
+                };
+              };
+            };
           };
 
           # shortcuts = { };
@@ -233,6 +246,13 @@ in
           userEmail = cfg.git.userEmail;
           extraConfig= {
             pull.rebase = false;
+          };
+        });
+
+        dconf.settings = (mkIf config.flcraft.system.virt.enable {
+          "org/virt-manager/virt-manager/connections" = {
+            autoconnect = ["qemu:///system"];
+            uris = ["qemu:///system"];
           };
         });
       };

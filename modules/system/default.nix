@@ -63,5 +63,13 @@ with lib;
         users.extraGroups.docker.members = [ "felix" ];
       }
     )
+    (mkIf cfg.virt.enable
+      {
+        programs.virt-manager.enable = true;
+        users.groups.libvirtd.members = [ "felix" ];
+        virtualisation.libvirtd.enable = true;
+        virtualisation.spiceUSBRedirection.enable = true;
+      }
+    )
   ];
 }
