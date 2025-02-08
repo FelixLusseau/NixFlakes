@@ -249,12 +249,12 @@ in
           };
         });
 
-        dconf.settings = (mkIf config.flcraft.system.virt.enable {
-          "org/virt-manager/virt-manager/connections" = {
-            autoconnect = ["qemu:///system"];
-            uris = ["qemu:///system"];
-          };
-        });
+      };
+    });
+    dconf.settings = (mkIf config.flcraft.system.virt.enable {
+      "org/virt-manager/virt-manager/connections" = {
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
       };
     });
   };
