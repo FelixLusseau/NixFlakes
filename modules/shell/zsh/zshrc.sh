@@ -25,4 +25,4 @@ then
   figlet -c $HOST | lolcat
 fi
 
-compdef kubectl=kubecolor
+compdef kubecolor=kubectl
