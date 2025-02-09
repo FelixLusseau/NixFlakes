@@ -25,6 +25,7 @@ with types;
             meld
             (callPackage ./sddm.nix {})
             (callPackage ./home-manager/theme/vivid.nix {})
+            (callPackage ./home-manager/theme/vivid-dark-icons.nix {})
             (callPackage ./home-manager/theme/gently.nix {})
             gparted
             ntfs3g
