@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
     src = ./Vivid-Dark-Icons.tar.gz;
     dontBuild = true;
     installPhase = ''
-        mkdir -p $out/share/icons
+        mkdir -p $out/share/icons/Vivid-Dark-Icons
         tar -xzf $src -C $out/share/icons/Vivid-Dark-Icons/
     '';
 }
