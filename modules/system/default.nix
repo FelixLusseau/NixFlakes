@@ -17,6 +17,7 @@ with lib;
           pciutils
           usbutils
           ffmpeg
+          sbctl
         ];
       }
     )
