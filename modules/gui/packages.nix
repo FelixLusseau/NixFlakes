@@ -18,6 +18,7 @@ with types;
             seafile-client
             conky
             vlc
+            mpv
             keepassxc
             brave
             xournalpp
