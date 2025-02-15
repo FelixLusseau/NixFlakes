@@ -236,6 +236,11 @@ in
                 };
               };
             };
+            plasmaparc = {
+              General = {
+                AudioFeedback=false; # Disable audio feedback at volume change
+              };
+            };
           };
 
           # shortcuts = { };
