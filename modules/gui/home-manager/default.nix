@@ -238,7 +238,10 @@ in
             };
             plasmaparc = {
               General = {
-                AudioFeedback=false; # Disable audio feedback at volume change
+                AudioFeedback = {
+                  value = false; # Disable audio feedback at volume change
+                  immutable = true;
+                };
               };
             };
           };
