@@ -49,6 +49,15 @@ in
 
       # xsession.numlock.enable = true; # -> I'm on Wayland...
 
+      xdg.configFile."autostart/conky.desktop".text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Conky
+        Exec=bash -c "cd /run/current-system/sw/share/conky/themes/auzia-conky && conky -c conkyrc"
+        X-KDE-autostart-after=panel
+        X-KDE-autostart-enabled=true
+      '';
+
       programs = {
         # Let Home Manager install and manage itself.
         home-manager.enable = true;
@@ -78,16 +87,6 @@ in
             };
             wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
           };
-
-          # startup = {
-          #   desktopScript = {
-          #     conky = {
-          #       text = ''
-          #         cd /run/current-system/sw/share/conky/themes/auzia-conky ; conky -c conkyrc
-          #       '';
-          #     };
-          #   };
-          # };
 
           input = {
             touchpads = [
