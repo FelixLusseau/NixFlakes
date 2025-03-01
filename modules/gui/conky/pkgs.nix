@@ -33,7 +33,7 @@ pkgs.stdenv.mkDerivation {
   # Currently not multi-theme enabled
   installPhase = ''
     cp -r . $out/share/conky/themes/${theme}
-    sed -i 's/middle_middle/right/g' $out/share/conky/themes/${theme}/conkyrc
+    sed -i 's/middle_middle/middle_right/g' $out/share/conky/themes/${theme}/conkyrc
     sed -i 's/cpu_cores = 4/cpu_cores = ${cores-nb}/g' $out/share/conky/themes/${theme}/settings.lua
     sed -i 's/net_interface = "wlan0"/net_interface = "${wifi-int-name}"/g' $out/share/conky/themes/${theme}/settings.lua
     sed -i 's/use_public_ip = false/use_public_ip = true/g' $out/share/conky/themes/${theme}/settings.lua
