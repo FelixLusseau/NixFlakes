@@ -64,6 +64,7 @@ with types;
             bruno
             python3
             nodejs_23
+            glib.out # Contains libgobject-2.0.so.0 for Puppeteer
         ];
       }
     )
