@@ -19,6 +19,7 @@ with lib;
           ffmpeg
           sbctl
           nix-index # Find which package contains a bin / a lib
+          appimage-run
         ];
       }
     )
