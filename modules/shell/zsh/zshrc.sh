@@ -2,6 +2,7 @@
 AUTO_NOTIFY_IGNORE+=(
   "docker"
   "ga"
+  "npm"
 )
 
 setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
