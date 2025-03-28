@@ -96,6 +96,7 @@ with lib;
             helmfile
             azure-cli
             terraform
+            ansible
           ];
       }
     )

@@ -14,6 +14,7 @@ with types;
             kdePackages.kate
             kdePackages.kalk
             spotify
+            (callPackage ./deezer.nix {})
             nextcloud-client
             seafile-client
             conky
