@@ -1,4 +1,5 @@
-{ stdenv, lib
+{ stdenv
+, lib
 , fetchurl
 , autoPatchelfHook
 , gcc-unwrapped
@@ -40,11 +41,16 @@ stdenv.mkDerivation rec {
   dontBuild = true;
   installPhase = ''
     runHook preInstall
-    # install -m755 -D deezer-desktop-${version}-x64/deezer-desktop $out/bin/deezer
-    install -d $out/bin
-    cp -r deezer-desktop-${version}-x64 $out/bin/
-    chmod -R 755 $out/bin/deezer-desktop-${version}-x64
-    ln -s $out/bin/deezer-desktop-${version}-x64/deezer-desktop $out/bin/deezer
+    install -d $out/bin $out/lib $out/share $out/share/applications $out/share/icons/hicolor/scalable/apps
+    sed -i 's/run\.sh/deezer/g' deezer-desktop-${version}-x64/resources/dev.aunetx.deezer.desktop
+    sed -i 's/dev.aunetx.deezer/deezer/g' deezer-desktop-${version}-x64/resources/dev.aunetx.deezer.desktop
+    cp -r deezer-desktop-${version}-x64/*.so $out/lib/
+    cp deezer-desktop-${version}-x64/resources/dev.aunetx.deezer.desktop $out/share/applications/deezer.desktop
+    cp deezer-desktop-${version}-x64/resources/dev.aunetx.deezer.svg $out/share/icons/hicolor/scalable/apps/deezer.svg
+    cp -r deezer-desktop-${version}-x64 $out/share/
+    # rm $out/share/deezer-desktop-${version}-x64/*.so
+    chmod -R 755 $out/share/deezer-desktop-${version}-x64
+    ln -s $out/share/deezer-desktop-${version}-x64/deezer-desktop $out/bin/deezer
     runHook postInstall
   '';
 

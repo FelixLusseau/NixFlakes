@@ -132,6 +132,7 @@ in
                       "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
                       "file://${pkgs.systemsettings}/share/applications/systemsettings.desktop"
                       "file://${pkgs.spotify}/share/applications/spotify.desktop"
+                      "applications:deezer.desktop"
                       "applications:org.kde.plasma-systemmonitor.desktop"
                       "file://${pkgs.discord}/share/applications/discord.desktop"
                       "file://${pkgs.brave}/share/applications/brave-browser.desktop"
