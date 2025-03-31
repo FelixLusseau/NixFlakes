@@ -28,7 +28,6 @@
         modules = {
           # # Pass inputs into the NixOS module system
           # specialArgs = { inherit inputs; };
-          nix-index-database.nixosModules.nix-index
 
           imports = [
             ./modules
@@ -36,6 +35,7 @@
             {
               home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
             }
+            nix-index-database.nixosModules.nix-index
           ];
         };
       };
