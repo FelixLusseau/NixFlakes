@@ -18,7 +18,7 @@ with lib;
           usbutils
           ffmpeg
           sbctl
-          nix-index # Find which package contains a bin / a lib
+          # nix-index # Find which package contains a bin / a lib
           appimage-run
         ];
       }

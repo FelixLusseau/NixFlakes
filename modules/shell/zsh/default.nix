@@ -16,7 +16,7 @@ with types;
         })
       ];
 
-      programs.command-not-found.enable = true;
+      # programs.command-not-found.enable = true;
       programs.mtr.enable = true;
       environment.systemPackages = with pkgs; [
         bat

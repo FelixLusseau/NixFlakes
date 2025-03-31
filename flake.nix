@@ -12,9 +12,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    nix-index-database = { 
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, plasma-manager }@inputs:
+  outputs = { self, nixpkgs, home-manager, plasma-manager, nix-index-database }@inputs:
     let
       system = "x86_64-linux";
     in 
@@ -24,6 +28,7 @@
         modules = {
           # # Pass inputs into the NixOS module system
           # specialArgs = { inherit inputs; };
+          nix-index-database.nixosModules.nix-index
 
           imports = [
             ./modules
