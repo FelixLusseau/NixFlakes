@@ -58,6 +58,19 @@ in
         X-KDE-autostart-enabled=true
       '';
 
+      xdg.configFile."autostart/seafile.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Exec=seafile-applet
+      Hidden=false
+      NoDisplay=false
+      X-GNOME-Autostart-enabled=true
+      Name[fr_FR]=Seafile
+      Name=Seafile
+      Comment[fr_FR]=Seafile desktop sync client
+      Comment=Seafile desktop sync client
+      '';
+
       programs = {
         # Let Home Manager install and manage itself.
         home-manager.enable = true;
