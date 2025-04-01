@@ -257,15 +257,34 @@ in
                 };
               };
             };
+            kdeglobals = {
+              General = {
+                TerminalApplication = { 
+                  value = "kitty";
+                };
+                TerminalService = {
+                  value = "kitty.desktop";
+                };
+              };
+            };
           };
 
-          # shortcuts = { };
+          shortcuts = {
+            "services/kitty.desktop" = {
+              _launch = "Ctrl+Alt+T";
+            };
+          };
         };
 
 
+        kitty = {
+          enable = true;
+          settings = {
+            confirm_os_window_close = 0;
+          };
+        };
         firefox.enable = true;
         alacritty.enable = true;
-        kitty.enable = true;
         floorp.enable = false;
 
         git = (mkIf cfg.git.enable {
