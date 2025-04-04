@@ -47,6 +47,7 @@ with types;
         plocate
         duf
         zoxide
+        tldr
       ];
       programs = {
         zsh = {

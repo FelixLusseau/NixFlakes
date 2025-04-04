@@ -260,17 +260,17 @@ in
             kdeglobals = {
               General = {
                 TerminalApplication = { 
-                  value = "kitty";
+                  value = "alacritty";
                 };
                 TerminalService = {
-                  value = "kitty.desktop";
+                  value = "Alacritty.desktop";
                 };
               };
             };
           };
 
           shortcuts = {
-            "services/kitty.desktop" = {
+            "services/Alacritty.desktop" = {
               _launch = "Ctrl+Alt+T";
             };
           };
