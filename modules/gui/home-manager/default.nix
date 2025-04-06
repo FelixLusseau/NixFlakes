@@ -284,7 +284,15 @@ in
           };
         };
         firefox.enable = true;
-        alacritty.enable = true;
+        alacritty = { 
+          enable = true;
+          settings = {
+            window.dimensions = {
+              lines = 30;
+              columns = 125;
+            };
+          };
+        };
         floorp.enable = false;
 
         git = (mkIf cfg.git.enable {

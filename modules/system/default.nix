@@ -20,6 +20,7 @@ with lib;
           sbctl
           # nix-index # Find which package contains a bin / a lib
           appimage-run
+          jmtpfs
         ];
       }
     )
