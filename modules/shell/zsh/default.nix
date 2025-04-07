@@ -38,10 +38,11 @@ with types;
         fd # replacement for find
         zellij # tmux alternative
         glow # markdown previewer in terminal
-        btop # replacement of htop/nmo
+        btop # replacement of htop/nmon
         htop
         iotop # io monitoring
         iftop # network monitoring
+        glances # system monitoring
         ncdu
         w3m # Display image in terminal
         plocate
