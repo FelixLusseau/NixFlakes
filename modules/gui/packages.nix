@@ -75,7 +75,7 @@ with types;
           gimp
         #   darktable
           inkscape
-          kdenlive
+          kdePackages.kdenlive
           shotwell
         ];
       }
