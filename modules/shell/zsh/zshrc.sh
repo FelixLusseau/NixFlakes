@@ -26,4 +26,7 @@ then
   figlet -c $HOST | lolcat
 fi
 
-compdef kubecolor=kubectl
+if command -v kubecolor 2>&1 >/dev/null # Only run compdef if kubecolor is installed
+then
+  compdef kubecolor=kubectl
+fi

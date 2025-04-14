@@ -49,6 +49,7 @@ with types;
         duf
         zoxide
         tldr
+        jq
       ];
       programs = {
         zsh = {
