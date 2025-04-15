@@ -98,6 +98,7 @@ with lib;
             azure-cli
             terraform
             ansible
+            lens
           ];
       }
     )
