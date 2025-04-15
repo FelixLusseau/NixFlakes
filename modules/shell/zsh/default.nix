@@ -70,7 +70,7 @@ with types;
             whatismyip = "curl https://ipinfo.io/ip";
             mtr = "mtr -e -b -t -z";
             diff = "difft";
-            kctx    = "kubectx";
+            kx    = "kubectx";
             kns     = "kubens";
             kubectl = "kubecolor";
           };
