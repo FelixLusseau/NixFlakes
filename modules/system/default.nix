@@ -38,6 +38,7 @@ with lib;
           tcpdump
           ipcalc
           dig
+          trippy
         ];
       }
     )
