@@ -30,7 +30,6 @@
   description = "FL's NixOS";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     flModules.url = "github:FelixLusseau/NixFlakes"; 
   };
 
