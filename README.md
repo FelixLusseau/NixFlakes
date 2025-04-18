@@ -34,11 +34,11 @@
     flModules.url = "github:FelixLusseau/NixFlakes"; 
   };
 
-  outputs = { self, nixpkgs, flModules }@inputs:
+  outputs = { self, flModules }@inputs:
     let
     in {
       nixosConfigurations = {
-        flnix = nixpkgs.lib.nixosSystem {
+        flnix = flModules.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
           modules = [
