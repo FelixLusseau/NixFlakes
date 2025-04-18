@@ -60,7 +60,11 @@ options.flcraft
   \_shell
     \_zsh
   \_system
+  \_  docker.enable
+  \_  virt.enable
+  \_  kube.enable
   \_  ssh.enable
+  \_  network-tools.enable
     \_hardware
   \_gui
     \_enable
@@ -68,6 +72,7 @@ options.flcraft
       \_messages.enable
       \_programming.enable
       \_art.enable
+      \_gaming.enable
 ```
 You have to fill the options into your `configuration.nix` equivalent file, dedicated for the current installation.
 
