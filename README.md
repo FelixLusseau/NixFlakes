@@ -60,11 +60,11 @@ options.flcraft
   \_shell
     \_zsh
   \_system
-  \_  docker.enable
-  \_  virt.enable
-  \_  kube.enable
-  \_  ssh.enable
-  \_  network-tools.enable
+    \_docker.enable
+    \_virt.enable
+    \_kube.enable
+    \_ssh.enable
+    \_network-tools.enable
     \_hardware
   \_gui
     \_enable
