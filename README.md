@@ -65,6 +65,7 @@ options.flcraft
     \_ssh.enable
     \_network-tools.enable
     \_hardware
+    \_blocky.enable
   \_gui
     \_enable
     \_pkgs

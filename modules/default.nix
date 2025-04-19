@@ -56,6 +56,7 @@ in
         };
         fingerprint.enable = mkEnableOption "Activate fingerprint";
       };
+      blocky.enable = mkEnableOption "Activate Blocky Ads Blocker";
     };
     gui = {
       enable = mkEnableOption "Activate GUI";
