@@ -65,6 +65,10 @@ fun TextYOffset() {
       y = Window.GetHeight() * 0.85;
 }
 
+fun ProportionalY(pixel_value) {
+    return Window.GetHeight() * (pixel_value / 1080); # 1080 est la hauteur de référence
+}
+
 
 #------------------------------String functions-------------------------------
 
@@ -129,10 +133,10 @@ Window.SetBackgroundTopColor (0, 0, 0);     # Nice colour on top of the screen f
 Window.SetBackgroundBottomColor (0, 0, 0);  # an equally nice colour on the bottom
 
 logo_filename = "logo.png";
-progress_dot_off_filename = "smalldot.png";
-progress_dot_on_filename = "bigdot.png";
-password_dot_filename = "password_dot.png";
-password_field_filename = "password_field.png";
+progress_dot_off_filename = "pacman/smalldot.png";
+progress_dot_on_filename = "pacman/bigdot.png";
+password_dot_filename = "pacman/password_dot.png";
+password_field_filename = "pacman/password_field.png";
 
 logo.image = Image (logo_filename);
 logo.sprite = Sprite ();
@@ -147,10 +151,10 @@ logo.scaled.x = logo.image.GetWidth() / logo.image.GetHeight() * logo.scaled.y;
 logo.resized = logo.image.Scale(logo.scaled.x, logo.scaled.y);
 
 logo.sprite.SetImage (logo.resized);
-logo.width =  logo.sprite.GetImage().GetWidth ();
-logo.height = logo.sprite.GetImage().GetHeight ();
-logo.x = Window.GetWidth () / 2 - logo.width / 2;
-logo.y = 40 ; # Window.GetHeight () / 2.5 - logo.height / 1.5;
+logo.width =  logo.sprite.GetImage().GetWidth();
+logo.height = logo.sprite.GetImage().GetHeight();
+logo.x = Window.GetWidth() / 2 - logo.width / 2;
+logo.y = ProportionalY(60);
 logo.z = 1000;
 
 logo.sprite.SetX (logo.x);
@@ -167,12 +171,12 @@ fsck_notification.image = ImageToActionText ("");
 
 status = "normal";
 
-progress_bar_y = (Window.GetHeight() / 1.5) + 40;
+progress_bar_y = ProportionalY(800);
 
 progress_indicator.bullet_off = Image (progress_dot_off_filename);
 progress_indicator.bullet_on = Image (progress_dot_on_filename);
-progress_indicator.bullet_width = progress_indicator.bullet_off.GetWidth ();
-progress_indicator.bullet_height = progress_indicator.bullet_off.GetHeight ();
+progress_indicator.bullet_width = progress_indicator.bullet_off.GetWidth();
+progress_indicator.bullet_height = progress_indicator.bullet_off.GetHeight();
 progress_indicator.bullet_hspacing = progress_indicator.bullet_width;
 progress_indicator.width = progress_indicator.bullet_width;
 progress_indicator.height = progress_indicator.bullet_height;
@@ -203,7 +207,7 @@ fun draw_logo () {
 
 screen_width = Window.GetWidth();
 
-maze_image = Image("maze.png");
+maze_image = Image("pacman/maze.png");
 resized_maze_image = maze_image.Scale(screen_width,1);
 
 maze_sprite_1 = Sprite (resized_maze_image);
@@ -220,38 +224,38 @@ maze_sprite_4.SetY (progress_bar_y -9);
 #----------------------------------------- Pacmanimation --------------------------------
 
 for (i = 0; i < 4; i++)# Loop through 4 pacman sprites
-  pacman_images[i] = Image("pacman" + i + ".png"); # sprites named pacman0.png - pacman3.png
+  pacman_images[i] = Image("pacman/pacman" + i + ".png"); # sprites named pacman0.png - pacman3.png
 pacman_sprite = Sprite();
 
 for (i = 0; i < 2; i++)# Loop through 2 ghost sprites
-  redghostright_images[i] = Image("redghostright" + i + ".png"); # sprites named redghostright0.png - redghostright1.png
+  redghostright_images[i] = Image("pacman/redghostright" + i + ".png"); # sprites named redghostright0.png - redghostright1.png
 redghostright_sprite = Sprite();
 
 for (i = 0; i < 2; i++)# Loop through 2 ghost sprites
-  pinkghostright_images[i] = Image("pinkghostright" + i + ".png"); # sprites named pinkghostright0.png - pinkghostright1.png
+  pinkghostright_images[i] = Image("pacman/pinkghostright" + i + ".png"); # sprites named pinkghostright0.png - pinkghostright1.png
 pinkghostright_sprite = Sprite();
 
 for (i = 0; i < 2; i++)# Loop through 2 ghost sprites
-  cyanghostright_images[i] = Image("cyanghostright" + i + ".png"); # sprites named cyanghostright0.png - cyanghostright1.png
+  cyanghostright_images[i] = Image("pacman/cyanghostright" + i + ".png"); # sprites named cyanghostright0.png - cyanghostright1.png
 cyanghostright_sprite = Sprite();
 
 for (i = 0; i < 2; i++)# Loop through 2 ghost sprites
-  orangeghostright_images[i] = Image("orangeghostright" + i + ".png"); # sprites named orangeghostright0.png - orangeghostright1.png
+  orangeghostright_images[i] = Image("pacman/orangeghostright" + i + ".png"); # sprites named orangeghostright0.png - orangeghostright1.png
 orangeghostright_sprite = Sprite();
 
 # cycle through all images
 for (i = 0; i < 38; i++)
-  flyingman_image[i] = Image("glowing/progress-" + i + ".png");
-flyingman_sprite = Sprite();
+  glowing_image[i] = Image("glowing/progress-" + i + ".png");
+glowing_sprite = Sprite();
 
 # set image position
-flyingman_sprite.SetX(Window.GetX() + (Window.GetWidth(0) / 2 - flyingman_image[0].GetWidth() / 2)); # Place images in the center
-flyingman_sprite.SetY(280); #(Window.GetY() + (Window.GetHeight(0) / 2 - flyingman_image[0].GetHeight() / 2));
+glowing_sprite.SetX(Window.GetX() + (Window.GetWidth() / 2 - glowing_image[0].GetWidth() / 2)); # Place images in the center
+glowing_sprite.SetY(ProportionalY(300)); #(Window.GetY() + (Window.GetHeight() / 2 - glowing_image[0].GetHeight() / 2));
 
 progress = 0;
 
 fun pacman_move() {
-  flyingman_sprite.SetImage(flyingman_image[Math.Int(progress / 2) % 38]);
+  glowing_sprite.SetImage(glowing_image[Math.Int(progress / 2) % 38]);
 
   # variables to calculate the progress of pacman moving across the screen at original gameplay rate of~80 pixels per second
   local.screen_width = Window.GetWidth();
@@ -453,11 +457,11 @@ fun get_message_label (label, is_fake, is_action_line) {
     else
         local.message_image = (is_action_line) && ImageToActionText (label) || ImageToTintedText (label);
         
-    message_label.width = message_image.GetWidth ();
-    message_label.height = message_image.GetHeight ();
+    message_label.width = message_image.GetWidth();
+    message_label.height = message_image.GetHeight();
 
     # Center the line horizontally
-    message_label.x = Window.GetX () + Window.GetWidth () / 2 - message_label.width / 2;
+    message_label.x = Window.GetX () + Window.GetWidth() / 2 - message_label.width / 2;
 
     message_label.y = top_of_the_text;
 
@@ -488,11 +492,11 @@ fun get_fsck_label (label, is_fake) {
     else
         fsck_label.image = ImageToTintedText (label);
     
-    fsck_label.width = fsck_label.image.GetWidth ();
-    fsck_label.height = fsck_label.image.GetHeight ();
+    fsck_label.width = fsck_label.image.GetWidth();
+    fsck_label.height = fsck_label.image.GetHeight();
     
     # Centre the label horizontally
-    fsck_label.x = Window.GetX () + Window.GetWidth () / 2 - fsck_label.width / 2;
+    fsck_label.x = Window.GetX () + Window.GetWidth() / 2 - fsck_label.width / 2;
     
     local.first_label = get_message_label (label, 1, 0);
     
@@ -603,7 +607,7 @@ fun password_dialogue_setup (message_label) {
     entry.sprite.SetImage (entry.image);
     
     # Centre the box horizontally
-    entry.x = Window.GetX () + Window.GetWidth () / 2 - entry.image.GetWidth () / 2;
+    entry.x = Window.GetX () + Window.GetWidth() / 2 - entry.image.GetWidth() / 2;
 
     # Put the entry below the second label.
     entry.y = message_notification[2].y + label.height;
@@ -645,13 +649,13 @@ fun display_password_callback (prompt, bullets) {
     password_dialogue_opacity (1);
     bullet_width = password_dialogue.bullet_image.GetWidth();
     bullet_y = password_dialogue.entry.y +
-               password_dialogue.entry.image.GetHeight () / 2 -
-               password_dialogue.bullet_image.GetHeight () / 2;
+               password_dialogue.entry.image.GetHeight() / 2 -
+               password_dialogue.bullet_image.GetHeight() / 2;
     margin = bullet_width;
-    spaces = Math.Int( (password_dialogue.entry.image.GetWidth () - (margin * 2)) / (bullet_width / 2 ) );
+    spaces = Math.Int( (password_dialogue.entry.image.GetWidth() - (margin * 2)) / (bullet_width / 2 ) );
     #Debug ("spaces = " + spaces + ", bullets = " + bullets);
     bullets_area.width = margin + spaces * (bullet_width / 2);
-    bullets_area.x = Window.GetX () + Window.GetWidth () / 2 - bullets_area.width / 2;
+    bullets_area.x = Window.GetX () + Window.GetWidth() / 2 - bullets_area.width / 2;
     #DebugBottom ("pwd_entry x = " + password_dialogue.entry.x + ", bullets_area.x = " + bullets_area.x + ", bullets_area.width = " + bullets_area.width);
     if (bullets > spaces)
         bullets = spaces;
