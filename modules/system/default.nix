@@ -100,6 +100,7 @@ with lib;
             terraform
             ansible
             lens
+            busybox # contains envdir
           ];
       }
     )
