@@ -64,7 +64,7 @@ with types;
             vscode
             bruno
             python3
-            nodejs_23
+            nodejs_24
         ];
       }
     )
