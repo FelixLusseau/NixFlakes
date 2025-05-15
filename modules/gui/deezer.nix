@@ -14,11 +14,11 @@
 
 stdenv.mkDerivation rec {
   pname = "deezer";
-  version = "7.0.50";
+  version = "7.0.70";
 
   src = fetchurl {
     url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-x64.tar.xz";
-    hash = "sha256-PZQF0vV2nkduK8RW4D93QTtM2GVbniMG3Nukjth/eO8=";
+    hash = "sha256-0g+vzBCU7H61CO1sOJkqKFkHt5stwOoK1azYm4ZrZtI=";
   };
 
   nativeBuildInputs = [
