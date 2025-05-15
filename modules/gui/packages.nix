@@ -72,7 +72,7 @@ with types;
       {
         environment.systemPackages = with pkgs; [
           krita
-          gimp
+          gimp3
         #   darktable
           inkscape
           kdePackages.kdenlive
