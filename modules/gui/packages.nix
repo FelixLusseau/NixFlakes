@@ -23,7 +23,7 @@ with types;
             keepassxc
             brave
             xournalpp
-            # kmymoney
+            kmymoney
             meld
             (callPackage ./sddm.nix {})
             (callPackage ./home-manager/theme/vivid.nix {})
