@@ -76,7 +76,7 @@ with types;
             trip = "sudo trip -r cloudflare -z --tui-locale fr --tui-icmp-extension-mode full -e -a both";
           };
 
-          promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\n"; #fastfetch\nfiglet -c ${config.networking.hostName} | lolcat\n";
+          promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\n"; #fastfetch\nfiglet -c ${config.networking.hostName} | lolcat 2> /dev/null\n";
 
           ohMyZsh = {
             enable = true;
