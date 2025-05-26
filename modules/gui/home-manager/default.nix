@@ -151,7 +151,7 @@ in
                       "file://${pkgs.brave}/share/applications/brave-browser.desktop"
                       "file://${pkgs.vscode}/share/applications/code.desktop"
                       "file://${pkgs.keepassxc}/share/applications/org.keepassxc.KeePassXC.desktop"
-                      "file://${pkgs.signal-desktop}/share/applications/signal-desktop.desktop"
+                      "applications:signal.desktop"
                       "file://${pkgs.element-desktop}/share/applications/element-desktop.desktop"
                     ];
                   };
