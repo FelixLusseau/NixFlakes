@@ -34,6 +34,7 @@ pkgs.stdenv.mkDerivation {
   installPhase = ''
     cp -r . $out/share/conky/themes/${theme}
     sed -i 's/middle_middle/middle_right/g' $out/share/conky/themes/${theme}/conkyrc
+    sed -i '/require "imlib2"/a require("cairo_xlib")' $out/share/conky/themes/${theme}/abstract.lua
     sed -i 's/cpu_cores = 4/cpu_cores = ${cores-nb}/g' $out/share/conky/themes/${theme}/settings.lua
     sed -i 's/net_interface = "wlan0"/net_interface = "${wifi-int-name}"/g' $out/share/conky/themes/${theme}/settings.lua
     sed -i 's/use_public_ip = false/use_public_ip = true/g' $out/share/conky/themes/${theme}/settings.lua
