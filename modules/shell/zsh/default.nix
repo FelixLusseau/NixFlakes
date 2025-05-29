@@ -60,7 +60,7 @@ with types;
 
           shellAliases = {
             nixswitch = "sudo nixos-rebuild switch --flake .#$HOST";
-            nixgc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
+            nixgc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
             cd = "z";
             ls = "eza --icons --group-directories-first";
             ll = "eza --icons -l --group-directories-first";
