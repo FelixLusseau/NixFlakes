@@ -49,15 +49,6 @@ with types;
           alsa.support32Bit = true;
           pulse.enable = true;
         };
-
-        # systemd.user.services.conky = {
-        #   description = "Conky Service";
-        #   wantedBy = [ "default.target" ]; # Start this service when the user session starts
-        #   serviceConfig = {
-        #     ExecStart = "${pkgs.bash}/bin/bash -c 'cd /run/current-system/sw/share/conky/themes/auzia-conky && ${pkgs.conky}/bin/conky -c conkyrc'";
-        #     Restart = "always"; # Restart the service if it crashes
-        #   };
-        # };
       }
     )
   ];
