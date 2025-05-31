@@ -27,14 +27,10 @@ in
       home.packages = with pkgs; [
         nixpkgs-fmt # nix formatting tool
         nix-prefetch-git
-
-        ani-cli
-        spicetify-cli
         
         wl-clipboard
         wf-recorder
     
-        ueberzug
         # archives
         zip
         unzip

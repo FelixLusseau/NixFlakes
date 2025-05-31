@@ -1,9 +1,10 @@
 { config, lib, pkgs, ... }:
 
-let cfg = config.flcraft.shell.zsh;
-in
 with lib;
-with types;
+let 
+  cfg = config.flcraft.shell.zsh;
+  userNames = builtins.attrNames (lib.filterAttrs (name: _: name != "root") config.flcraft.users);
+in
 {
   config = mkMerge [
     (mkIf cfg.enable {
@@ -19,6 +20,12 @@ with types;
       # programs.command-not-found.enable = true;
       programs.nix-index.enable = true;
       programs.mtr.enable = true;
+      services.locate = { # https://search.nixos.org/options?channel=unstable&show=services.locate.interval&from=0&size=50&sort=relevance&type=packages&query=services.locate
+        enable = true;
+        package = pkgs.plocate;
+      };
+      users.extraGroups.plocate.members = userNames;
+      
       environment.systemPackages = with pkgs; [
         bat
         ripgrep
@@ -45,7 +52,6 @@ with types;
         glances # system monitoring
         ncdu
         w3m # Display image in terminal
-        plocate
         duf
         zoxide
         tldr

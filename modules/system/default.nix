@@ -1,8 +1,9 @@
 {config, lib, pkgs, ...}:
+with lib;
 let
   cfg = config.flcraft.system;
+  userNames = builtins.attrNames (lib.filterAttrs (name: _: name != "root") config.flcraft.users);
 in
-with lib;
 {
   imports =
   [
@@ -65,7 +66,7 @@ with lib;
             # data-root = "/some-place/to-store-the-docker-data";
           };
         };
-        users.extraGroups.docker.members = [ "felix" ];
+        users.extraGroups.docker.members = userNames;
         environment.systemPackages = with pkgs; [
           dive
         ];
@@ -74,7 +75,7 @@ with lib;
     (mkIf cfg.virt.enable
       {
         programs.virt-manager.enable = true;
-        users.groups.libvirtd.members = [ "felix" ];
+        users.groups.libvirtd.members = userNames;
         virtualisation.libvirtd.enable = true;
         virtualisation.spiceUSBRedirection.enable = true;
       }
