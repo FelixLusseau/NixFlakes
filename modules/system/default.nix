@@ -137,6 +137,45 @@ in
         boot.kernelModules = [ "nf_nat_ftp" ];
 
         users.extraGroups.lxd.members = userNames;
+
+        environment.etc."lxd/preseed.yaml".text = ''
+          config:
+            images.auto_update_interval: "0"
+          # networks: {}
+          storage_pools:
+          - config:
+              source: /var/lib/lxd/storage-pools/default
+            description: ""
+            name: default
+            driver: dir
+          profiles:
+          - config: {}
+            description: Default LXD profile
+            devices:
+              root:
+                path: /
+                pool: default
+                type: disk
+            name: default
+          projects:
+          - config:
+              features.images: "true"
+              features.networks: "true"
+              features.profiles: "true"
+              features.storage.volumes: "true"
+            description: Default LXD project
+            name: default
+        '';
+
+        systemd.services.lxd-preseed = {
+          description = "LXD initialization with preseed YAML";
+          wantedBy = [ "multi-user.target" ];
+          requires = [ "lxd.socket" ];
+          serviceConfig = {
+            ExecStart = "${pkgs.lxd}/bin/lxd init --preseed < /etc/lxd/preseed.yaml";
+            Type = "oneshot";
+          };
+        };
       }
     )
     (mkIf cfg.kube.enable 
