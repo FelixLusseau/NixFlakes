@@ -42,7 +42,8 @@ in
     };
     system = {
       docker.enable = mkEnableOption "Activate Docker";
-      virt.enable = mkEnableOption "Activate Virtualisation tools";
+      virt.vm.enable = mkEnableOption "Activate VM Virtualisation tools";
+      virt.lxd.enable = mkEnableOption "Activate LXD Virtualisation tools";
       kube.enable = mkEnableOption "Activate Kubernetes tools";
       ssh.enable = mkEnableOption "Activate SSH server";
       network-tools.enable = mkEnableOption "Install network tools";

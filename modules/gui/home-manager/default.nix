@@ -302,7 +302,7 @@ in
         });
 
       };
-      dconf.settings = (mkIf config.flcraft.system.virt.enable {
+      dconf.settings = (mkIf config.flcraft.system.virt.vm.enable {
         "org/virt-manager/virt-manager/connections" = {
           autoconnect = ["qemu:///system"];
           uris = ["qemu:///system"];

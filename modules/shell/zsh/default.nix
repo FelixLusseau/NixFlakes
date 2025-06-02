@@ -103,6 +103,7 @@ in
               "zsh-interactive-cd"
               "zsh-fzf-history-search"
               "history-substring-search"
+              "lxd"
             ];
             customPkgs = with pkgs; [
               zsh-forgit
