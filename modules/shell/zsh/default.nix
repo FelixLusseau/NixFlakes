@@ -28,34 +28,35 @@ in
       
       environment.systemPackages = with pkgs; [
         bat
-        ripgrep
-        fzf
-        libnotify
-        difftastic
-        fastfetch
-        eza
-        tree
-        cowsay
-        nnn
         broot
-        figlet
-        lolcat
-        direnv
-        ranger # terminal file manager
-        fd # replacement for find
-        zellij # tmux alternative
-        glow # markdown previewer in terminal
         btop # replacement of htop/nmon
-        htop
-        iotop # io monitoring
-        iftop # network monitoring
-        glances # system monitoring
-        ncdu
-        w3m # Display image in terminal
+        cowsay
+        difftastic
+        direnv
         duf
-        zoxide
-        tldr
+        eza
+        fastfetch
+        fd # replacement for find
+        figlet
+        fzf
+        glances # system monitoring
+        glow # markdown previewer in terminal
+        htop
+        iftop # network monitoring
+        iotop # io monitoring
         jq
+        libnotify
+        lolcat
+        ncdu
+        nnn
+        ranger # terminal file manager
+        ripgrep
+        tldr
+        tree
+        w3m # Display image in terminal
+        yazi # terminal file manager
+        zellij # tmux alternative
+        zoxide
       ];
       programs = {
         zsh = {
