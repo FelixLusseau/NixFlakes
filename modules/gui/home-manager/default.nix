@@ -218,15 +218,23 @@ in
             };
           };
           configFile = {
-            kwinrc.Desktops= {
-              Number = {
-                value = 9;
-                # Forces kde to not change this value (even through the settings app).
-                immutable = true;
+            kwinrc = { 
+              Desktops = {
+                Number = {
+                  value = 9;
+                  # Forces kde to not change this value (even through the settings app).
+                  immutable = true;
+                };
+                Rows = {
+                  value = 3;
+                  immutable = true;
+                };
               };
-              Rows = {
-                value = 3;
-                immutable = true;
+              EdgeBarrier = {
+                EdgeBarrier = {
+                  value = 0;
+                  immutable = true; # Disable edge barriers
+                };
               };
             };
             klipperrc = {
