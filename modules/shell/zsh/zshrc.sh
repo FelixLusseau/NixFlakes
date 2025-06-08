@@ -30,3 +30,7 @@ if command -v kubecolor 2>&1 >/dev/null # Only run compdef if kubecolor is insta
 then
   compdef kubecolor=kubectl
 fi
+
+if [[ "$TERM" == "xterm-kitty" ]]; then # Use Kitty's SSH client if in a Kitty terminal
+  alias ssh="kitten ssh"
+fi
