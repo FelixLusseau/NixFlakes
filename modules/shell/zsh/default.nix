@@ -57,6 +57,7 @@ in
         yazi # terminal file manager
         zellij # tmux alternative
         zoxide
+        zsh-you-should-use
       ];
       programs = {
         zsh = {
@@ -105,6 +106,7 @@ in
               "zsh-fzf-history-search"
               "history-substring-search"
               "lxd"
+              "you-should-use"
             ];
             customPkgs = with pkgs; [
               zsh-forgit
