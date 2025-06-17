@@ -57,7 +57,6 @@ in
         yazi # terminal file manager
         zellij # tmux alternative
         zoxide
-        zsh-you-should-use
       ];
       programs = {
         zsh = {
@@ -113,6 +112,7 @@ in
               zsh-fzf-history-search
               zsh-autopair
               zsh-auto-notify
+              zsh-you-should-use
             ];
             theme = "af-magic";
           };
