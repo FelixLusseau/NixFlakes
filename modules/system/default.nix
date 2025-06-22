@@ -3,6 +3,7 @@ with lib;
 let
   cfg = config.flcraft.system;
   userNames = builtins.attrNames (lib.filterAttrs (name: _: name != "root") config.flcraft.users);
+  cortexPkgs = pkgs.callPackage ./cortex/default.nix { };
 in
 {
   imports =
@@ -235,6 +236,82 @@ in
             };
           };
         };
+      }
+    )
+    (mkIf cfg.cortex.enable 
+      {
+        # Install the package
+        environment.systemPackages = [
+          cortexPkgs.cortexAgent
+          cortexPkgs.cortex-agent-fhs
+        ];
+
+        # Create configuration file
+        environment.etc."panw/cortex.conf" = {
+          text = ''
+            --distribution-id ${cfg.cortex.distributionId}
+            --distribution-server ${cfg.cortex.distributionServer}
+          '';
+          mode = "0600";
+        };
+
+        # Enable the service
+        systemd.services.cortex-agent = {
+          description = "Cortex XDR Agent";
+          after = [ "network.target" ];
+          wantedBy = [ "multi-user.target" ];
+          
+          preStart = ''
+            # Setup runtime directories
+            ${cortexPkgs.cortexAgent}/bin/cortex-setup-dirs
+            
+            # Ensure configuration exists
+            if [ ! -f /etc/panw/cortex.conf ]; then
+              echo "Error: Cortex configuration file not found at /etc/panw/cortex.conf"
+              exit 1
+            fi
+          '';
+
+          serviceConfig = {
+            Type = "forking";
+            # ExecStart = "${cortexPkgs.cortexAgent}/opt/traps/bin/pmd";
+            ExecStart = "${cortexPkgs.cortex-agent-fhs}/bin/cortex-agent-fhs";
+            ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+            KillMode = "process";
+            Restart = "on-failure";
+            RestartSec = "42s";
+            PIDFile = "/var/run/traps/pmd.pid";
+            
+            # Security settings
+            NoNewPrivileges = false; # Cortex may need privileges
+            PrivateTmp = false; # Cortex needs access to system tmp
+            ProtectSystem = false; # Cortex needs system access
+            ProtectHome = false; # Cortex may need home access
+          };
+        };
+
+        # Required kernel modules and capabilities
+        #boot.kernelModules = [ "tun" "tap" ];
+        
+        # Firewall exceptions if needed
+        # networking.firewall.allowedTCPPorts = [ ];
+        # networking.firewall.allowedUDPPorts = [ ];
+
+        # Required system groups and users
+        users.groups.traps = { };
+        users.users.traps = {
+          group = "traps";
+          isSystemUser = true;
+          home = "/opt/traps";
+          shell = pkgs.bash;
+        };
+
+        # Runtime directories
+        systemd.tmpfiles.rules = [
+          "d /var/run/traps 0755 root root -"
+          "d /var/log/traps 0755 root root -"
+          "d /tmp/traps 0755 root root -"
+        ];
       }
     )
   ];
