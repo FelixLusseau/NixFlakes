@@ -163,36 +163,34 @@ let
       pciutils
       usbutils
     ];
-    runScript = "${cortexAgent}/opt/traps/bin/pmd";
+    runScript = ''
+      set -euo pipefail
+
+      # Répertoire réel en lecture seule dans le Nix store
+      readonly LOWER="${cortexAgent}/opt/traps"
+      
+      # Répertoires temporaires en lecture-écriture
+      readonly UPPER="/tmp/cortex-agent-upper"
+      readonly WORK="/tmp/cortex-agent-work"
+      readonly MERGED="/opt/traps"
+
+      mkdir -p "$UPPER" "$WORK" "$MERGED"
+
+      # Monter l'overlayfs
+      mount -t overlay overlay \
+        -o lowerdir="$LOWER",upperdir="$UPPER",workdir="$WORK" \
+        "$MERGED"
+
+      # Lancer l'agent depuis le merged FS
+      ${cortexAgent}/opt/traps/bin/pmd
+    '';
     extraBuildCommands = ''
       mkdir -p $out/var/cache/ldconfig
       chmod 700 $out/var/cache/ldconfig
-      mkdir -p $out/var/log/traps/coredumps/
-      mkdir -p $out/opt/traps/{persist,ipc,download/content,traps_sockets}
-      chmod 01755 $out/opt/traps/traps_sockets
+      # mkdir -p $out/var/log/traps/coredumps/
+      # mkdir -p $out/opt/traps/{persist,ipc,download/content,traps_sockets}
+      # chmod 01755 $out/opt/traps/traps_sockets
     '';
-    extraMounts = [
-      {
-        source = "/tmp/traps/persist";
-        target = "/opt/traps/persist";
-        options = "bind";
-      }
-      {
-        source = "/tmp/traps/ipc";
-        target = "/opt/traps/ipc";
-        options = "bind";
-      }
-      {
-        source = "/tmp/traps/download/content";
-        target = "/opt/traps/download/content";
-        options = "bind";
-      }
-      {
-        source = "/tmp/traps/traps_sockets";
-        target = "/opt/traps/traps_sockets";
-        options = "bind";
-      }
-    ];
   };
 in
 {
