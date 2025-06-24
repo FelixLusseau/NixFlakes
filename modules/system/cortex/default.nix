@@ -91,26 +91,6 @@ let
       makeWrapper $out/opt/traps/bin/cytool $out/bin/cytool \
         --prefix PATH : ${lib.makeBinPath runtimeDependencies}
 
-      # Create systemd service file
-      cat > $out/lib/systemd/system/cortex-agent.service << EOF
-  [Unit]
-  Description=Cortex XDR Agent
-  After=network.target
-  Wants=network.target
-
-  [Service]
-  Type=forking
-  ExecStart=$out/opt/traps/bin/pmd
-  ExecReload=/bin/kill -HUP \$MAINPID
-  KillMode=process
-  Restart=on-failure
-  RestartSec=42s
-  PIDFile=/var/run/traps/pmd.pid
-
-  [Install]
-  WantedBy=multi-user.target
-  EOF
-
       # Create configuration directory
       mkdir -p $out/etc/panw
 
@@ -121,17 +101,18 @@ let
       # Fix permissions
       chmod +x $out/opt/traps/bin/*
 
-      # Create runtime directories script
-      cat > $out/bin/cortex-setup-dirs << EOF
-  #!/bin/bash
-  mkdir -p /var/run/traps
-  mkdir -p /var/log/traps
-  mkdir -p /tmp/traps
-  chown root:root /var/run/traps /var/log/traps /tmp/traps
-  chmod 755 /var/run/traps /var/log/traps /tmp/traps
-  EOF
-      chmod +x $out/bin/cortex-setup-dirs
-      patchShebangs $out/bin
+  #     # Create runtime directories script
+  #     cat > $out/bin/cortex-setup-dirs << EOF
+  # #!/bin/bash
+  # mkdir -p /var/run/traps
+  # mkdir -p /var/log/traps
+  # mkdir -p /tmp/traps
+  # chown root:root /var/run/traps /var/log/traps /tmp/traps
+  # chmod 755 /var/run/traps /var/log/traps /tmp/traps
+  # EOF
+  #     chmod +x $out/bin/cortex-setup-dirs
+      patchShebangs $out
+      ln -s ${openssl}/bin/openssl $out/opt/traps/bin/openssl
     '';
 
     meta = with lib; {
@@ -164,7 +145,10 @@ let
       usbutils
     ];
     runScript = ''
+      #!/bin/bash
       set -euo pipefail
+
+      export PATH="/bin:/sbin:$PATH"
 
       # Répertoire réel en lecture seule dans le Nix store
       readonly LOWER="${cortexAgent}/opt/traps"
@@ -176,20 +160,26 @@ let
 
       mkdir -p "$UPPER" "$WORK" "$MERGED"
 
-      # Monter l'overlayfs
+      # Monter l'overlayfs pour /opt/traps
       mount -t overlay overlay \
         -o lowerdir="$LOWER",upperdir="$UPPER",workdir="$WORK" \
         "$MERGED"
 
-      # Lancer l'agent depuis le merged FS
+      # --- Overlayfs direct sur /var/log ---
+      mkdir -p /tmp/cortex-agent-logs-upper /tmp/cortex-agent-logs-work
+      mount -t overlay overlay \
+        -o lowerdir=/var/log,upperdir=/tmp/cortex-agent-logs-upper,workdir=/tmp/cortex-agent-logs-work \
+        /var/log
+
+      mkdir -p /var/log/traps/coredumps/
+
+      # Lancer l'agent depuis le merged FS ou ouvrir un shell
       ${cortexAgent}/opt/traps/bin/pmd
+      # /bin/bash
     '';
     extraBuildCommands = ''
-      mkdir -p $out/var/cache/ldconfig
-      chmod 700 $out/var/cache/ldconfig
-      # mkdir -p $out/var/log/traps/coredumps/
-      # mkdir -p $out/opt/traps/{persist,ipc,download/content,traps_sockets}
-      # chmod 01755 $out/opt/traps/traps_sockets
+      mkdir -p $out/var/{log,cache/ldconfig}
+      chmod 700 $out/var/{log,cache/ldconfig}
     '';
   };
 in
