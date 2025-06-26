@@ -20,6 +20,8 @@
 , pciutils
 , usbutils
 , buildFHSEnv
+, nodename ? "flnix"
+, fake_uname_c ? ./fake_uname.c
 }:
 
 let
@@ -71,6 +73,10 @@ let
     installPhase = ''
       runHook preInstall
 
+      # Copie fake_uname.c dans le répertoire de build
+      cp ${fake_uname_c} fake_uname.c
+      gcc -shared -fPIC -DFAKE_NODENAME="\"${nodename}\"" -o fake_uname.so fake_uname.c
+
       # Create directory structure
       mkdir -p $out/{bin,sbin,lib/systemd/system,etc/cortex,share/cortex}
       mkdir -p $out/opt/traps/{bin,lib,modules,etc,logs,tmp}
@@ -93,6 +99,9 @@ let
 
       # Create configuration directory
       mkdir -p $out/etc/panw
+
+      # Copie la lib fake_uname.so
+      cp fake_uname.so $out/lib/fake_uname.so
 
       runHook postInstall
     '';
@@ -148,6 +157,7 @@ let
       #!/bin/bash
       set -euo pipefail
 
+      export LD_PRELOAD=/lib/fake_uname.so
       export PATH="/bin:/sbin:$PATH"
 
       # Répertoire réel en lecture seule dans le Nix store
@@ -172,6 +182,25 @@ let
         /var/log
 
       mkdir -p /var/log/traps/coredumps/
+
+      mkdir -p /tmp/fake-etc
+
+      cat > /tmp/fake-etc/os-release <<'EOF'
+  PRETTY_NAME="Ubuntu 22.04.5 LTS"
+  NAME="Ubuntu"
+  VERSION_ID="22.04"
+  VERSION="22.04.5 LTS (Jammy Jellyfish)"
+  VERSION_CODENAME=jammy
+  ID=ubuntu
+  ID_LIKE=debian
+  HOME_URL="https://www.ubuntu.com/"
+  SUPPORT_URL="https://help.ubuntu.com/"
+  BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+  PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+  UBUNTU_CODENAME=jammy
+  EOF
+
+      mount --bind /tmp/fake-etc/os-release /etc/os-release
 
       # Lancer l'agent depuis le merged FS ou ouvrir un shell
       ${cortexAgent}/opt/traps/bin/pmd

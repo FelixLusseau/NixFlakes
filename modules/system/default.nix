@@ -3,7 +3,9 @@ with lib;
 let
   cfg = config.flcraft.system;
   userNames = builtins.attrNames (lib.filterAttrs (name: _: name != "root") config.flcraft.users);
-  cortexPkgs = pkgs.callPackage ./cortex/default.nix { };
+  cortexPkgs = pkgs.callPackage ./cortex/default.nix {
+    nodename = config.networking.hostName;
+  };
 in
 {
   imports =
@@ -260,38 +262,38 @@ in
         };
 
         # Enable the service
-        systemd.services.cortex-agent = {
-          description = "Palo Alto Networks Cortex XDR Agent(tm) daemon";
-          after = [ "local-fs.target" "network.target" ];
-          wantedBy = [ "multi-user.target" ];
+        # systemd.services.cortex-agent = {
+        #   description = "Palo Alto Networks Cortex XDR Agent(tm) daemon";
+        #   after = [ "local-fs.target" "network.target" ];
+        #   wantedBy = [ "multi-user.target" ];
           
-          # preStart = ''
-          #   # Setup runtime directories
-          #   ${cortexPkgs.cortexAgent}/bin/cortex-setup-dirs
+        #   # preStart = ''
+        #   #   # Setup runtime directories
+        #   #   ${cortexPkgs.cortexAgent}/bin/cortex-setup-dirs
             
-          #   # Ensure configuration exists
-          #   if [ ! -f /etc/panw/cortex.conf ]; then
-          #     echo "Error: Cortex configuration file not found at /etc/panw/cortex.conf"
-          #     exit 1
-          #   fi
-          # '';
+        #   #   # Ensure configuration exists
+        #   #   if [ ! -f /etc/panw/cortex.conf ]; then
+        #   #     echo "Error: Cortex configuration file not found at /etc/panw/cortex.conf"
+        #   #     exit 1
+        #   #   fi
+        #   # '';
 
-          serviceConfig = {
-            Type = "forking";
-            ExecStart = "${cortexPkgs.cortex-agent-fhs}/bin/cortex-agent-fhs";
-            ExecStopPost="${cortexPkgs.cortex-agent-fhs}/opt/traps/km_utils/km_manage stop";
-            Restart = "always";
-            PIDFile = "/run/traps/pmd.pid";
+        #   serviceConfig = {
+        #     Type = "forking";
+        #     ExecStart = "${cortexPkgs.cortex-agent-fhs}/bin/cortex-agent-fhs";
+        #     ExecStopPost="${cortexPkgs.cortex-agent-fhs}/opt/traps/km_utils/km_manage stop";
+        #     Restart = "always";
+        #     PIDFile = "/run/traps/pmd.pid";
             
-            # Security settings
-            NoNewPrivileges = false; # Cortex may need privileges
-            PrivateTmp = false; # Cortex needs access to system tmp
-            ProtectSystem = false; # Cortex needs system access
-            ProtectHome = true; # Cortex may need home access
-            # User = "traps"; # Run as the traps user
-            # Group = "traps"; # Run as the traps group
-          };
-        };
+        #     # Security settings
+        #     NoNewPrivileges = false; # Cortex may need privileges
+        #     PrivateTmp = false; # Cortex needs access to system tmp
+        #     ProtectSystem = false; # Cortex needs system access
+        #     ProtectHome = true; # Cortex may need home access
+        #     # User = "traps"; # Run as the traps user
+        #     # Group = "traps"; # Run as the traps group
+        #   };
+        # };
 
         # Required kernel modules and capabilities
         #boot.kernelModules = [ "tun" "tap" ];
