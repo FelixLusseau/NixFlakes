@@ -23,6 +23,10 @@ in
           appimage-run
           jmtpfs
         ];
+        boot.tmp = {
+          cleanOnBoot = true; # Clean /tmp on boot
+          useTmpfs = true; # Use tmpfs for /tmp
+        };
       }
     )
     (mkIf cfg.hardware.fingerprint.enable
