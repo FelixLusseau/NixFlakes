@@ -22,6 +22,7 @@ in
           # nix-index # Find which package contains a bin / a lib
           appimage-run
           jmtpfs
+          sshfs
         ];
         boot.tmp = {
           cleanOnBoot = true; # Clean /tmp on boot
