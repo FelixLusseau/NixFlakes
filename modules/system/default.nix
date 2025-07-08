@@ -26,7 +26,7 @@ in
         ];
         boot.tmp = {
           cleanOnBoot = true; # Clean /tmp on boot
-          useTmpfs = true; # Use tmpfs for /tmp
+#          useTmpfs = true; # Use tmpfs for /tmp
         };
       }
     )
@@ -45,6 +45,7 @@ in
           ipcalc
           dig
           trippy
+          traceroute
         ];
       }
     )

@@ -145,7 +145,7 @@ in
                       "applications:org.kde.plasma-systemmonitor.desktop"
                       "file://${pkgs.discord}/share/applications/discord.desktop"
                       "file://${pkgs.brave}/share/applications/brave-browser.desktop"
-                      "file://${pkgs.vscode}/share/applications/code.desktop"
+                      "applications:code.desktop"
                       "file://${pkgs.keepassxc}/share/applications/org.keepassxc.KeePassXC.desktop"
                       "applications:signal.desktop"
                       "file://${pkgs.element-desktop}/share/applications/element-desktop.desktop"
@@ -306,6 +306,7 @@ in
           userEmail = cfg.git.userEmail;
           extraConfig= {
             pull.rebase = false;
+            init.defaultBranch = "main";
           };
         });
 
