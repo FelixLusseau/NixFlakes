@@ -34,3 +34,5 @@ fi
 if [[ "$TERM" == "xterm-kitty" ]]; then # Use Kitty's SSH client if in a Kitty terminal
   alias ssh="kitten ssh"
 fi
+
+export YSU_MESSAGE_POSITION="after"
