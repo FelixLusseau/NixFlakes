@@ -38,6 +38,10 @@ in
     shell = {
       zsh = {
         enable = mkEnableOption "Activate ZSH as default shell";
+        powerlevel10k = {
+          enable = mkEnableOption "Setup powerlevel10k for ZSH";
+          setupInstantPrompt = mkEnableOption "Setup instant prompt, might crash zsh";
+        };
       };
     };
     system = {

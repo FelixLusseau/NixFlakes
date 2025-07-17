@@ -133,6 +133,19 @@ in
       users = {
         defaultUserShell = pkgs.zsh;
       };
+
+    })
+    (mkIf cfg.powerlevel10k.enable {
+      programs.zsh.promptInit = ''
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        source ${./p10k.zsh}
+      '';
+    })
+
+    (mkIf (cfg.powerlevel10k.enable && cfg.powerlevel10k.setupInstantPrompt) {
+      programs.zsh.interactiveShellInit = ''
+        source ${./p10k-instant-prompt.zsh}
+      '';
     })
   ];
 }
