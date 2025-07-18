@@ -1718,3 +1718,10 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
+
+# Surcharge du segment nix-shell pour powerlevel10k
+# Affiche le contenu de $ANY_NIX_SHELL_PKGS à la place de pure/impure
+
+function prompt_nix_shell() {
+  _p9k_prompt_segment $0 4 $_p9k_color1 NIX_SHELL_ICON 0 '' "${ANY_NIX_SHELL_PKGS##[[:space:]]}"
+}

@@ -10,15 +10,15 @@ setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a d
 
 eval "$(zoxide init zsh)"
 
-# Show when running a Nix-Shell
-function in_nix_shell() {
-  if [ ! -z ${IN_NIX_SHELL+x} ];
-  then
-    export ANY_NIX_SHELL_PKGS=$(echo $ANY_NIX_SHELL_PKGS | xargs) 
-    echo " Nix-Shell with '$ANY_NIX_SHELL_PKGS'";
-  fi
-}
-RPS1="%F{yellow}%b$(in_nix_shell)%f$RPS1"
+# # Show when running a Nix-Shell
+# function in_nix_shell() {
+#   if [ ! -z ${IN_NIX_SHELL+x} ];
+#   then
+#     export ANY_NIX_SHELL_PKGS=$(echo $ANY_NIX_SHELL_PKGS | xargs) 
+#     echo " Nix-Shell with '$ANY_NIX_SHELL_PKGS'";
+#   fi
+# }
+# RPS1="%F{yellow}%b$(in_nix_shell)%f$RPS1"
 
 if [ -z ${IN_NIX_SHELL+x} ]; # Do not display Fastfetch and Figlet in a Nix-Shell
 then
