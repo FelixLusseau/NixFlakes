@@ -85,6 +85,7 @@ with types;
         hardware.xone.enable = true; # Enable Xbox One controller support
         environment.systemPackages = with pkgs; [
           # minecraft # Broken 25/01/2025
+          prismlauncher
         ];
       }
     )
