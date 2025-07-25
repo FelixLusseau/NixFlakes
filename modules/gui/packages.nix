@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
-let cfg = config.flcraft.gui;
+let 
+  cfg = config.flcraft.gui;
+  minecraft-launcher = pkgs.callPackage ./minecraft-launcher.nix {};
 in
 with lib;
 with types;
