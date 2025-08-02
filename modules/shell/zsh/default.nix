@@ -42,6 +42,7 @@ in
         glances # system monitoring
         glow # markdown previewer in terminal
         htop
+        neohtop
         iftop # network monitoring
         iotop # io monitoring
         jq
