@@ -99,11 +99,17 @@ in
 
           input = {
             touchpads = [
-              {
+              { # Swift
                 name = "SYNA7DAB:01 06CB:CD40 Touchpad";
                 naturalScroll = true;
                 vendorId = "06cb";
                 productId = "cd40";
+              }
+              { # MSI
+                name = "SynPS/2 Synaptics TouchPad";
+                naturalScroll = true;
+                vendorId = "0002";
+                productId = "0007";
               }
             ];
           };
