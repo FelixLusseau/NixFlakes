@@ -28,6 +28,9 @@ in
           cleanOnBoot = true; # Clean /tmp on boot
 #          useTmpfs = true; # Use tmpfs for /tmp
         };
+        boot.kernel.sysctl = {
+          "vm.swappiness" = 10;
+        };
       }
     )
     (mkIf cfg.hardware.fingerprint.enable
