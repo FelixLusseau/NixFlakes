@@ -137,7 +137,7 @@ in
       programs.zsh.interactiveShellInit = ''
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin
         
-        # Affichage après instant prompt pour éviter les avertissements
+        # Display before instant prompt to avoid warnings
         if [ -z ''${IN_NIX_SHELL+x} ]; then
           fastfetch
           figlet -c $HOST | lolcat 2> /dev/null
