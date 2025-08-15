@@ -43,6 +43,7 @@ in
         glow # markdown previewer in terminal
         htop
         neohtop
+        nmon
         iftop # network monitoring
         iotop # io monitoring
         jq
@@ -83,8 +84,6 @@ in
             kubectl = "kubecolor";
             trip = "sudo trip -r cloudflare -z --tui-locale fr --tui-icmp-extension-mode full -e -a both";
           };
-
-          promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\n"; #fastfetch\nfiglet -c ${config.networking.hostName} | lolcat 2> /dev/null\n";
 
           ohMyZsh = {
             enable = true;
@@ -135,16 +134,24 @@ in
         defaultUserShell = pkgs.zsh;
       };
 
+      programs.zsh.interactiveShellInit = ''
+        ${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin
+        
+        # Affichage après instant prompt pour éviter les avertissements
+        if [ -z ''${IN_NIX_SHELL+x} ]; then
+          fastfetch
+          figlet -c $HOST | lolcat 2> /dev/null
+        fi
+      '';
     })
+
     (mkIf cfg.powerlevel10k.enable {
       programs.zsh.promptInit = ''
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source ${./p10k.zsh}
       '';
-    })
-
-    (mkIf (cfg.powerlevel10k.enable && cfg.powerlevel10k.setupInstantPrompt) {
-      programs.zsh.interactiveShellInit = ''
+      
+      programs.zsh.interactiveShellInit = mkAfter ''
         source ${./p10k-instant-prompt.zsh}
       '';
     })

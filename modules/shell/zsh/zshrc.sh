@@ -20,11 +20,11 @@ eval "$(zoxide init zsh)"
 # }
 # RPS1="%F{yellow}%b$(in_nix_shell)%f$RPS1"
 
-if [ -z ${IN_NIX_SHELL+x} ]; # Do not display Fastfetch and Figlet in a Nix-Shell
-then
-  fastfetch
-  figlet -c $HOST | lolcat 2> /dev/null
-fi
+# if [ -z ${IN_NIX_SHELL+x} ]; # Do not display Fastfetch and Figlet in a Nix-Shell
+# then
+#   fastfetch
+#   figlet -c $HOST | lolcat 2> /dev/null
+# fi
 
 if command -v kubecolor 2>&1 >/dev/null # Only run compdef if kubecolor is installed
 then

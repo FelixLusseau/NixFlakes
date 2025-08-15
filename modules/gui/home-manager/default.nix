@@ -146,7 +146,7 @@ in
                       "file://${pkgs.google-chrome}/share/applications/google-chrome.desktop"
                       "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
                       "file://${pkgs.kdePackages.systemsettings}/share/applications/systemsettings.desktop"
-                      "file://${pkgs.spotify}/share/applications/spotify.desktop"
+                      # "file://${pkgs.spotify}/share/applications/spotify.desktop"
                       "applications:deezer.desktop"
                       "applications:org.kde.plasma-systemmonitor.desktop"
                       "file://${pkgs.discord}/share/applications/discord.desktop"
