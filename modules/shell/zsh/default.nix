@@ -70,6 +70,7 @@ in
           shellAliases = {
             nixswitch = "sudo nixos-rebuild switch --flake .#$HOST";
             nixgc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
+            nixfu = "nix flake update";
             cd = "z";
             ls = "eza --icons --group-directories-first";
             ll = "eza --icons -l --group-directories-first";
