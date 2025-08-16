@@ -277,6 +277,11 @@ in
                 };
               };
             };
+            baloofilerc = {
+              "Basic Settings" = {
+                "Indexing-Enabled" = false; # Disable baloo indexing
+              };
+            };
           };
 
           shortcuts = {
