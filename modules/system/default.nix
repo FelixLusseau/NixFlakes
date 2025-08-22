@@ -31,6 +31,8 @@ in
         boot.kernel.sysctl = {
           "vm.swappiness" = 10;
         };
+        services.orca.enable = false;
+        services.speechd.enable = false;
       }
     )
     (mkIf cfg.hardware.fingerprint.enable
