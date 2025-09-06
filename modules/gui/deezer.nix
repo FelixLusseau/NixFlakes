@@ -10,15 +10,17 @@
 , libdrm
 , alsa-lib
 , libgbm
+, libGL
 }:
 
 stdenv.mkDerivation rec {
   pname = "deezer";
-  version = "7.0.140";
+  version = "7.0.150";
+  arch = "x64";
 
   src = fetchurl {
-    url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-x64.tar.xz";
-    hash = "sha256-8S8pv2ZZ+n4juFkjh6yhV44kKzahDBuvuvqHQym/A6w=";
+    url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-${arch}.tar.xz";
+    hash = "sha256-J7gg5G0LLhQiTQw1MppVhFx9zp9F2chxOZ8Wf2AkMpg=";
   };
 
   nativeBuildInputs = [
@@ -34,6 +36,7 @@ stdenv.mkDerivation rec {
     libdrm
     alsa-lib
     libgbm
+    libGL
   ];
 
   sourceRoot = ".";
@@ -56,8 +59,12 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    homepage = "https://github.com/aunetx/deezer-linux";
     description = "Deezer is a music streaming service";
+    homepage = "https://github.com/aunetx/deezer-linux";
+    downloadPage = "https://github.com/aunetx/deezer-linux/releases";
     platforms = platforms.linux;
+    license = licenses.unfree;
+    maintainers = with maintainers; [ FelixLusseau ];
+    mainProgram = "deezer";
   };
 }
