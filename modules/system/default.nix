@@ -25,11 +25,17 @@ in
           # nix-index # Find which package contains a bin / a lib
           appimage-run
           jmtpfs
+          sshfs
         ];
         boot.tmp = {
           cleanOnBoot = true; # Clean /tmp on boot
-          useTmpfs = true; # Use tmpfs for /tmp
+#          useTmpfs = true; # Use tmpfs for /tmp
         };
+        boot.kernel.sysctl = {
+          "vm.swappiness" = 10;
+        };
+        services.orca.enable = false;
+        services.speechd.enable = false;
       }
     )
     (mkIf cfg.hardware.fingerprint.enable
@@ -47,6 +53,7 @@ in
           ipcalc
           dig
           trippy
+          traceroute
         ];
       }
     )

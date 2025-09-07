@@ -99,11 +99,17 @@ in
 
           input = {
             touchpads = [
-              {
+              { # Swift
                 name = "SYNA7DAB:01 06CB:CD40 Touchpad";
                 naturalScroll = true;
                 vendorId = "06cb";
                 productId = "cd40";
+              }
+              { # MSI
+                name = "SynPS/2 Synaptics TouchPad";
+                naturalScroll = true;
+                vendorId = "0002";
+                productId = "0007";
               }
             ];
           };
@@ -140,12 +146,14 @@ in
                       "file://${pkgs.google-chrome}/share/applications/google-chrome.desktop"
                       "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
                       "file://${pkgs.kdePackages.systemsettings}/share/applications/systemsettings.desktop"
-                      "file://${pkgs.spotify}/share/applications/spotify.desktop"
+                      # "file://${pkgs.spotify}/share/applications/spotify.desktop"
                       "applications:deezer.desktop"
-                      "applications:org.kde.plasma-systemmonitor.desktop"
+                      # "applications:org.kde.plasma-systemmonitor.desktop"
+                      "applications:net.nokyan.Resources.desktop"
                       "file://${pkgs.discord}/share/applications/discord.desktop"
                       "file://${pkgs.brave}/share/applications/brave-browser.desktop"
-                      "file://${pkgs.vscode}/share/applications/code.desktop"
+                      # "applications:code.desktop"
+                      "applications:code-url-handler.desktop"
                       "file://${pkgs.keepassxc}/share/applications/org.keepassxc.KeePassXC.desktop"
                       "applications:signal.desktop"
                       "file://${pkgs.element-desktop}/share/applications/element-desktop.desktop"
@@ -271,6 +279,11 @@ in
                 };
               };
             };
+            baloofilerc = {
+              "Basic Settings" = {
+                "Indexing-Enabled" = false; # Disable baloo indexing
+              };
+            };
           };
 
           shortcuts = {
@@ -306,6 +319,7 @@ in
           userEmail = cfg.git.userEmail;
           extraConfig= {
             pull.rebase = false;
+            init.defaultBranch = "main";
           };
         });
 

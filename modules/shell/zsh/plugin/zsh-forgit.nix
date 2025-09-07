@@ -3,13 +3,13 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "zsh-forgit";
-  version = "25.06.0";
+  version = "25.08.0";
 
   src = fetchFromGitHub {
     owner = "wfxr";
     repo = "forgit";
     rev = version;
-    sha256 = "sha256-D1we3pOPXNsK8KgEaRBAmD5eH1i2ud4zX1GwYbOyZvY=";
+    sha256 = "sha256-45NeIRSTNiCqctdwBaS/qOeOI/8f4L+KVI/I6grYm+0=";
   };
 
   dontConfigure = true;

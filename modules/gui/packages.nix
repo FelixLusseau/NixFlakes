@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
-let cfg = config.flcraft.gui;
+let 
+  cfg = config.flcraft.gui;
+  minecraft-launcher = pkgs.callPackage ./minecraft-launcher.nix {};
 in
 with lib;
 with types;
@@ -85,6 +87,7 @@ with types;
         hardware.xone.enable = true; # Enable Xbox One controller support
         environment.systemPackages = with pkgs; [
           # minecraft # Broken 25/01/2025
+          prismlauncher
         ];
       }
     )

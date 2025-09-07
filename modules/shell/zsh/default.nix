@@ -42,6 +42,8 @@ in
         glances # system monitoring
         glow # markdown previewer in terminal
         htop
+        neohtop
+        nmon
         iftop # network monitoring
         iotop # io monitoring
         jq
@@ -68,6 +70,7 @@ in
           shellAliases = {
             nixswitch = "sudo nixos-rebuild switch --flake .#$HOST";
             nixgc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
+            nixfu = "nix flake update";
             cd = "z";
             ls = "eza --icons --group-directories-first";
             ll = "eza --icons -l --group-directories-first";
@@ -82,8 +85,6 @@ in
             kubectl = "kubecolor";
             trip = "sudo trip -r cloudflare -z --tui-locale fr --tui-icmp-extension-mode full -e -a both";
           };
-
-          promptInit = "${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin\n"; #fastfetch\nfiglet -c ${config.networking.hostName} | lolcat 2> /dev/null\n";
 
           ohMyZsh = {
             enable = true;
@@ -133,6 +134,27 @@ in
       users = {
         defaultUserShell = pkgs.zsh;
       };
+
+      programs.zsh.interactiveShellInit = ''
+        ${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin
+        
+        # Display before instant prompt to avoid warnings
+        if [ -z ''${IN_NIX_SHELL+x} ]; then
+          fastfetch
+          figlet -c $HOST | lolcat 2> /dev/null
+        fi
+      '';
+    })
+
+    (mkIf cfg.powerlevel10k.enable {
+      programs.zsh.promptInit = ''
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        source ${./p10k.zsh}
+      '';
+      
+      programs.zsh.interactiveShellInit = mkAfter ''
+        source ${./p10k-instant-prompt.zsh}
+      '';
     })
   ];
 }
