@@ -10,7 +10,6 @@
 , libdrm
 , alsa-lib
 , libgbm
-, libGL
 }:
 
 let
@@ -53,7 +52,6 @@ stdenv.mkDerivation rec {
     libdrm
     alsa-lib
     libgbm
-    libGL
   ];
 
   sourceRoot = ".";

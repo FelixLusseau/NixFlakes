@@ -75,6 +75,10 @@ in
           enable = true;
           daemon.settings = {
             # data-root = "/some-place/to-store-the-docker-data";
+            daemonConfig = {
+              ipv6 = true;
+              "fixed-cidr-v6" = "fd00::/80";
+            };
           };
         };
         users.extraGroups.docker.members = userNames;
