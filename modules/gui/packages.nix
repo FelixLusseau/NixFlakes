@@ -35,6 +35,11 @@ with types;
             ntfs3g
             resources
         ];
+        
+        nixpkgs.config.permittedInsecurePackages = [
+          "qtwebengine-5.15.19"
+        ];
+        
         programs.firefox.enable = true;
 
         # Enable the X11 windowing system.

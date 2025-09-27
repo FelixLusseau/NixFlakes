@@ -13,16 +13,16 @@
 }:
 
 let
-  version = "7.0.150";
+  version = "7.0.160";
   
   srcs = {
     x86_64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-x64.tar.xz";
-      hash = "sha256-J7gg5G0LLhQiTQw1MppVhFx9zp9F2chxOZ8Wf2AkMpg=";
+      hash = "sha256-LiEirtA7BPYNkWBZVT3Rd6nNjkrvw5StbwUzFBlu078=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-arm64.tar.xz";
-      hash = "sha256-xFox81W3jOlhhMTyp56wHVJjyEya62tHYiBgNMO1v3E="; 
+      hash = "sha256-ml5P3P6EMSaRpRS4bhl0p5+DnvKoRVtM/Lal7Er/3wY="; 
     };
   };
   
