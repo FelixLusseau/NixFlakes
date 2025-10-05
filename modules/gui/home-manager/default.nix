@@ -81,6 +81,9 @@ in
         plasma = {
           enable = true;
           overrideConfig = true;
+          resetFilesExclude = [
+            "kglobalshortcutsrc"
+          ];
 
           workspace = {
             theme = "Vivid-Dark-Plasma"; 
