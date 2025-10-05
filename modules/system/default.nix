@@ -20,7 +20,6 @@ in
           ffmpeg
           sbctl
           # nix-index # Find which package contains a bin / a lib
-          appimage-run
           jmtpfs
           sshfs
         ];
@@ -33,6 +32,10 @@ in
         };
         services.orca.enable = false;
         services.speechd.enable = false;
+        programs.appimage = {
+          enable = true;
+          binfmt = true;
+        };
       }
     )
     (mkIf cfg.hardware.fingerprint.enable
