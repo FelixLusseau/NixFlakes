@@ -3,6 +3,13 @@
 let 
   cfg = config.flcraft.gui;
   minecraft-launcher = pkgs.callPackage ./minecraft-launcher.nix {};
+  seafile-client-fixed = pkgs.seafile-client.overrideAttrs (oldAttrs: {
+    postPatch = (oldAttrs.postPatch or "") + ''
+      # Corriger la version CMake minimale
+      substituteInPlace CMakeLists.txt \
+        --replace "CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)" "CMAKE_MINIMUM_REQUIRED(VERSION 3.31)" \
+    '';
+  });
 in
 with lib;
 with types;
@@ -18,7 +25,7 @@ with types;
             spotify
             (callPackage ./deezer.nix {})
             nextcloud-client
-            seafile-client
+            seafile-client-fixed
             conky
             vlc
             mpv
