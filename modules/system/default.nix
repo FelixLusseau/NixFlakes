@@ -36,6 +36,7 @@ in
           enable = true;
           binfmt = true;
         };
+        services.printing.enable = true;
       }
     )
     (mkIf cfg.hardware.fingerprint.enable
