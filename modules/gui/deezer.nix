@@ -13,16 +13,16 @@
 }:
 
 let
-  version = "7.0.170";
-  
+  version = "7.0.190";
+  # nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.0.190/deezer-desktop-7.0.190-x64.tar.xz --json | jq -r .hash && nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.0.190/deezer-desktop-7.0.190-arm64.tar.xz --json | jq -r .hash
   srcs = {
     x86_64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-x64.tar.xz";
-      hash = "sha256-7fnX+zOdGYQ9jQ6nxl+dqmbf0e0meX3OG1TIIYS6r+Y=";
+      hash = "sha256-zbkoOhuaayF5GXQNh1P67JpkyhlJqJao+UEvTLMTF1Q=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-arm64.tar.xz";
-      hash = "sha256-A7dFGtEhuXbkJQL5spoBAgyuta0d0VX/klTo0sevFjs="; 
+      hash = "sha256-mlow0nMW6miJDK95GuGdmccwP83pRddF8hYVUeyDds4="; 
     };
   };
   
