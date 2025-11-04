@@ -218,6 +218,7 @@ in
             terraform
             ansible
             lens
+            (callPackage ./freelens.nix {})
             busybox # contains envdir
           ];
       }
