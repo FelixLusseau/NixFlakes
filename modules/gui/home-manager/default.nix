@@ -315,12 +315,17 @@ in
         };
         floorp.enable = false;
 
+        difftastic = { 
+          enable = true; 
+          git.enable = true;
+          };
         git = (mkIf cfg.git.enable {
           enable = true;
-          difftastic.enable = true;
-          userName = cfg.git.userName;
-          userEmail = cfg.git.userEmail;
-          extraConfig= {
+          settings = {
+            user = {
+              name = cfg.git.userName;
+              email = cfg.git.userEmail;
+            };
             pull.rebase = false;
             init.defaultBranch = "main";
           };

@@ -33,7 +33,7 @@
             ./modules
             home-manager.nixosModules.home-manager
             {
-              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
             }
             nix-index-database.nixosModules.nix-index
           ];

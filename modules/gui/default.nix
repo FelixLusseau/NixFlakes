@@ -33,7 +33,7 @@ with types;
           packages = with pkgs; [ 
             fira-code 
             fira-code-symbols 
-            noto-fonts-emoji 
+            noto-fonts-color-emoji
             pkgs.nerd-fonts.fira-code 
           ];
           fontconfig.defaultFonts.monospace = [ "Fira Code" ];
