@@ -205,6 +205,7 @@ in
             kubecolor
             kubectx
             kube-bench
+            kube-capacity
             stern
             (wrapHelm kubernetes-helm {
               plugins = with pkgs.kubernetes-helmPlugins; [
@@ -217,9 +218,15 @@ in
             azure-cli
             terraform
             ansible
+            busybox # contains envdir
+          ];
+      }
+    )
+    (mkIf (cfg.kube.enable && config.flcraft.gui.enable)
+      {
+        environment.systemPackages = with pkgs; [
             lens
             (callPackage ./freelens.nix {})
-            busybox # contains envdir
           ];
       }
     )
