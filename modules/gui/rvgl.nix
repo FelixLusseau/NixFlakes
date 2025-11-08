@@ -1,6 +1,6 @@
 { lib
 , stdenv
-, fetchzip
+, fetchFromGitLab
 , autoPatchelfHook
 , makeWrapper
 , SDL2
@@ -22,13 +22,26 @@
 
 stdenv.mkDerivation rec {
   pname = "rvgl";
-  version = "23.1030a";
+  version = "23.1030a1";
 
-  src = fetchzip {
-    url = "https://distribute.re-volt.io/releases/rvgl_full_linux_original.zip";
-    sha256 = "sha256-wDCVhyU7d79OeEsLwFYM1e280YBPOFAvRcBcZSM7/Bw=";
-    stripRoot = false;
+  # Récupérer les binaires depuis GitLab
+  platform = fetchFromGitLab {
+    owner = "re-volt";
+    repo = "rvgl-platform";
+    rev = version;
+    sha256 = "sha256-OlCNBUbyu/hA75qk27xSldjKXsPyaGLXxthtogdmfkQ=";
   };
+
+  # Récupérer les assets depuis GitLab
+  assets = fetchFromGitLab {
+    owner = "re-volt";
+    repo = "rvgl-assets";
+    rev = version;
+    sha256 = "sha256-9CARqvRS2+r9T+s3uWE7PZLiPluypH8eOOUEGr9S8UQ=";
+  };
+
+  # Pas de src car on construit à partir de plusieurs sources
+  dontUnpack = true;
 
   nativeBuildInputs = [
     autoPatchelfHook
@@ -57,48 +70,45 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    # Créer la structure de répertoires
     mkdir -p $out/bin
     mkdir -p $out/share/rvgl
-    mkdir -p $out/share/icons/hicolor/{16x16,24x24,32x32,48x48,256x256}/apps
-    mkdir -p $out/share/applications
 
-    # Copier l'exécutable approprié selon l'architecture
+    # Copier les binaires selon l'architecture
     ${if stdenv.hostPlatform.system == "x86_64-linux" then ''
-      install -Dm755 rvgl.64 $out/share/rvgl/rvgl
+      install -Dm755 ${platform}/linux/rvgl.64 $out/share/rvgl/rvgl
       # Copier les bibliothèques spécifiques
       mkdir -p $out/share/rvgl/lib
-      cp -r lib/lib64/* $out/share/rvgl/lib/
+      cp -r ${platform}/linux/lib/lib64/* $out/share/rvgl/lib/
     '' else if stdenv.hostPlatform.system == "i686-linux" then ''
-      install -Dm755 rvgl.32 $out/share/rvgl/rvgl
+      install -Dm755 ${platform}/linux/rvgl.32 $out/share/rvgl/rvgl
       mkdir -p $out/share/rvgl/lib
-      cp -r lib/lib32/* $out/share/rvgl/lib/
+      cp -r ${platform}/linux/lib/lib32/* $out/share/rvgl/lib/
     '' else if stdenv.hostPlatform.system == "aarch64-linux" then ''
-      install -Dm755 rvgl.arm64 $out/share/rvgl/rvgl
+      install -Dm755 ${platform}/linux/rvgl.arm64 $out/share/rvgl/rvgl
       mkdir -p $out/share/rvgl/lib
-      cp -r lib/libarm64/* $out/share/rvgl/lib/
+      cp -r ${platform}/linux/lib/libarm64/* $out/share/rvgl/lib/
     '' else if stdenv.hostPlatform.system == "armv7l-linux" then ''
-      install -Dm755 rvgl.armhf $out/share/rvgl/rvgl
+      install -Dm755 ${platform}/linux/rvgl.armhf $out/share/rvgl/rvgl
       mkdir -p $out/share/rvgl/lib
-      cp -r lib/libarmhf/* $out/share/rvgl/lib/
+      cp -r ${platform}/linux/lib/libarmhf/* $out/share/rvgl/lib/
     '' else
       throw "Unsupported platform: ${stdenv.hostPlatform.system}"
     }
 
-    # Copier tous les fichiers de données (voitures, pistes, etc.)
-    cp -r cars levels gfx strings wavs edit gallery models redbook cups licenses packs shaders $out/share/rvgl/ 2>/dev/null || true
-    cp -r fonts skins music sfx profiles $out/share/rvgl/ 2>/dev/null || true
-    cp *.txt *.ini $out/share/rvgl/ 2>/dev/null || true
+    # Copier tous les assets
+    cp -r ${assets}/* $out/share/rvgl/
 
     # Copier les icônes
+    mkdir -p $out/share/icons/hicolor
     for size in 16x16 24x24 32x32 48x48 256x256; do
-      if [ -f icons/$size/apps/rvgl.png ]; then
-        install -Dm644 icons/$size/apps/rvgl.png \
-          $out/share/icons/hicolor/$size/apps/rvgl.png
+      if [ -d ${assets}/icons/$size/apps ]; then
+        mkdir -p $out/share/icons/hicolor/$size/apps
+        cp ${assets}/icons/$size/apps/*.png $out/share/icons/hicolor/$size/apps/ 2>/dev/null || true
       fi
     done
 
     # Créer un fichier .desktop
+    mkdir -p $out/share/applications
     cat > $out/share/applications/rvgl.desktop <<EOF
     [Desktop Entry]
     Type=Application
@@ -110,7 +120,7 @@ stdenv.mkDerivation rec {
     Terminal=false
     EOF
 
-    # Créer un script wrapper qui gère le répertoire utilisateur
+    # Créer le script wrapper
     cat > $out/bin/rvgl-wrapper <<'WRAPPER'
     #!/bin/sh
     RVGL_HOME="$HOME/.rvgl"
@@ -120,13 +130,13 @@ stdenv.mkDerivation rec {
     if [ ! -d "$RVGL_HOME" ]; then
       mkdir -p "$RVGL_HOME"
       # Créer des liens symboliques vers les données en lecture seule
-      for dir in cars levels gfx strings wavs edit gallery models redbook cups licenses packs shaders; do
+      for dir in cars levels gfx strings gallery models licenses packs shaders; do
         if [ -d "$RVGL_DATA/$dir" ]; then
           ln -sf "$RVGL_DATA/$dir" "$RVGL_HOME/"
         fi
       done
       # Copier les fichiers de configuration
-      for file in "$RVGL_DATA"/*.txt "$RVGL_DATA"/*.ini; do
+      for file in "$RVGL_DATA"/*.txt "$RVGL_DATA"/*.ini "$RVGL_DATA"/*.rpl; do
         if [ -f "$file" ]; then
           cp "$file" "$RVGL_HOME/" 2>/dev/null || true
         fi
@@ -152,6 +162,7 @@ stdenv.mkDerivation rec {
     longDescription = ''
       RVGL is an enhanced Re-Volt game engine with improved graphics,
       online multiplayer support, and modern platform compatibility.
+      Built from GitLab repositories with version ${version}.
     '';
     homepage = "https://rvgl.org/";
     license = licenses.unfree;
