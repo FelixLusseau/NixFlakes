@@ -2,7 +2,6 @@
 
 let 
   cfg = config.flcraft.gui;
-  minecraft-launcher = pkgs.callPackage ./minecraft-launcher.nix {};
   # Fixed by https://github.com/NixOS/nixpkgs/pull/450764
   # seafile-client-fixed = pkgs.seafile-client.overrideAttrs (oldAttrs: {
   #   postPatch = (oldAttrs.postPatch or "") + ''
@@ -101,6 +100,7 @@ with types;
         environment.systemPackages = with pkgs; [
           # minecraft # Broken 25/01/2025
           prismlauncher
+          (callPackage ./rvgl.nix {})
         ];
       }
     )
