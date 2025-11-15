@@ -88,6 +88,7 @@ in
         users.extraGroups.docker.members = userNames;
         environment.systemPackages = with pkgs; [
           dive
+          (callPackage ./dcv.nix { })
         ];
       }
     )

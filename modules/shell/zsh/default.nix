@@ -41,6 +41,7 @@ in
         fzf
         glances # system monitoring
         glow # markdown previewer in terminal
+        doxx # Word reader in terminal
         htop
         # neohtop # Not working
         nmon
