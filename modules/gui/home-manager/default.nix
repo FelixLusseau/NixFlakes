@@ -67,6 +67,17 @@ in
       Comment=Seafile desktop sync client
       '';
 
+      xdg.configFile."autostart/kdrive.desktop".text = ''
+      [Desktop Entry]
+      Type=Application
+      Exec=kDrive
+      Hidden=false
+      NoDisplay=false
+      X-GNOME-Autostart-enabled=true
+      Name=kDrive
+      Comment=Infomaniak kDrive client de synchronisation
+      '';
+
       programs = {
         # Let Home Manager install and manage itself.
         home-manager.enable = true;

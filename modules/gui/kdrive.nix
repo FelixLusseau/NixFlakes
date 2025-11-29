@@ -76,46 +76,23 @@ stdenv.mkDerivation rec {
     xorg.xcbutilwm
   ];
 
-  # Créer un module FindLog4cplus.cmake personnalisé
   postPatch = ''
+    # Créer un module FindLog4cplus.cmake minimal
     mkdir -p cmake/modules
     cat > cmake/modules/Findlog4cplus.cmake << 'EOFCMAKE'
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(PC_LOG4CPLUS QUIET log4cplus)
-
-find_path(LOG4CPLUS_INCLUDE_DIR
-  NAMES log4cplus/logger.h
-  PATHS ''${PC_LOG4CPLUS_INCLUDE_DIRS}
-)
-
-find_library(LOG4CPLUS_LIBRARY
-  NAMES log4cplusU log4cplus
-  PATHS ''${PC_LOG4CPLUS_LIBRARY_DIRS}
-)
-
-if(PC_LOG4CPLUS_VERSION)
-  set(LOG4CPLUS_VERSION_STRING ''${PC_LOG4CPLUS_VERSION})
-endif()
-
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(log4cplus
-  REQUIRED_VARS LOG4CPLUS_LIBRARY LOG4CPLUS_INCLUDE_DIR
-  VERSION_VAR LOG4CPLUS_VERSION_STRING
-)
-
-if(log4cplus_FOUND AND NOT TARGET log4cplus::log4cplus)
+if(NOT TARGET log4cplus::log4cplus)
   add_library(log4cplus::log4cplus UNKNOWN IMPORTED)
   set_target_properties(log4cplus::log4cplus PROPERTIES
-    IMPORTED_LOCATION "''${LOG4CPLUS_LIBRARY}"
-    INTERFACE_INCLUDE_DIRECTORIES "''${LOG4CPLUS_INCLUDE_DIR}"
+    IMPORTED_LOCATION "''${log4cplus_LIBRARY}"
+    INTERFACE_INCLUDE_DIRECTORIES "''${log4cplus_INCLUDE_DIR}"
     INTERFACE_COMPILE_DEFINITIONS "UNICODE"
   )
 endif()
-
-mark_as_advanced(LOG4CPLUS_INCLUDE_DIR LOG4CPLUS_LIBRARY)
+set(log4cplus_FOUND TRUE)
+set(log4cplus_VERSION "2.1.2")
 EOFCMAKE
-
-    # Ajouter le chemin des modules CMake
+    
+    # Ajouter le chemin du module
     substituteInPlace CMakeLists.txt \
       --replace-fail 'project(client)' \
                      'list(APPEND CMAKE_MODULE_PATH "''${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
@@ -173,6 +150,8 @@ endif()'
     "-DCONAN_DEP_DIR=build-linux/conan/dependencies"
     "-DQT_FEATURE_neon=OFF"
     "-DKDRIVE_DEBUG=0"
+    "-Dlog4cplus_INCLUDE_DIR=${log4cplus}/include"
+    "-Dlog4cplus_LIBRARY=${log4cplus}/lib/liblog4cplusU.so"
     "-DCMAKE_PREFIX_PATH=${lib.concatStringsSep ";" [
       log4cplus
       xxHash
