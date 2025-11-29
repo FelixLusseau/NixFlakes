@@ -26,6 +26,7 @@ with types;
             (callPackage ./deezer.nix {})
             nextcloud-client
             seafile-client #-fixed
+            (callPackage ./kdrive.nix {})
             conky
             vlc
             mpv
