@@ -77,7 +77,7 @@ stdenv.mkDerivation rec {
   ];
 
   postPatch = ''
-    # Créer un module FindLog4cplus.cmake minimal
+    # Create a minimal FindLog4cplus.cmake module
     mkdir -p cmake/modules
     cat > cmake/modules/Findlog4cplus.cmake << 'EOFCMAKE'
 if(NOT TARGET log4cplus::log4cplus)
@@ -92,13 +92,13 @@ set(log4cplus_FOUND TRUE)
 set(log4cplus_VERSION "2.1.2")
 EOFCMAKE
     
-    # Ajouter le chemin du module
+    # Add the module path
     substituteInPlace CMakeLists.txt \
       --replace-fail 'project(client)' \
                      'list(APPEND CMAKE_MODULE_PATH "''${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 project(client)'
     
-    # Patcher la copie de bibliothèques pour utiliser les chemins Nix
+    # Patch library copying to use Nix paths
     substituteInPlace CMakeLists.txt \
       --replace-fail 'get_library_dirs("log4cplus" "log4cplus")' \
                      'set(_log4cplus_LIB_DIRS "${log4cplus}/lib")' \
@@ -107,7 +107,7 @@ project(client)'
       --replace-fail 'get_library_dirs("xxHash" "xxhash")' \
                      'set(_xxHash_LIB_DIRS "${xxHash}/lib")'
     
-    # Remplacer les chemins des variables par les valeurs réelles avec les bons noms de fichiers (utiliser Unicode version)
+    # Replace variable paths with actual values using correct filenames (use Unicode version)
     substituteInPlace CMakeLists.txt \
       --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so"' '"${log4cplus}/lib/liblog4cplusU.so"' \
       --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so.9"' '"${log4cplus}/lib/liblog4cplusU-2.1.so.9"' \
@@ -115,7 +115,7 @@ project(client)'
       --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0"' '"${xxHash}/lib/libxxhash.so.0"' \
       --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0.8.2"' '"${xxHash}/lib/libxxhash.so.0.8.3"'
     
-    # Patcher les CMakeLists pour ajouter la configuration RelWithDebInfo pour libzip
+    # Patch CMakeLists to add RelWithDebInfo configuration for libzip
     for file in src/libcommon/CMakeLists.txt src/libcommonserver/CMakeLists.txt; do
       substituteInPlace "$file" \
         --replace-fail 'find_package(libzip 1.10.1 REQUIRED)' \
@@ -129,12 +129,12 @@ endif()'
     done
   '';
 
-  # Créer un répertoire de dépendances vide pour Conan
+  # Create an empty dependency directory for Conan
   preConfigure = ''
     export HOME=$TMPDIR
     mkdir -p build-linux/conan/dependencies
     
-    # Créer des liens symboliques vers les dépendances Nix
+    # Create symbolic links to Nix dependencies
     ln -sf ${openssl.out}/lib/* build-linux/conan/dependencies/ || true
     ln -sf ${zlib.out}/lib/* build-linux/conan/dependencies/ || true
     ln -sf ${log4cplus}/lib/* build-linux/conan/dependencies/ || true
@@ -161,41 +161,41 @@ endif()'
     ]}"
   ];
 
-  # Build en parallèle
+  # Parallel build
   enableParallelBuilding = true;
 
-  # Éviter l'installation dans /kDrive
+  # Avoid installing to /kDrive
   preInstall = ''
-    # Patcher cmake_install.cmake pour éviter d'installer dans /kDrive
+    # Patch cmake_install.cmake to avoid installing to /kDrive
     find . -name cmake_install.cmake -exec sed -i 's|file(MAKE_DIRECTORY "/kDrive")|# &|g' {} +
     find . -name cmake_install.cmake -exec sed -i 's|"/kDrive"|"$ENV{out}/kDrive"|g' {} +
-    # Ignorer uniquement les lignes file(INSTALL qui utilisent CRASHPAD_HANDLER_PROGRAM-NOTFOUND
+    # Only ignore file(INSTALL lines using CRASHPAD_HANDLER_PROGRAM-NOTFOUND
     find . -name cmake_install.cmake -exec sed -i '/file(INSTALL.*CRASHPAD_HANDLER_PROGRAM-NOTFOUND/d' {} +
   '';
 
-  # Installation personnalisée
+  # Custom installation
   postInstall = ''
-    # Copier le fichier d'exclusion de synchronisation
+    # Copy the sync exclusion file
     cp ${src}/sync-exclude-linux.lst $out/bin/sync-exclude.lst
 
-    # Créer les répertoires nécessaires
+    # Create necessary directories
     mkdir -p $out/share/applications
     mkdir -p $out/share/icons/hicolor/512x512/apps
 
-    # Copier les fichiers desktop et icônes s'ils existent
+    # Copy desktop and icon files if they exist
     if [ -f $out/share/applications/kDrive_client.desktop ]; then
       sed -i "s|Exec=.*|Exec=$out/bin/kDrive|g" $out/share/applications/kDrive_client.desktop
     fi
   '';
 
-  # Wrapper pour les chemins Qt et autres dépendances
+  # Wrapper for Qt paths and other dependencies
   postFixup = ''
     wrapProgram $out/bin/kDrive \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
       --prefix QT_PLUGIN_PATH : "${qt6.qtbase}/${qt6.qtbase.qtPluginPrefix}" \
       --prefix QML2_IMPORT_PATH : "${qt6.qtbase}/${qt6.qtbase.qtQmlPrefix}"
     
-    # Wrapper pour le client si différent
+    # Wrapper for the client if different
     if [ -f $out/bin/kDrive_client ]; then
       wrapProgram $out/bin/kDrive_client \
         --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
@@ -205,7 +205,7 @@ endif()'
   '';
 
   meta = with lib; {
-    description = "Infomaniak kDrive - Client de synchronisation desktop";
+    description = "Infomaniak kDrive - Desktop synchronization client";
     homepage = "https://github.com/Infomaniak/desktop-kDrive";
     license = licenses.gpl3Plus;
     maintainers = [ ];
