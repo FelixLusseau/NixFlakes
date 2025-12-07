@@ -2,6 +2,7 @@
 , lib
 , fetchurl
 , autoPatchelfHook
+, makeWrapper
 , gcc-unwrapped
 , cairo
 , pango
@@ -10,19 +11,20 @@
 , libdrm
 , alsa-lib
 , libgbm
+, libglvnd
 }:
 
 let
-  version = "7.0.190";
+  version = "7.1.20";
   # nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.0.190/deezer-desktop-7.0.190-x64.tar.xz --json | jq -r .hash && nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.0.190/deezer-desktop-7.0.190-arm64.tar.xz --json | jq -r .hash
   srcs = {
     x86_64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-x64.tar.xz";
-      hash = "sha256-zbkoOhuaayF5GXQNh1P67JpkyhlJqJao+UEvTLMTF1Q=";
+      hash = "sha256-Tp8ktdznP4WHHyf8Psa4TLrgmPmF88DbWEbwzVoXhrs=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-arm64.tar.xz";
-      hash = "sha256-mlow0nMW6miJDK95GuGdmccwP83pRddF8hYVUeyDds4="; 
+      hash = "sha256-KfXZbLnyx6E9yaXVvcTKw3Zth1H2R/iJpnh44sTCygs="; 
     };
   };
   
@@ -41,6 +43,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     autoPatchelfHook
+    makeWrapper
   ];
 
   buildInputs = [
@@ -52,6 +55,7 @@ stdenv.mkDerivation rec {
     libdrm
     alsa-lib
     libgbm
+    libglvnd
   ];
 
   sourceRoot = ".";
@@ -68,7 +72,10 @@ stdenv.mkDerivation rec {
 
     cp -r deezer-desktop-${version}-${archDir} $out/opt/
     chmod -R 755 $out/opt/deezer-desktop-${version}-${archDir}
-    ln -s $out/opt/deezer-desktop-${version}-${archDir}/deezer-desktop $out/bin/deezer
+    
+    # Create wrapper with proper library paths
+    makeWrapper $out/opt/deezer-desktop-${version}-${archDir}/deezer-desktop $out/bin/deezer \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libglvnd ]}"
     
     runHook postInstall
   '';
