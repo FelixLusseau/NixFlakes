@@ -48,6 +48,7 @@ in
         iftop # network monitoring
         iotop # io monitoring
         jq
+        lazygit
         libnotify
         lolcat
         ncdu
@@ -57,6 +58,7 @@ in
         tldr
         tree
         w3m # Display image in terminal
+        xan # CSV viewer in terminal
         yazi # terminal file manager
         zellij # tmux alternative
         zoxide
