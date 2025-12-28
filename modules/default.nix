@@ -20,6 +20,10 @@ let
           type = types.str;
           default = "";
         };
+        userSigningKey = mkOption {
+          type = types.str;
+          default = "";
+        };
       };
     };
   };
