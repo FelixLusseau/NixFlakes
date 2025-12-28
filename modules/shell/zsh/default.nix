@@ -70,7 +70,7 @@ in
 
           shellAliases = {
             nixswitch = "sudo nixos-rebuild switch --flake .#$HOST";
-            nixgc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
+            nixgc = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimize";
             nixfu = "nix flake update";
             cd = "z";
             ls = "eza --icons --group-directories-first";
@@ -78,7 +78,7 @@ in
             tree = "eza --tree --icons";
             cat = "bat";
             clip = "wl-copy";
-            whatismyip = "curl https://ipinfo.io/ip";
+            whatismyip = "echo -e '\e[1;34mIPv6:\e[0m' && curl -6 https://ifconfig.me/ip && echo -e '\e[1;34m\nIPv4:\e[0m' && curl -4 https://ifconfig.me/ip";
             mtr = "mtr -e -b -t -z";
             diff = "difft";
             kx    = "kubectx";
