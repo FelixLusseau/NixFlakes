@@ -12,6 +12,25 @@ in
       extraGroups = [ "networkmanager" "wheel" "disk" ];
       useDefaultShell = true;
   } else {});
+
+  # Configuration spécifique pour les VMs (build-vm)
+  virtualisation.vmVariant = {
+    users.users = mapUsers ( name: cfg: if name != "root" then {
+      initialPassword = "nixos";
+    } else {});
+    
+    # Augmentation des ressources VM
+    virtualisation = {
+      memorySize = 8192;  # 8 Go de RAM
+      cores = 4;          # 4 cœurs CPU
+      diskSize = 40960;   # 40 Go d'espace disque
+      resolution = {
+        x = 1920;
+        y = 1080;
+      };
+    };
+  };
+
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
