@@ -1,6 +1,6 @@
 --- a/abstract.lua
 +++ b/abstract.lua
-@@ -283,7 +283,16 @@ function diskio(device)         return parse("diskio " .. device) end       --
+@@ -283,7 +283,18 @@ function diskio(device)         return parse("diskio " .. device) end       --
  function diskio_read(device)    return parse("diskio_read " .. device) end
  function diskio_write(device)   return parse("diskio_write " .. device) end
 -function cpu_temperature()      return parse("acpitemp") end                --  temperature in C°
@@ -10,7 +10,10 @@
 +    if file then
 +        local temp = file:read("*a")
 +        file:close()
-+        return string.format("%.0f", tonumber(temp) / 1000)
++        local temp_num = tonumber(temp)
++        if temp_num then
++            return string.format("%.0f", temp_num / 1000)
++        end
 +    end
 +    return parse("acpitemp")  -- Fallback
 +end                                                                         --  temperature in C°
