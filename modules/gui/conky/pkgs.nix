@@ -33,6 +33,11 @@ pkgs.stdenv.mkDerivation {
   # Currently not multi-theme enabled
   installPhase = ''
     cp -r . $out/share/conky/themes/${theme}
+    
+    # Application du patch pour corriger la température CPU
+    cd $out/share/conky/themes/${theme}
+    patch -p1 < ${./fix-cpu-temp.patch}
+    
     sed -i 's/middle_middle/middle_right/g' $out/share/conky/themes/${theme}/conkyrc
     sed -i '/require "imlib2"/a require("cairo_xlib")' $out/share/conky/themes/${theme}/abstract.lua
     sed -i 's/cpu_cores = 4/cpu_cores = ${cores-nb}/g' $out/share/conky/themes/${theme}/settings.lua

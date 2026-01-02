@@ -1,0 +1,19 @@
+--- a/abstract.lua
++++ b/abstract.lua
+@@ -283,7 +283,16 @@ function diskio(device)         return parse("diskio " .. device) end       --
+ function diskio_read(device)    return parse("diskio_read " .. device) end
+ function diskio_write(device)   return parse("diskio_write " .. device) end
+-function cpu_temperature()      return parse("acpitemp") end                --  temperature in C°
++function cpu_temperature()
++    -- Utilise thermal_zone4 (x86_pkg_temp) pour la vraie température CPU
++    local file = io.open("/sys/class/thermal/thermal_zone4/temp", "r")
++    if file then
++        local temp = file:read("*a")
++        file:close()
++        return string.format("%.0f", tonumber(temp) / 1000)
++    end
++    return parse("acpitemp")  -- Fallback
++end                                                                         --  temperature in C°
+ function cpu_percent(n)
+     if n == nil or n == 0 or n == "" then return parse("cpu") end
+     if n > 0 and n <= 32    then return parse("cpu cpu" .. n)
