@@ -22,6 +22,7 @@ in
           # nix-index # Find which package contains a bin / a lib
           jmtpfs
           sshfs
+          file # To display file types
         ];
         boot.tmp = {
           cleanOnBoot = true; # Clean /tmp on boot
