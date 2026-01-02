@@ -5,7 +5,7 @@
  function diskio_write(device)   return parse("diskio_write " .. device) end
 -function cpu_temperature()      return parse("acpitemp") end                --  temperature in C°
 +function cpu_temperature()
-+    -- Utilise thermal_zone4 (x86_pkg_temp) pour la vraie température CPU
++    -- Use thermal_zone4 (x86_pkg_temp) for real CPU temperature
 +    local file = io.open("/sys/class/thermal/thermal_zone4/temp", "r")
 +    if file then
 +        local temp = file:read("*a")

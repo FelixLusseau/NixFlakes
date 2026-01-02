@@ -34,7 +34,7 @@ pkgs.stdenv.mkDerivation {
   installPhase = ''
     cp -r . $out/share/conky/themes/${theme}
     
-    # Application du patch pour corriger la température CPU
+    # Apply patch to fix CPU temperature reading
     cd $out/share/conky/themes/${theme}
     patch -p1 < ${./fix-cpu-temp.patch}
     
