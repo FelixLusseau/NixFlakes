@@ -6,14 +6,14 @@
  
 -function cpu_temperature()      return parse("acpitemp") end                --  temperature in C°
 +function cpu_temperature()
-+    -- Utilise thermal_zone4 (x86_pkg_temp) pour la vraie température CPU
++    -- Use thermal_zone4 (x86_pkg_temp) for real CPU temperature
 +    local file = io.open("/sys/class/thermal/thermal_zone4/temp", "r")
 +    if file then
 +        local temp = file:read("*a")
 +        file:close()
 +        return string.format("%.0f", tonumber(temp) / 1000)
 +    end
-+    return parse("acpitemp")  -- Fallback
++    return parse("acpitemp")  -- Fallback if thermal zone unavailable
 +end                                                                         --  temperature in C°
  
  function cpu_percent(n)
