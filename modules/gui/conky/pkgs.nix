@@ -1,6 +1,7 @@
 {
   cores-nb,
   wifi-int-name,
+  cpu-thermal-zone,
   pkgs ? import <nixpkgs> {},
   theme ? "auzia-conky",
   fetchFromGitHub,
@@ -8,7 +9,7 @@
 
 pkgs.stdenv.mkDerivation {
   pname = "conky-theme";
-  version = "0.1.1";
+  version = "0.1.2";
 
   src = fetchFromGitHub {
         owner = "SZinedine";
@@ -33,6 +34,14 @@ pkgs.stdenv.mkDerivation {
   # Currently not multi-theme enabled
   installPhase = ''
     cp -r . $out/share/conky/themes/${theme}
+    
+    # Application du patch pour corriger la température CPU
+    cd $out/share/conky/themes/${theme}
+    patch -p1 < ${./fix-cpu-temp.patch}
+    
+    # Remplacer le thermal_zone par celui configuré pour cet hôte
+    sed -i 's|/sys/class/thermal/thermal_zone4/temp|/sys/class/thermal/thermal_zone${cpu-thermal-zone}/temp|g' $out/share/conky/themes/${theme}/abstract.lua
+    
     sed -i 's/middle_middle/middle_right/g' $out/share/conky/themes/${theme}/conkyrc
     sed -i '/require "imlib2"/a require("cairo_xlib")' $out/share/conky/themes/${theme}/abstract.lua
     sed -i 's/cpu_cores = 4/cpu_cores = ${cores-nb}/g' $out/share/conky/themes/${theme}/settings.lua
