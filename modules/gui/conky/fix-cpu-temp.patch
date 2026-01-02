@@ -9,7 +9,7 @@
 +    -- Use thermal_zone4 (x86_pkg_temp) for real CPU temperature
 +    local file = io.open("/sys/class/thermal/thermal_zone4/temp", "r")
 +    if file then
-+        local temp = file:read("*a")
++        local temp = file:read("*l")
 +        file:close()
 +        return string.format("%.0f", tonumber(temp) / 1000)
 +    end
