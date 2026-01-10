@@ -65,6 +65,27 @@ in
         fingerprint.enable = mkEnableOption "Activate fingerprint";
       };
       blocky.enable = mkEnableOption "Activate Blocky Ads Blocker"; # A reboot is required to apply the changes
+      cortex = {
+        enable = mkEnableOption "Cortex XDR Agent";
+
+        configFile = mkOption {
+          type = types.path;
+          default = /etc/panw/cortex.conf;
+          description = "Path to the Cortex XDR configuration file";
+        };
+
+        distributionId = mkOption {
+          type = types.str;
+          example = "033c89d0a73e4f28b8f226441fcc17c6";
+          description = "Distribution ID for Cortex XDR";
+        };
+
+        distributionServer = mkOption {
+          type = types.str;
+          default = "https://distributions.traps.paloaltonetworks.com/";
+          description = "Distribution server URL for Cortex XDR";
+        };
+      };
     };
     gui = {
       enable = mkEnableOption "Activate GUI";
