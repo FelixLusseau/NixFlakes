@@ -25,13 +25,13 @@
 
 stdenv.mkDerivation rec {
   pname = "kdrive";
-  version = "3.7.9";
+  version = "3.8.1";
 
   src = fetchFromGitHub {
     owner = "Infomaniak";
     repo = "desktop-kDrive";
     rev = version;
-    sha256 = "sha256-1MIiFWxMciTaMOysDo+9dtCbFKfgyXR03SCo4J41rzE=";
+    sha256 = "sha256-7PVf04B8wqBRMkNl5UJb9Ht8LBNviqzrdlUjccLyN/Y=";
     fetchSubmodules = true;
   };
 
