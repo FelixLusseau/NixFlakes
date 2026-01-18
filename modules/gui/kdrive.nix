@@ -152,6 +152,7 @@ endif()'
     "-DKDRIVE_DEBUG=0"
     "-Dlog4cplus_INCLUDE_DIR=${log4cplus}/include"
     "-Dlog4cplus_LIBRARY=${log4cplus}/lib/liblog4cplusU.so"
+    "-DCMAKE_CXX_FLAGS=-Wno-error=uninitialized" # Suppress uninitialized errors on v3.8.1
     "-DCMAKE_PREFIX_PATH=${lib.concatStringsSep ";" [
       log4cplus
       xxHash
