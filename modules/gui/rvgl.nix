@@ -40,6 +40,22 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-9CARqvRS2+r9T+s3uWE7PZLiPluypH8eOOUEGr9S8UQ=";
   };
 
+  # Récupérer les fichiers de jeu de base
+  gameFiles = fetchFromGitLab {
+    owner = "re-volt";
+    repo = "game_files";
+    rev = "e2fa1e900425dd2d3d4d5328228a45b489afdf71";
+    sha256 = "sha256-pX/bxesie6+Pw6A/T8Mn38kMIV89oyxFcKPgBxfw0zg=";
+  };
+
+  # Récupérer la bande sonore originale
+  ost = fetchFromGitLab {
+    owner = "re-volt";
+    repo = "ost";
+    rev = "5ddd726534730c4f0afcd676a32852b20362de8a";
+    sha256 = "sha256-js3HWU8a4Xc44YW2jROwZgDrCnDHp7tvlXb3TghmjiM=";
+  };
+
   # Pas de src car on construit à partir de plusieurs sources
   dontUnpack = true;
 
@@ -73,30 +89,47 @@ stdenv.mkDerivation rec {
     mkdir -p $out/bin
     mkdir -p $out/share/rvgl
 
-    # Copier les binaires selon l'architecture
+    # Copier d'abord les fichiers de jeu de base (game_files)
+    echo "Installing game files..."
+    cp -r ${gameFiles}/* $out/share/rvgl/
+    chmod -R +w $out/share/rvgl
+
+    # Copier les binaires selon l'architecture (peut patcher game_files)
     ${if stdenv.hostPlatform.system == "x86_64-linux" then ''
       install -Dm755 ${platform}/linux/rvgl.64 $out/share/rvgl/rvgl
       # Copier les bibliothèques spécifiques
       mkdir -p $out/share/rvgl/lib
       cp -r ${platform}/linux/lib/lib64/* $out/share/rvgl/lib/
+      # Copier les autres fichiers du platform qui peuvent patcher
+      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
     '' else if stdenv.hostPlatform.system == "i686-linux" then ''
       install -Dm755 ${platform}/linux/rvgl.32 $out/share/rvgl/rvgl
       mkdir -p $out/share/rvgl/lib
       cp -r ${platform}/linux/lib/lib32/* $out/share/rvgl/lib/
+      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
     '' else if stdenv.hostPlatform.system == "aarch64-linux" then ''
       install -Dm755 ${platform}/linux/rvgl.arm64 $out/share/rvgl/rvgl
       mkdir -p $out/share/rvgl/lib
       cp -r ${platform}/linux/lib/libarm64/* $out/share/rvgl/lib/
+      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
     '' else if stdenv.hostPlatform.system == "armv7l-linux" then ''
       install -Dm755 ${platform}/linux/rvgl.armhf $out/share/rvgl/rvgl
       mkdir -p $out/share/rvgl/lib
       cp -r ${platform}/linux/lib/libarmhf/* $out/share/rvgl/lib/
+      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
     '' else
       throw "Unsupported platform: ${stdenv.hostPlatform.system}"
     }
+    chmod -R +w $out/share/rvgl
 
-    # Copier tous les assets
+    # Copier les assets (peuvent patcher game_files et platform)
+    echo "Installing assets..."
     cp -r ${assets}/* $out/share/rvgl/
+    chmod -R +w $out/share/rvgl
+
+    # Copier la bande sonore originale
+    echo "Installing OST..."
+    cp -r ${ost}/* $out/share/rvgl/
 
     # Copier les icônes
     mkdir -p $out/share/icons/hicolor
@@ -124,13 +157,13 @@ stdenv.mkDerivation rec {
     cat > $out/bin/rvgl-wrapper <<'WRAPPER'
     #!/bin/sh
     RVGL_HOME="$HOME/.rvgl"
-    RVGL_DATA="@out@/share/rvgl"
+    RVGL_DATA="/run/current-system/sw/share/rvgl"
     
     # Créer le répertoire utilisateur s'il n'existe pas
     if [ ! -d "$RVGL_HOME" ]; then
       mkdir -p "$RVGL_HOME"
       # Créer des liens symboliques vers les données en lecture seule
-      for dir in cars levels gfx strings gallery models licenses packs shaders; do
+      for dir in cars levels gfx strings wavs edit gallery models redbook cups licenses packs shaders; do
         if [ -d "$RVGL_DATA/$dir" ]; then
           ln -sf "$RVGL_DATA/$dir" "$RVGL_HOME/"
         fi
