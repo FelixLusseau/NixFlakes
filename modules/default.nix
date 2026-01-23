@@ -62,6 +62,11 @@ in
         wifi-int-name = mkOption {
           type = types.str;
         };
+        cpu-thermal-zone = mkOption {
+          type = types.str;
+          default = "4";
+          description = "Thermal zone number for CPU temperature (e.g., 4 for thermal_zone4)";
+        };
         fingerprint.enable = mkEnableOption "Activate fingerprint";
       };
       blocky.enable = mkEnableOption "Activate Blocky Ads Blocker"; # A reboot is required to apply the changes
