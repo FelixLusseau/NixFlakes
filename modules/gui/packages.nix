@@ -1,102 +1,97 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-let 
+let
   cfg = config.flcraft.gui;
 in
 with lib;
 with types;
 {
   config = mkMerge [
-    (mkIf cfg.enable
-      {
-        environment.systemPackages = with pkgs; [
-            google-chrome
-            font-manager
-            kdePackages.kate
-            kdePackages.kalk
-            spotify
-            (callPackage ./deezer.nix {})
-            nextcloud-client
-            (callPackage ./kdrive.nix {})
-            conky
-            vlc
-            mpv
-            keepassxc
-            brave
-            xournalpp
-            kmymoney
-            meld
-            (callPackage ./sddm.nix {})
-            (callPackage ./home-manager/theme/vivid.nix {})
-            (callPackage ./home-manager/theme/vivid-dark-icons.nix {})
-            (callPackage ./home-manager/theme/gently.nix {})
-            gparted
-            ntfs3g
-            resources
-        ];
-        
-        nixpkgs.config.permittedInsecurePackages = [
-          "qtwebengine-5.15.19"
-        ];
-        
-        programs.firefox.enable = true;
+    (mkIf cfg.enable {
+      environment.systemPackages = with pkgs; [
+        google-chrome
+        font-manager
+        kdePackages.kate
+        kdePackages.kalk
+        spotify
+        (callPackage ./deezer.nix { })
+        nextcloud-client
+        (callPackage ./kdrive.nix { })
+        conky
+        vlc
+        mpv
+        keepassxc
+        brave
+        xournalpp
+        kmymoney
+        meld
+        (callPackage ./sddm.nix { })
+        (callPackage ./home-manager/theme/vivid.nix { })
+        (callPackage ./home-manager/theme/vivid-dark-icons.nix { })
+        (callPackage ./home-manager/theme/gently.nix { })
+        gparted
+        ntfs3g
+        resources
+      ];
 
-        programs.kdeconnect.enable = true;
+      nixpkgs.config.permittedInsecurePackages = [
+        "qtwebengine-5.15.19"
+      ];
 
-        # Enable the X11 windowing system.
-        # You can disable this if you're only using the Wayland session.
-        # services.xserver.enable = true;
-        services.displayManager.sddm.wayland.enable = true;
-        services.displayManager.sddm.autoNumlock = true;
+      programs.firefox.enable = true;
 
-        # Enable the KDE Plasma Desktop Environment.
-        services.displayManager.sddm.enable = true;
-        services.desktopManager.plasma6.enable = true;
-        # Custom SDDM theme
-        services.displayManager.sddm.theme = "sddm-vivid-theme-dialog";
-      }
-    )
-    (mkIf cfg.pkgs.messages.enable
-      {
-        environment.systemPackages = with pkgs; [
-            thunderbird
-            element-desktop
-            signal-desktop
-            discord
-        ];
-      }
-    )
-    (mkIf cfg.pkgs.programming.enable
-      {
-        environment.systemPackages = with pkgs; [
-            vscode
-            bruno
-            python3
-            nodejs_24
-        ];
-      }
-    )
-    (mkIf cfg.pkgs.art.enable
-      {
-        environment.systemPackages = with pkgs; [
-          krita
-          gimp3
+      programs.kdeconnect.enable = true;
+
+      # Enable the X11 windowing system.
+      # You can disable this if you're only using the Wayland session.
+      # services.xserver.enable = true;
+      services.displayManager.sddm.wayland.enable = true;
+      services.displayManager.sddm.autoNumlock = true;
+
+      # Enable the KDE Plasma Desktop Environment.
+      services.displayManager.sddm.enable = true;
+      services.desktopManager.plasma6.enable = true;
+      # Custom SDDM theme
+      services.displayManager.sddm.theme = "sddm-vivid-theme-dialog";
+    })
+    (mkIf cfg.pkgs.messages.enable {
+      environment.systemPackages = with pkgs; [
+        thunderbird
+        element-desktop
+        signal-desktop
+        discord
+      ];
+    })
+    (mkIf cfg.pkgs.programming.enable {
+      environment.systemPackages = with pkgs; [
+        vscode
+        bruno
+        python3
+        nodejs_24
+      ];
+    })
+    (mkIf cfg.pkgs.art.enable {
+      environment.systemPackages = with pkgs; [
+        krita
+        gimp3
         #   darktable
-          inkscape
-          kdePackages.kdenlive
-          shotwell
-        ];
-      }
-    )
-    (mkIf cfg.pkgs.gaming.enable
-      {
-        hardware.xone.enable = true; # Enable Xbox One controller support
-        environment.systemPackages = with pkgs; [
-          # minecraft # Broken 25/01/2025
-          prismlauncher
-          (callPackage ./rvgl.nix {})
-        ];
-      }
-    )
+        inkscape
+        kdePackages.kdenlive
+        shotwell
+      ];
+    })
+    (mkIf cfg.pkgs.gaming.enable {
+      hardware.xone.enable = true; # Enable Xbox One controller support
+      environment.systemPackages = with pkgs; [
+        # minecraft # Broken 25/01/2025
+        prismlauncher
+        (callPackage ./rvgl.nix { })
+      ];
+    })
   ];
 }

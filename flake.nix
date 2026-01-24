@@ -12,17 +12,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    nix-index-database = { 
+    nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, plasma-manager, nix-index-database }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      plasma-manager,
+      nix-index-database,
+    }@inputs:
     let
       system = "x86_64-linux";
-    in 
+    in
     {
+      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-tree;
+
       nixpkgs = nixpkgs; # Allow NixConfig to catch this Nixpkgs
       nixosModules = {
         modules = {

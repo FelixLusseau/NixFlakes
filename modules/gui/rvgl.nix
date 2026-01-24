@@ -1,23 +1,24 @@
-{ lib
-, stdenv
-, fetchFromGitLab
-, autoPatchelfHook
-, makeWrapper
-, SDL2
-, SDL2_image
-, SDL2_mixer
-, libGL
-, libX11
-, libXext
-, libXrandr
-, libXi
-, libXcursor
-, libXinerama
-, libXxf86vm
-, alsa-lib
-, libvorbis
-, flac
-, fluidsynth
+{
+  lib,
+  stdenv,
+  fetchFromGitLab,
+  autoPatchelfHook,
+  makeWrapper,
+  SDL2,
+  SDL2_image,
+  SDL2_mixer,
+  libGL,
+  libX11,
+  libXext,
+  libXrandr,
+  libXi,
+  libXcursor,
+  libXinerama,
+  libXxf86vm,
+  alsa-lib,
+  libvorbis,
+  flac,
+  fluidsynth,
 }:
 
 stdenv.mkDerivation rec {
@@ -95,30 +96,39 @@ stdenv.mkDerivation rec {
     chmod -R +w $out/share/rvgl
 
     # Copier les binaires selon l'architecture (peut patcher game_files)
-    ${if stdenv.hostPlatform.system == "x86_64-linux" then ''
-      install -Dm755 ${platform}/linux/rvgl.64 $out/share/rvgl/rvgl
-      # Copier les bibliothèques spécifiques
-      mkdir -p $out/share/rvgl/lib
-      cp -r ${platform}/linux/lib/lib64/* $out/share/rvgl/lib/
-      # Copier les autres fichiers du platform qui peuvent patcher
-      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
-    '' else if stdenv.hostPlatform.system == "i686-linux" then ''
-      install -Dm755 ${platform}/linux/rvgl.32 $out/share/rvgl/rvgl
-      mkdir -p $out/share/rvgl/lib
-      cp -r ${platform}/linux/lib/lib32/* $out/share/rvgl/lib/
-      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
-    '' else if stdenv.hostPlatform.system == "aarch64-linux" then ''
-      install -Dm755 ${platform}/linux/rvgl.arm64 $out/share/rvgl/rvgl
-      mkdir -p $out/share/rvgl/lib
-      cp -r ${platform}/linux/lib/libarm64/* $out/share/rvgl/lib/
-      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
-    '' else if stdenv.hostPlatform.system == "armv7l-linux" then ''
-      install -Dm755 ${platform}/linux/rvgl.armhf $out/share/rvgl/rvgl
-      mkdir -p $out/share/rvgl/lib
-      cp -r ${platform}/linux/lib/libarmhf/* $out/share/rvgl/lib/
-      cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
-    '' else
-      throw "Unsupported platform: ${stdenv.hostPlatform.system}"
+    ${
+      if stdenv.hostPlatform.system == "x86_64-linux" then
+        ''
+          install -Dm755 ${platform}/linux/rvgl.64 $out/share/rvgl/rvgl
+          # Copier les bibliothèques spécifiques
+          mkdir -p $out/share/rvgl/lib
+          cp -r ${platform}/linux/lib/lib64/* $out/share/rvgl/lib/
+          # Copier les autres fichiers du platform qui peuvent patcher
+          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+        ''
+      else if stdenv.hostPlatform.system == "i686-linux" then
+        ''
+          install -Dm755 ${platform}/linux/rvgl.32 $out/share/rvgl/rvgl
+          mkdir -p $out/share/rvgl/lib
+          cp -r ${platform}/linux/lib/lib32/* $out/share/rvgl/lib/
+          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+        ''
+      else if stdenv.hostPlatform.system == "aarch64-linux" then
+        ''
+          install -Dm755 ${platform}/linux/rvgl.arm64 $out/share/rvgl/rvgl
+          mkdir -p $out/share/rvgl/lib
+          cp -r ${platform}/linux/lib/libarm64/* $out/share/rvgl/lib/
+          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+        ''
+      else if stdenv.hostPlatform.system == "armv7l-linux" then
+        ''
+          install -Dm755 ${platform}/linux/rvgl.armhf $out/share/rvgl/rvgl
+          mkdir -p $out/share/rvgl/lib
+          cp -r ${platform}/linux/lib/libarmhf/* $out/share/rvgl/lib/
+          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+        ''
+      else
+        throw "Unsupported platform: ${stdenv.hostPlatform.system}"
     }
     chmod -R +w $out/share/rvgl
 
@@ -158,7 +168,7 @@ stdenv.mkDerivation rec {
     #!/bin/sh
     RVGL_HOME="$HOME/.rvgl"
     RVGL_DATA="/run/current-system/sw/share/rvgl"
-    
+
     # Créer le répertoire utilisateur s'il n'existe pas
     if [ ! -d "$RVGL_HOME" ]; then
       mkdir -p "$RVGL_HOME"
@@ -175,15 +185,15 @@ stdenv.mkDerivation rec {
         fi
       done
     fi
-    
+
     cd "$RVGL_HOME"
     export LD_LIBRARY_PATH="$RVGL_DATA/lib:$LD_LIBRARY_PATH"
     exec "$RVGL_DATA/rvgl" "$@"
     WRAPPER
-    
+
     sed -i "s|@out@|$out|g" $out/bin/rvgl-wrapper
     chmod +x $out/bin/rvgl-wrapper
-    
+
     # Créer le lien final
     ln -s $out/bin/rvgl-wrapper $out/bin/rvgl
 
@@ -199,7 +209,12 @@ stdenv.mkDerivation rec {
     '';
     homepage = "https://rvgl.org/";
     license = lib.licenses.unfree;
-    platforms = [ "x86_64-linux" "i686-linux" "aarch64-linux" "armv7l-linux" ];
+    platforms = [
+      "x86_64-linux"
+      "i686-linux"
+      "aarch64-linux"
+      "armv7l-linux"
+    ];
     maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "rvgl";
   };

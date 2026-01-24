@@ -1,4 +1,8 @@
-{ lib, stdenvNoCC, fetchFromGitHub }:
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+}:
 
 stdenvNoCC.mkDerivation {
   pname = "zsh-fzf-history-search";
@@ -12,9 +16,9 @@ stdenvNoCC.mkDerivation {
   };
 
   dontConfigure = true;
-  dontBuild     = true;
-  strictDeps    = true;
-  dontUnpack    = true;
+  dontBuild = true;
+  strictDeps = true;
+  dontUnpack = true;
 
   installPhase = ''
     install -Dm0444 $src/zsh-fzf-history-search*.zsh --target-directory=$out/share/zsh/plugins/zsh-fzf-history-search

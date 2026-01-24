@@ -1,17 +1,18 @@
-{ stdenv
-, lib
-, fetchurl
-, autoPatchelfHook
-, makeWrapper
-, gcc-unwrapped
-, cairo
-, pango
-, gtk3
-, nss
-, libdrm
-, alsa-lib
-, libgbm
-, libglvnd
+{
+  stdenv,
+  lib,
+  fetchurl,
+  autoPatchelfHook,
+  makeWrapper,
+  gcc-unwrapped,
+  cairo,
+  pango,
+  gtk3,
+  nss,
+  libdrm,
+  alsa-lib,
+  libgbm,
+  libglvnd,
 }:
 
 let
@@ -24,17 +25,20 @@ let
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-arm64.tar.xz";
-      hash = "sha256-fn5XkGj4LZKZ9RiBuoMlQeHOo8//3XOIhI3Dp58DTjk="; 
+      hash = "sha256-fn5XkGj4LZKZ9RiBuoMlQeHOo8//3XOIhI3Dp58DTjk=";
     };
   };
-  
-  src = srcs.${stdenv.hostPlatform.system}
-    or (throw "${stdenv.hostPlatform.system} not supported");
-    
+
+  src = srcs.${stdenv.hostPlatform.system} or (throw "${stdenv.hostPlatform.system} not supported");
+
   # Architecture string for directory names
-  archDir = if stdenv.hostPlatform.isx86_64 then "x64" 
-           else if stdenv.hostPlatform.isAarch64 then "arm64"
-           else throw "Unsupported architecture";
+  archDir =
+    if stdenv.hostPlatform.isx86_64 then
+      "x64"
+    else if stdenv.hostPlatform.isAarch64 then
+      "arm64"
+    else
+      throw "Unsupported architecture";
 in
 
 stdenv.mkDerivation rec {
@@ -72,11 +76,11 @@ stdenv.mkDerivation rec {
 
     cp -r deezer-desktop-${version}-${archDir} $out/opt/
     chmod -R 755 $out/opt/deezer-desktop-${version}-${archDir}
-    
+
     # Create wrapper with proper library paths
     makeWrapper $out/opt/deezer-desktop-${version}-${archDir}/deezer-desktop $out/bin/deezer \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libglvnd ]}"
-    
+
     runHook postInstall
   '';
 
@@ -84,7 +88,10 @@ stdenv.mkDerivation rec {
     description = "Deezer is a music streaming service";
     homepage = "https://github.com/aunetx/deezer-linux";
     downloadPage = "https://github.com/aunetx/deezer-linux/releases";
-    platforms = [ "x86_64-linux" "aarch64-linux" ];
+    platforms = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
     license = lib.licenses.unfree;
     maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "deezer";

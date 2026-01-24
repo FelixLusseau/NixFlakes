@@ -1,5 +1,5 @@
 {
-  pkgs ? import <nixpkgs> {},
+  pkgs ? import <nixpkgs> { },
   theme ? "plymouth-felix",
   logo ? ./nixos.png,
 }:
@@ -12,15 +12,13 @@ pkgs.stdenv.mkDerivation {
   buildInputs = [
   ];
 
-  unpackPhase = ''
-  '';
+  unpackPhase = "";
 
   configurePhase = ''
     mkdir -p $out/share/plymouth/themes/${theme}
   '';
 
-  buildPhase = ''
-  '';
+  buildPhase = "";
 
   # Currently not multi-theme enabled
   installPhase = ''

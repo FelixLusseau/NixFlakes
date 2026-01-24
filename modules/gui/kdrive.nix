@@ -1,26 +1,27 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, cmake
-, pkg-config
-, qt6
-, poco
-, cppunit
-, sentry-native
-, libzip
-, openssl
-, zlib
-, log4cplus
-, xxHash
-, sqlite
-, libsecret
-, libGL
-, mesa
-, freeglut
-, glib
-, makeWrapper
-, nss
-, xorg
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  pkg-config,
+  qt6,
+  poco,
+  cppunit,
+  sentry-native,
+  libzip,
+  openssl,
+  zlib,
+  log4cplus,
+  xxHash,
+  sqlite,
+  libsecret,
+  libGL,
+  mesa,
+  freeglut,
+  glib,
+  makeWrapper,
+  nss,
+  xorg,
 }:
 
 stdenv.mkDerivation rec {
@@ -77,63 +78,63 @@ stdenv.mkDerivation rec {
   ];
 
   postPatch = ''
-    # Create a minimal FindLog4cplus.cmake module
-    mkdir -p cmake/modules
-    cat > cmake/modules/Findlog4cplus.cmake << 'EOFCMAKE'
-if(NOT TARGET log4cplus::log4cplus)
-  add_library(log4cplus::log4cplus UNKNOWN IMPORTED)
-  set_target_properties(log4cplus::log4cplus PROPERTIES
-    IMPORTED_LOCATION "''${log4cplus_LIBRARY}"
-    INTERFACE_INCLUDE_DIRECTORIES "''${log4cplus_INCLUDE_DIR}"
-    INTERFACE_COMPILE_DEFINITIONS "UNICODE"
-  )
-endif()
-set(log4cplus_FOUND TRUE)
-set(log4cplus_VERSION "2.1.2")
-EOFCMAKE
-    
-    # Add the module path
-    substituteInPlace CMakeLists.txt \
-      --replace-fail 'project(client)' \
-                     'list(APPEND CMAKE_MODULE_PATH "''${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
-project(client)'
-    
-    # Patch library copying to use Nix paths
-    substituteInPlace CMakeLists.txt \
-      --replace-fail 'get_library_dirs("log4cplus" "log4cplus")' \
-                     'set(_log4cplus_LIB_DIRS "${log4cplus}/lib")' \
-      --replace-fail 'get_library_dirs("OpenSSL" "openssl")' \
-                     'set(_OpenSSL_LIB_DIRS "${openssl.out}/lib")' \
-      --replace-fail 'get_library_dirs("xxHash" "xxhash")' \
-                     'set(_xxHash_LIB_DIRS "${xxHash}/lib")'
-    
-    # Replace variable paths with actual values using correct filenames (use Unicode version)
-    substituteInPlace CMakeLists.txt \
-      --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so"' '"${log4cplus}/lib/liblog4cplusU.so"' \
-      --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so.9"' '"${log4cplus}/lib/liblog4cplusU-2.1.so.9"' \
-      --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so"' '"${xxHash}/lib/libxxhash.so"' \
-      --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0"' '"${xxHash}/lib/libxxhash.so.0"' \
-      --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0.8.2"' '"${xxHash}/lib/libxxhash.so.0.8.3"'
-    
-    # Patch CMakeLists to add RelWithDebInfo configuration for libzip
-    for file in src/libcommon/CMakeLists.txt src/libcommonserver/CMakeLists.txt; do
-      substituteInPlace "$file" \
-        --replace-fail 'find_package(libzip 1.10.1 REQUIRED)' \
-                       'find_package(libzip 1.10.1 REQUIRED)
-if(TARGET libzip::zip)
-  set_target_properties(libzip::zip PROPERTIES
-    IMPORTED_LOCATION_RELWITHDEBINFO "${libzip}/lib/libzip.so"
-    IMPORTED_IMPLIB_RELWITHDEBINFO "${libzip}/lib/libzip.so"
-  )
-endif()'
-    done
+        # Create a minimal FindLog4cplus.cmake module
+        mkdir -p cmake/modules
+        cat > cmake/modules/Findlog4cplus.cmake << 'EOFCMAKE'
+    if(NOT TARGET log4cplus::log4cplus)
+      add_library(log4cplus::log4cplus UNKNOWN IMPORTED)
+      set_target_properties(log4cplus::log4cplus PROPERTIES
+        IMPORTED_LOCATION "''${log4cplus_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "''${log4cplus_INCLUDE_DIR}"
+        INTERFACE_COMPILE_DEFINITIONS "UNICODE"
+      )
+    endif()
+    set(log4cplus_FOUND TRUE)
+    set(log4cplus_VERSION "2.1.2")
+    EOFCMAKE
+        
+        # Add the module path
+        substituteInPlace CMakeLists.txt \
+          --replace-fail 'project(client)' \
+                         'list(APPEND CMAKE_MODULE_PATH "''${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+    project(client)'
+        
+        # Patch library copying to use Nix paths
+        substituteInPlace CMakeLists.txt \
+          --replace-fail 'get_library_dirs("log4cplus" "log4cplus")' \
+                         'set(_log4cplus_LIB_DIRS "${log4cplus}/lib")' \
+          --replace-fail 'get_library_dirs("OpenSSL" "openssl")' \
+                         'set(_OpenSSL_LIB_DIRS "${openssl.out}/lib")' \
+          --replace-fail 'get_library_dirs("xxHash" "xxhash")' \
+                         'set(_xxHash_LIB_DIRS "${xxHash}/lib")'
+        
+        # Replace variable paths with actual values using correct filenames (use Unicode version)
+        substituteInPlace CMakeLists.txt \
+          --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so"' '"${log4cplus}/lib/liblog4cplusU.so"' \
+          --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so.9"' '"${log4cplus}/lib/liblog4cplusU-2.1.so.9"' \
+          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so"' '"${xxHash}/lib/libxxhash.so"' \
+          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0"' '"${xxHash}/lib/libxxhash.so.0"' \
+          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0.8.2"' '"${xxHash}/lib/libxxhash.so.0.8.3"'
+        
+        # Patch CMakeLists to add RelWithDebInfo configuration for libzip
+        for file in src/libcommon/CMakeLists.txt src/libcommonserver/CMakeLists.txt; do
+          substituteInPlace "$file" \
+            --replace-fail 'find_package(libzip 1.10.1 REQUIRED)' \
+                           'find_package(libzip 1.10.1 REQUIRED)
+    if(TARGET libzip::zip)
+      set_target_properties(libzip::zip PROPERTIES
+        IMPORTED_LOCATION_RELWITHDEBINFO "${libzip}/lib/libzip.so"
+        IMPORTED_IMPLIB_RELWITHDEBINFO "${libzip}/lib/libzip.so"
+      )
+    endif()'
+        done
   '';
 
   # Create an empty dependency directory for Conan
   preConfigure = ''
     export HOME=$TMPDIR
     mkdir -p build-linux/conan/dependencies
-    
+
     # Create symbolic links to Nix dependencies
     ln -sf ${openssl.out}/lib/* build-linux/conan/dependencies/ || true
     ln -sf ${zlib.out}/lib/* build-linux/conan/dependencies/ || true
@@ -153,13 +154,15 @@ endif()'
     "-Dlog4cplus_INCLUDE_DIR=${log4cplus}/include"
     "-Dlog4cplus_LIBRARY=${log4cplus}/lib/liblog4cplusU.so"
     "-DCMAKE_CXX_FLAGS=-Wno-error=uninitialized" # Suppress uninitialized errors on v3.8.1
-    "-DCMAKE_PREFIX_PATH=${lib.concatStringsSep ";" [
-      log4cplus
-      xxHash
-      poco
-      sentry-native
-      libzip
-    ]}"
+    "-DCMAKE_PREFIX_PATH=${
+      lib.concatStringsSep ";" [
+        log4cplus
+        xxHash
+        poco
+        sentry-native
+        libzip
+      ]
+    }"
   ];
 
   # Parallel build
@@ -195,7 +198,7 @@ endif()'
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
       --prefix QT_PLUGIN_PATH : "${qt6.qtbase}/${qt6.qtbase.qtPluginPrefix}" \
       --prefix QML2_IMPORT_PATH : "${qt6.qtbase}/${qt6.qtbase.qtQmlPrefix}"
-    
+
     # Wrapper for the client if different
     if [ -f $out/bin/kDrive_client ]; then
       wrapProgram $out/bin/kDrive_client \

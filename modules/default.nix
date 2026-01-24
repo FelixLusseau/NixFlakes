@@ -3,30 +3,31 @@
 with lib;
 with types;
 let
-  userModule = { name, config, ... }:
-  {
-    options = {
-      description = mkOption {
-        type = types.str;
-        default = "";
-      };
-      git = {
-        enable = mkEnableOption "Activate git";
-        userName = mkOption {
-          type = types.str;
-          default = name;
-        };
-        userEmail = mkOption {
+  userModule =
+    { name, config, ... }:
+    {
+      options = {
+        description = mkOption {
           type = types.str;
           default = "";
         };
-        userSigningKey = mkOption {
-          type = types.str;
-          default = "";
+        git = {
+          enable = mkEnableOption "Activate git";
+          userName = mkOption {
+            type = types.str;
+            default = name;
+          };
+          userEmail = mkOption {
+            type = types.str;
+            default = "";
+          };
+          userSigningKey = mkOption {
+            type = types.str;
+            default = "";
+          };
         };
       };
     };
-  };
 in
 {
   imports = [
@@ -36,8 +37,8 @@ in
   ];
 
   options.flcraft = {
-    users  = mkOption {
-      type = attrsOf ( submodule userModule );
+    users = mkOption {
+      type = attrsOf (submodule userModule);
     };
     shell = {
       zsh = {
