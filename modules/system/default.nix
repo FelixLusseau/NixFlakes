@@ -26,6 +26,7 @@ in
         jmtpfs
         sshfs
         file # To display file types
+        nixfmt
       ];
       boot.tmp = {
         cleanOnBoot = true; # Clean /tmp on boot
