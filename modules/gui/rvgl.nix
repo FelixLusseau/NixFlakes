@@ -190,7 +190,7 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Re-Volt GL - Enhanced Re-Volt game engine";
     longDescription = ''
       RVGL is an enhanced Re-Volt game engine with improved graphics,
@@ -198,9 +198,9 @@ stdenv.mkDerivation rec {
       Built from GitLab repositories with version ${version}.
     '';
     homepage = "https://rvgl.org/";
-    license = licenses.unfree;
+    license = lib.licenses.unfree;
     platforms = [ "x86_64-linux" "i686-linux" "aarch64-linux" "armv7l-linux" ];
-    maintainers = [ ];
+    maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "rvgl";
   };
 }

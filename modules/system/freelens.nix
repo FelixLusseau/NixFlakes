@@ -32,11 +32,11 @@ appimageTools.wrapType2 {
       --replace 'Exec=AppRun' 'Exec=${pname}'
   '';
 
-  meta = with lib; {
+  meta = {
     description = "The Kubernetes IDE";
     homepage = "https://github.com/freelensapp/freelens";
-    license = licenses.mit;
-    maintainers = with maintainers; [
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [
       FelixLusseau
     ];
     mainProgram = "freelens";

@@ -1,16 +1,17 @@
-{ lib
-, buildGoModule
-, fetchFromGitHub
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
 }:
 
-buildGoModule rec {
+buildGoModule (finalAttrs: {
   pname = "dcv";
   version = "v0.3.1";
 
   src = fetchFromGitHub {
     owner = "tokuhirom";
     repo = "dcv";
-    rev = "${version}";
+    tag = "${finalAttrs.version}";
     hash = "sha256-OwfGZq+ce6RNb5dhNHsQ15iMPoEp7QlaYIUVYIiVqmI=";
   };
 
@@ -32,12 +33,11 @@ buildGoModule rec {
     "-w"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "TUI (Terminal User Interface) tool for monitoring Docker containers and Docker Compose applications";
     homepage = "https://github.com/tokuhirom/dcv";
-    license = licenses.mit;
-    maintainers = [ ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "dcv";
-    platforms = platforms.linux;
   };
-}
+})

@@ -205,12 +205,12 @@ endif()'
     fi
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Infomaniak kDrive - Desktop synchronization client";
     homepage = "https://github.com/Infomaniak/desktop-kDrive";
-    license = licenses.gpl3Plus;
-    maintainers = [ ];
-    platforms = platforms.linux;
+    license = lib.licenses.gpl3Plus;
+    maintainers = with lib.maintainers; [ FelixLusseau ];
+    platforms = lib.platforms.linux;
     mainProgram = "kDrive";
   };
 }

@@ -80,13 +80,13 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Deezer is a music streaming service";
     homepage = "https://github.com/aunetx/deezer-linux";
     downloadPage = "https://github.com/aunetx/deezer-linux/releases";
     platforms = [ "x86_64-linux" "aarch64-linux" ];
-    license = licenses.unfree;
-    maintainers = with maintainers; [ FelixLusseau ];
+    license = lib.licenses.unfree;
+    maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "deezer";
   };
 }
