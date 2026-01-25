@@ -172,7 +172,6 @@ in
             };
 
             panels = [
-              # Windows-like panel at the top
               {
                 location = "top";
                 screen = "all";
