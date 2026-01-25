@@ -185,6 +185,24 @@ in
                   "org.kde.plasma.marginsseparator"
                   "org.kde.plasma.systemtray"
                   "org.kde.plasma.digitalclock"
+                  {
+                    name = "org.kde.plasma.weather";
+                    config = {
+                      WeatherStation = {
+                        updateInterval = 30; # (Mins)
+                        source = config.flcraft.gui.weatherSource;
+                      };
+                      Appearance = {
+                        showTemperatureInCompactMode = true;
+                        showTemperatureInBadge = true;
+                        showPressureInTooltip = true;
+                      };
+                      Units = {
+                        temperatureUnit = 6001;
+                        speedUnit = 9001;
+                      };
+                    };
+                  }
                   "org.kde.plasma.showdesktop"
                 ];
               }

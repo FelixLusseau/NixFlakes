@@ -69,6 +69,10 @@ in
     };
     gui = {
       enable = mkEnableOption "Activate GUI";
+      weatherSource = mkOption {
+        type = types.str;
+        default = "";
+      };
       pkgs = {
         messages.enable = mkEnableOption "Activate messages apps";
         programming.enable = mkEnableOption "Activate programming";
