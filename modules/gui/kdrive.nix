@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "Infomaniak";
     repo = "desktop-kDrive";
-    rev = version;
+    tag = version;
     sha256 = "sha256-7PVf04B8wqBRMkNl5UJb9Ht8LBNviqzrdlUjccLyN/Y=";
     fetchSubmodules = true;
   };
