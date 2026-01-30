@@ -27,10 +27,11 @@ in
         sshfs
         file # To display file types
         nixfmt
+        tmux
       ];
       boot.tmp = {
         cleanOnBoot = true; # Clean /tmp on boot
-        #          useTmpfs = true; # Use tmpfs for /tmp
+        # useTmpfs = true; # Use tmpfs for /tmp
       };
       boot.kernel.sysctl = {
         "vm.swappiness" = 10;
