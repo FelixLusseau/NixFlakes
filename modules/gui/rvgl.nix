@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
   platform = fetchFromGitLab {
     owner = "re-volt";
     repo = "rvgl-platform";
-    tag = version;
+    rev = version;
     sha256 = "sha256-OlCNBUbyu/hA75qk27xSldjKXsPyaGLXxthtogdmfkQ=";
   };
 
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
   assets = fetchFromGitLab {
     owner = "re-volt";
     repo = "rvgl-assets";
-    tag = version;
+    rev = version;
     sha256 = "sha256-9CARqvRS2+r9T+s3uWE7PZLiPluypH8eOOUEGr9S8UQ=";
   };
 
@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
   gameFiles = fetchFromGitLab {
     owner = "re-volt";
     repo = "game_files";
-    tag = "e2fa1e900425dd2d3d4d5328228a45b489afdf71";
+    rev = "e2fa1e900425dd2d3d4d5328228a45b489afdf71";
     sha256 = "sha256-pX/bxesie6+Pw6A/T8Mn38kMIV89oyxFcKPgBxfw0zg=";
   };
 
@@ -53,7 +53,7 @@ stdenv.mkDerivation rec {
   ost = fetchFromGitLab {
     owner = "re-volt";
     repo = "ost";
-    tag = "5ddd726534730c4f0afcd676a32852b20362de8a";
+    rev = "5ddd726534730c4f0afcd676a32852b20362de8a";
     sha256 = "sha256-js3HWU8a4Xc44YW2jROwZgDrCnDHp7tvlXb3TghmjiM=";
   };
 
