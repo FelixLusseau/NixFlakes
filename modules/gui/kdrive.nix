@@ -24,14 +24,14 @@
   xorg,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "kdrive";
   version = "3.8.1";
 
   src = fetchFromGitHub {
     owner = "Infomaniak";
     repo = "desktop-kDrive";
-    tag = version;
+    tag = "${finalAttrs.version}";
     sha256 = "sha256-7PVf04B8wqBRMkNl5UJb9Ht8LBNviqzrdlUjccLyN/Y=";
     fetchSubmodules = true;
   };
@@ -147,7 +147,7 @@ stdenv.mkDerivation rec {
     "-DCMAKE_INSTALL_PREFIX=${placeholder "out"}"
     "-DBIN_INSTALL_DIR=${placeholder "out"}/bin"
     "-DBUILD_UNIT_TESTS=OFF"
-    "-DKDRIVE_THEME_DIR=${src}/infomaniak"
+    "-DKDRIVE_THEME_DIR=${finalAttrs.src}/infomaniak"
     "-DCONAN_DEP_DIR=build-linux/conan/dependencies"
     "-DQT_FEATURE_neon=OFF"
     "-DKDRIVE_DEBUG=0"
@@ -180,7 +180,7 @@ stdenv.mkDerivation rec {
   # Custom installation
   postInstall = ''
     # Copy the sync exclusion file
-    cp ${src}/sync-exclude-linux.lst $out/bin/sync-exclude.lst
+    cp ${finalAttrs.src}/sync-exclude-linux.lst $out/bin/sync-exclude.lst
 
     # Create necessary directories
     mkdir -p $out/share/applications
@@ -195,14 +195,14 @@ stdenv.mkDerivation rec {
   # Wrapper for Qt paths and other dependencies
   postFixup = ''
     wrapProgram $out/bin/kDrive \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath finalAttrs.buildInputs}" \
       --prefix QT_PLUGIN_PATH : "${qt6.qtbase}/${qt6.qtbase.qtPluginPrefix}" \
       --prefix QML2_IMPORT_PATH : "${qt6.qtbase}/${qt6.qtbase.qtQmlPrefix}"
 
     # Wrapper for the client if different
     if [ -f $out/bin/kDrive_client ]; then
       wrapProgram $out/bin/kDrive_client \
-        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
+        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath finalAttrs.buildInputs}" \
         --prefix QT_PLUGIN_PATH : "${qt6.qtbase}/${qt6.qtbase.qtPluginPrefix}" \
         --prefix QML2_IMPORT_PATH : "${qt6.qtbase}/${qt6.qtbase.qtQmlPrefix}"
     fi
@@ -216,4 +216,4 @@ stdenv.mkDerivation rec {
     platforms = lib.platforms.linux;
     mainProgram = "kDrive";
   };
-}
+})

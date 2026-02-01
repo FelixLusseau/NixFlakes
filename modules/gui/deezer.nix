@@ -41,7 +41,7 @@ let
       throw "Unsupported architecture";
 in
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "deezer";
   inherit version src;
 
@@ -96,4 +96,4 @@ stdenv.mkDerivation rec {
     maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "deezer";
   };
-}
+})

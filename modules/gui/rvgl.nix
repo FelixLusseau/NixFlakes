@@ -21,7 +21,7 @@
   fluidsynth,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "rvgl";
   version = "23.1030a1";
 
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
   platform = fetchFromGitLab {
     owner = "re-volt";
     repo = "rvgl-platform";
-    rev = version;
+    rev = "${finalAttrs.version}";
     sha256 = "sha256-OlCNBUbyu/hA75qk27xSldjKXsPyaGLXxthtogdmfkQ=";
   };
 
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
   assets = fetchFromGitLab {
     owner = "re-volt";
     repo = "rvgl-assets";
-    rev = version;
+    rev = "${finalAttrs.version}";
     sha256 = "sha256-9CARqvRS2+r9T+s3uWE7PZLiPluypH8eOOUEGr9S8UQ=";
   };
 
@@ -92,40 +92,40 @@ stdenv.mkDerivation rec {
 
     # Copier d'abord les fichiers de jeu de base (game_files)
     echo "Installing game files..."
-    cp -r ${gameFiles}/* $out/share/rvgl/
+    cp -r ${finalAttrs.gameFiles}/* $out/share/rvgl/
     chmod -R +w $out/share/rvgl
 
     # Copier les binaires selon l'architecture (peut patcher game_files)
     ${
       if stdenv.hostPlatform.system == "x86_64-linux" then
         ''
-          install -Dm755 ${platform}/linux/rvgl.64 $out/share/rvgl/rvgl
+          install -Dm755 ${finalAttrs.platform}/linux/rvgl.64 $out/share/rvgl/rvgl
           # Copier les bibliothèques spécifiques
           mkdir -p $out/share/rvgl/lib
-          cp -r ${platform}/linux/lib/lib64/* $out/share/rvgl/lib/
+          cp -r ${finalAttrs.platform}/linux/lib/lib64/* $out/share/rvgl/lib/
           # Copier les autres fichiers du platform qui peuvent patcher
-          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+          cp -r ${finalAttrs.platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
         ''
       else if stdenv.hostPlatform.system == "i686-linux" then
         ''
-          install -Dm755 ${platform}/linux/rvgl.32 $out/share/rvgl/rvgl
+          install -Dm755 ${finalAttrs.platform}/linux/rvgl.32 $out/share/rvgl/rvgl
           mkdir -p $out/share/rvgl/lib
-          cp -r ${platform}/linux/lib/lib32/* $out/share/rvgl/lib/
-          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+          cp -r ${finalAttrs.platform}/linux/lib/lib32/* $out/share/rvgl/lib/
+          cp -r ${finalAttrs.platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
         ''
       else if stdenv.hostPlatform.system == "aarch64-linux" then
         ''
-          install -Dm755 ${platform}/linux/rvgl.arm64 $out/share/rvgl/rvgl
+          install -Dm755 ${finalAttrs.platform}/linux/rvgl.arm64 $out/share/rvgl/rvgl
           mkdir -p $out/share/rvgl/lib
-          cp -r ${platform}/linux/lib/libarm64/* $out/share/rvgl/lib/
-          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+          cp -r ${finalAttrs.platform}/linux/lib/libarm64/* $out/share/rvgl/lib/
+          cp -r ${finalAttrs.platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
         ''
       else if stdenv.hostPlatform.system == "armv7l-linux" then
         ''
-          install -Dm755 ${platform}/linux/rvgl.armhf $out/share/rvgl/rvgl
+          install -Dm755 ${finalAttrs.platform}/linux/rvgl.armhf $out/share/rvgl/rvgl
           mkdir -p $out/share/rvgl/lib
-          cp -r ${platform}/linux/lib/libarmhf/* $out/share/rvgl/lib/
-          cp -r ${platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
+          cp -r ${finalAttrs.platform}/linux/lib/libarmhf/* $out/share/rvgl/lib/
+          cp -r ${finalAttrs.platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
         ''
       else
         throw "Unsupported platform: ${stdenv.hostPlatform.system}"
@@ -134,19 +134,19 @@ stdenv.mkDerivation rec {
 
     # Copier les assets (peuvent patcher game_files et platform)
     echo "Installing assets..."
-    cp -r ${assets}/* $out/share/rvgl/
+    cp -r ${finalAttrs.assets}/* $out/share/rvgl/
     chmod -R +w $out/share/rvgl
 
     # Copier la bande sonore originale
     echo "Installing OST..."
-    cp -r ${ost}/* $out/share/rvgl/
+    cp -r ${finalAttrs.ost}/* $out/share/rvgl/
 
     # Copier les icônes
     mkdir -p $out/share/icons/hicolor
     for size in 16x16 24x24 32x32 48x48 256x256; do
-      if [ -d ${assets}/icons/$size/apps ]; then
+      if [ -d ${finalAttrs.assets}/icons/$size/apps ]; then
         mkdir -p $out/share/icons/hicolor/$size/apps
-        cp ${assets}/icons/$size/apps/*.png $out/share/icons/hicolor/$size/apps/ 2>/dev/null || true
+        cp ${finalAttrs.assets}/icons/$size/apps/*.png $out/share/icons/hicolor/$size/apps/ 2>/dev/null || true
       fi
     done
 
@@ -205,7 +205,7 @@ stdenv.mkDerivation rec {
     longDescription = ''
       RVGL is an enhanced Re-Volt game engine with improved graphics,
       online multiplayer support, and modern platform compatibility.
-      Built from GitLab repositories with version ${version}.
+      Built from GitLab repositories with version ${finalAttrs.version}.
     '';
     homepage = "https://rvgl.org/";
     license = lib.licenses.unfree;
@@ -218,4 +218,4 @@ stdenv.mkDerivation rec {
     maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "rvgl";
   };
-}
+})

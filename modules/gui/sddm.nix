@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "sddm-vivid-theme-dialog";
   version = "1.0";
   dontBuild = true;
@@ -14,4 +14,4 @@ stdenv.mkDerivation rec {
     rev = "b16f14ce43066abfcbe8e55dea9718d5070e0f66";
     sha256 = "070zb4ybki7509ifn6bpdp805yry9m2yi3mf99g8igs8cblyd6la";
   };
-}
+})
