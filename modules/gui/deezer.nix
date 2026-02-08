@@ -85,13 +85,10 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   meta = {
-    description = "Deezer is a music streaming service";
+    description = "Unofficial Linux port of the music streaming application";
     homepage = "https://github.com/aunetx/deezer-linux";
     downloadPage = "https://github.com/aunetx/deezer-linux/releases";
-    platforms = [
-      "x86_64-linux"
-      "aarch64-linux"
-    ];
+    platforms = lib.platforms.linux;
     license = lib.licenses.unfree;
     maintainers = with lib.maintainers; [ FelixLusseau ];
     mainProgram = "deezer";
