@@ -2,17 +2,9 @@
   stdenv,
   lib,
   fetchurl,
-  autoPatchelfHook,
   makeWrapper,
-  gcc-unwrapped,
-  cairo,
-  pango,
-  gtk3,
-  nss,
-  libdrm,
-  alsa-lib,
-  libgbm,
-  libglvnd,
+  electron,
+  nodePackages,
 }:
 
 let
@@ -46,20 +38,8 @@ stdenv.mkDerivation (finalAttrs: {
   inherit version src;
 
   nativeBuildInputs = [
-    autoPatchelfHook
     makeWrapper
-  ];
-
-  buildInputs = [
-    gcc-unwrapped
-    cairo
-    pango
-    gtk3
-    nss
-    libdrm
-    alsa-lib
-    libgbm
-    libglvnd
+    nodePackages.asar
   ];
 
   sourceRoot = ".";
@@ -67,19 +47,27 @@ stdenv.mkDerivation (finalAttrs: {
   dontBuild = true;
   installPhase = ''
     runHook preInstall
-    install -d $out/bin $out/opt $out/share $out/share/applications $out/share/icons/hicolor/scalable/apps
+    install -d $out/bin $out/share/deezer-desktop/resources $out/share/applications $out/share/icons/hicolor/scalable/apps
 
-    sed -i 's/run\.sh/deezer/g' deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop
+    sed -i 's/run\.sh/deezer-desktop/g' deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop
     sed -i 's/dev.aunetx.deezer/deezer/g' deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop
     cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop $out/share/applications/deezer.desktop
     cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.svg $out/share/icons/hicolor/scalable/apps/deezer.svg
 
-    cp -r deezer-desktop-${version}-${archDir} $out/opt/
-    chmod -R 755 $out/opt/deezer-desktop-${version}-${archDir}
+    cp deezer-desktop-${version}-${archDir}/resources/app.asar* $out/share/deezer-desktop/resources/
+    cp -r deezer-desktop-${version}-${archDir}/resources/linux $out/share/deezer-desktop/resources/
 
-    # Create wrapper with proper library paths
-    makeWrapper $out/opt/deezer-desktop-${version}-${archDir}/deezer-desktop $out/bin/deezer \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libglvnd ]}"
+    # process.resourcesPath points to Electron's own resources dir when using system Electron.
+    # Replace it with the actual app resources path directly in the bundle.
+    asar extract "$out/share/deezer-desktop/resources/app.asar" "$TMPDIR/asar-unpacked"
+    sed -i "s|process\.resourcesPath|\"$out/share/deezer-desktop/resources\"|g" \
+      "$TMPDIR/asar-unpacked/build/main.js"
+    asar pack "$TMPDIR/asar-unpacked" "$out/share/deezer-desktop/resources/app.asar"
+
+    makeWrapper "${lib.getExe electron}" "$out/bin/deezer-desktop" \
+      --inherit-argv0 \
+      --add-flags "$out/share/deezer-desktop/resources/app.asar" \
+      --set-default ELECTRON_FORCE_IS_PACKAGED 1
 
     runHook postInstall
   '';
@@ -91,6 +79,6 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = lib.platforms.linux;
     license = lib.licenses.unfree;
     maintainers = with lib.maintainers; [ FelixLusseau ];
-    mainProgram = "deezer";
+    mainProgram = "deezer-desktop";
   };
 })
