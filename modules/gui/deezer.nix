@@ -49,20 +49,21 @@ stdenv.mkDerivation (finalAttrs: {
     runHook preInstall
     install -d $out/bin $out/share/deezer-desktop/resources $out/share/applications $out/share/icons/hicolor/scalable/apps
 
-    sed -i 's/run\.sh/deezer-desktop/g' deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop
-    sed -i 's/dev.aunetx.deezer/deezer/g' deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop
+    substituteInPlace deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop \
+      --replace-fail "run.sh" "deezer-desktop" \
+      --replace-fail "dev.aunetx.deezer" "deezer"
     cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop $out/share/applications/deezer.desktop
     cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.svg $out/share/icons/hicolor/scalable/apps/deezer.svg
 
     cp deezer-desktop-${version}-${archDir}/resources/app.asar* $out/share/deezer-desktop/resources/
-    cp -r deezer-desktop-${version}-${archDir}/resources/linux $out/share/deezer-desktop/resources/
+    # cp -r deezer-desktop-${version}-${archDir}/resources/linux $out/share/deezer-desktop/resources/
 
-    # process.resourcesPath points to Electron's own resources dir when using system Electron.
-    # Replace it with the actual app resources path directly in the bundle.
-    asar extract "$out/share/deezer-desktop/resources/app.asar" "$TMPDIR/asar-unpacked"
-    sed -i "s|process\.resourcesPath|\"$out/share/deezer-desktop/resources\"|g" \
-      "$TMPDIR/asar-unpacked/build/main.js"
-    asar pack "$TMPDIR/asar-unpacked" "$out/share/deezer-desktop/resources/app.asar"
+    # # process.resourcesPath points to Electron's own resources dir when using system Electron.
+    # # Replace it with the actual app resources path directly in the bundle.
+    # asar extract "$out/share/deezer-desktop/resources/app.asar" "$TMPDIR/asar-unpacked"
+    # substituteInPlace "$TMPDIR/asar-unpacked/build/main.js" \
+    #   --replace-fail "process.resourcesPath" "\"$out/share/deezer-desktop/resources\""
+    # asar pack "$TMPDIR/asar-unpacked" "$out/share/deezer-desktop/resources/app.asar"
 
     makeWrapper "${lib.getExe electron}" "$out/bin/deezer-desktop" \
       --inherit-argv0 \
