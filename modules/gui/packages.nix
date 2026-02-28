@@ -43,8 +43,6 @@ with types;
         "qtwebengine-5.15.19"
       ];
 
-      programs.firefox.enable = true;
-
       programs.kdeconnect.enable = true;
 
       # Enable the X11 windowing system.
@@ -69,7 +67,6 @@ with types;
     })
     (mkIf cfg.pkgs.programming.enable {
       environment.systemPackages = with pkgs; [
-        vscode
         bruno
         python3
         nodejs_24

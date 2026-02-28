@@ -8,6 +8,7 @@ with lib;
 with types;
 let
   mapUsers = f: attrsets.mapAttrs f config.flcraft.users;
+  guiCfg = config.flcraft.gui;
 in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -221,13 +222,13 @@ in
                         "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
                         "file://${pkgs.kdePackages.systemsettings}/share/applications/systemsettings.desktop"
                         # "file://${pkgs.spotify}/share/applications/spotify.desktop"
-                        "applications:deezer.desktop"
+                        "applications:deezer-desktop.desktop"
                         # "applications:org.kde.plasma-systemmonitor.desktop"
                         "applications:net.nokyan.Resources.desktop"
                         "file://${pkgs.discord}/share/applications/discord.desktop"
                         "file://${pkgs.brave}/share/applications/brave-browser.desktop"
-                        # "applications:code.desktop"
-                        "applications:code-url-handler.desktop"
+                        "applications:code.desktop"
+                        # "applications:code-url-handler.desktop"
                         "file://${pkgs.keepassxc}/share/applications/org.keepassxc.KeePassXC.desktop"
                         "applications:signal.desktop"
                         "file://${pkgs.element-desktop}/share/applications/element-desktop.desktop"
@@ -413,7 +414,12 @@ in
               };
             }
           );
-
+          vscode = (
+            mkIf guiCfg.pkgs.programming.enable {
+              enable = true;
+              profiles.default.enableUpdateCheck = false;
+            }
+          );
         };
         dconf.settings = (
           mkIf config.flcraft.system.virt.vm.enable {
