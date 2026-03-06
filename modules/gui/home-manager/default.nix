@@ -417,7 +417,7 @@ in
           vscode = (
             mkIf guiCfg.pkgs.programming.enable {
               enable = true;
-              profiles.default.enableUpdateCheck = false;
+              # profiles.default.enableUpdateCheck = false;
             }
           );
         };

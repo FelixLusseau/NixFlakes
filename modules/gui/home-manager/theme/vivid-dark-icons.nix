@@ -2,8 +2,8 @@
 
 stdenv.mkDerivation rec {
   pname = "Vivid-Dark-Icons";
-  version = "1.0.1";
-  src = ./Vivid-Dark-Icons.tar.gz;
+  version = "1.0.2";
+  src = ./Vivid-Dark-Icons.tar.xz;
   dontBuild = true;
 
   # Remove missing target links
@@ -22,6 +22,6 @@ stdenv.mkDerivation rec {
   '';
   installPhase = ''
     mkdir -p $out/share/icons/Vivid-Dark-Icons
-    tar -xzf $src -C $out/share/icons/
+    tar -xJf $src -C $out/share/icons/
   '';
 }
