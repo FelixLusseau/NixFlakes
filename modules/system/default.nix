@@ -29,6 +29,9 @@ in
         nixfmt
         tmux
       ];
+      networking.networkmanager.plugins = with pkgs; [
+        networkmanager-openvpn
+      ];
       boot.tmp = {
         cleanOnBoot = true; # Clean /tmp on boot
         # useTmpfs = true; # Use tmpfs for /tmp
@@ -94,6 +97,9 @@ in
       users.groups.libvirtd.members = userNames;
       virtualisation.libvirtd.enable = true;
       virtualisation.spiceUSBRedirection.enable = true;
+      environment.systemPackages = with pkgs; [
+        virtiofsd
+      ];
     })
     (mkIf cfg.virt.lxd.enable {
       # Enable LXD.
