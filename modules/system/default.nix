@@ -224,7 +224,7 @@ in
     })
     (mkIf (cfg.kube.enable && config.flcraft.gui.enable) {
       environment.systemPackages = with pkgs; [
-        lens
+        # lens
         (callPackage ./freelens.nix { })
       ];
     })
