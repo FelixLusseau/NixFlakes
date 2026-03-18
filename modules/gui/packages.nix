@@ -69,7 +69,7 @@ with types;
       environment.systemPackages = with pkgs; [
         bruno
         python3
-        nodejs_24
+        nodejs_25
       ];
     })
     (mkIf cfg.pkgs.art.enable {
