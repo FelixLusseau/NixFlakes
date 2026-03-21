@@ -15,6 +15,7 @@ buildGoModule (finalAttrs: {
     hash = "sha256-OwfGZq+ce6RNb5dhNHsQ15iMPoEp7QlaYIUVYIiVqmI=";
   };
 
+  # Use vendorHash = lib.fakeHash; to obtain
   vendorHash = "sha256-xwTPb+eGsisYB9Jy7rG9tQlIbnKWTbAdXqJBsjB0YK0=";
 
   # Don't use the vendored dependencies as they are out of sync with go.mod

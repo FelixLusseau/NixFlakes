@@ -44,6 +44,8 @@ pkgs.stdenv.mkDerivation {
           --replace 'net_interface = "wlan0"' 'net_interface = "${wifi-int-name}"' \
           --replace "use_public_ip = false" "use_public_ip = true"
   '';
+  # substituteInPlace $out/share/conky/themes/${theme}/conkyrc \
+  #   --replace "own_window_type = 'normal'," "own_window_type = 'desktop',"
   # substituteInPlace $out/share/conky/themes/${theme}/settings.lua \
   #   --replace "startup_delay = 5" "startup_delay = 15"
 }
