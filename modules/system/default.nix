@@ -16,6 +16,7 @@ in
 
   config = mkMerge [
     ({
+      nix.settings.trusted-users = userNames;
       environment.systemPackages = with pkgs; [
         wireguard-tools
         pciutils
