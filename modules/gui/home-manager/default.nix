@@ -96,19 +96,6 @@ in
           X-KDE-autostart-enabled=true
         '';
 
-        xdg.configFile."autostart/seafile.desktop".text = ''
-          [Desktop Entry]
-          Type=Application
-          Exec=seafile-applet
-          Hidden=false
-          NoDisplay=false
-          X-GNOME-Autostart-enabled=true
-          Name[fr_FR]=Seafile
-          Name=Seafile
-          Comment[fr_FR]=Seafile desktop sync client
-          Comment=Seafile desktop sync client
-        '';
-
         xdg.configFile."autostart/kdrive.desktop".text = ''
           [Desktop Entry]
           Type=Application
@@ -394,6 +381,9 @@ in
           git = (
             mkIf cfg.git.enable {
               enable = true;
+              signing = {
+                format = null;
+              };
               settings = {
                 user = {
                   name = cfg.git.userName;
