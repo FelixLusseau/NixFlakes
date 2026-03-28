@@ -19,7 +19,8 @@ with types;
         kdePackages.kate
         kdePackages.kalk
         spotify
-        (callPackage ./deezer.nix { })
+        # (callPackage ./deezer.nix { })
+        deezer-desktop
         nextcloud-client
         (callPackage ./kdrive.nix { })
         conky
@@ -88,7 +89,11 @@ with types;
         # minecraft # Broken 25/01/2025
         prismlauncher
         (callPackage ./rvgl.nix { })
+        heroic
       ];
+      programs.steam = {
+        enable = true;
+      };
     })
   ];
 }

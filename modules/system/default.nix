@@ -90,7 +90,8 @@ in
       users.extraGroups.docker.members = userNames;
       environment.systemPackages = with pkgs; [
         dive
-        (callPackage ./dcv.nix { })
+        # (callPackage ./dcv.nix { })
+        dcv
       ];
     })
     (mkIf cfg.virt.vm.enable {
