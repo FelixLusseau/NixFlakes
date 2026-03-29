@@ -103,103 +103,64 @@ in
         virtiofsd
       ];
     })
-    (mkIf cfg.virt.lxd.enable {
-      # Enable LXD.
-      virtualisation.lxd = {
+    (mkIf cfg.virt.lxc.enable {
+      virtualisation.incus = {
         enable = true;
-
-        # This turns on a few sysctl settings that the LXD documentation recommends
-        # for running in production.
-        recommendedSysctlSettings = true;
-      };
-
-      # This enables lxcfs, which is a FUSE fs that sets up some things so that
-      # things like /proc and cgroups work better in lxd containers.
-      # See https://linuxcontainers.org/lxcfs/introduction/ for more info.
-      #
-      # Also note that the lxcfs NixOS option says that in order to make use of
-      # lxcfs in the container, you need to include the following NixOS setting
-      # in the NixOS container guest configuration:
-      #
-      # virtualisation.lxc.defaultConfig = "lxc.include = ''${pkgs.lxcfs}/share/lxc/config/common.conf.d/00-lxcfs.conf";
-      virtualisation.lxc.lxcfs.enable = true;
-
-      # This sets up a bridge called "mylxdbr0".  This is used to provide NAT'd
-      # internet to the guest.  This bridge is manipulated directly by lxd, so we
-      # don't need to specify any bridged interfaces here.
-      networking.bridges = {
-        mylxdbr0.interfaces = [ ];
-      };
-
-      # Add an IP address to the bridge interface.
-      networking.localCommands = ''
-        ip address add 192.168.92.1/24 dev mylxdbr0
-      '';
-
-      # Firewall commands allowing traffic to go in and out of the bridge interface
-      # (and to the guest LXD instance).  Also sets up the actual NAT masquerade rule.
-      networking.firewall.extraCommands = ''
-        iptables -A INPUT -i mylxdbr0 -m comment --comment "my rule for LXD network mylxdbr0" -j ACCEPT
-
-        # These three technically aren't needed, since by default the FORWARD and
-        # OUTPUT firewalls accept everything everything, but lets keep them in just
-        # in case.
-        iptables -A FORWARD -o mylxdbr0 -m comment --comment "my rule for LXD network mylxdbr0" -j ACCEPT
-        iptables -A FORWARD -i mylxdbr0 -m comment --comment "my rule for LXD network mylxdbr0" -j ACCEPT
-        iptables -A OUTPUT -o mylxdbr0 -m comment --comment "my rule for LXD network mylxdbr0" -j ACCEPT
-
-        iptables -t nat -A POSTROUTING -s 192.168.92.0/24 ! -d 192.168.92.0/24 -m comment --comment "my rule for LXD network mylxdbr0" -j MASQUERADE
-      '';
-
-      # ip forwarding is needed for NAT'ing to work.
-      boot.kernel.sysctl = {
-        "net.ipv4.conf.all.forwarding" = true;
-        "net.ipv4.conf.default.forwarding" = true;
-      };
-
-      # kernel module for forwarding to work
-      boot.kernelModules = [ "nf_nat_ftp" ];
-
-      users.extraGroups.lxd.members = userNames;
-
-      environment.etc."lxd/preseed.yaml".text = ''
-        config:
-          images.auto_update_interval: "0"
-        # networks: {}
-        storage_pools:
-        - config:
-            source: /var/lib/lxd/storage-pools/default
-          description: ""
-          name: default
-          driver: dir
-        profiles:
-        - config: {}
-          description: Default LXD profile
-          devices:
-            root:
-              path: /
-              pool: default
-              type: disk
-          name: default
-        projects:
-        - config:
-            features.images: "true"
-            features.networks: "true"
-            features.profiles: "true"
-            features.storage.volumes: "true"
-          description: Default LXD project
-          name: default
-      '';
-
-      systemd.services.lxd-preseed = {
-        description = "LXD initialization with preseed YAML";
-        wantedBy = [ "multi-user.target" ];
-        requires = [ "lxd.socket" ];
-        serviceConfig = {
-          ExecStart = "${pkgs.lxd}/bin/lxd init --preseed < /etc/lxd/preseed.yaml";
-          Type = "oneshot";
+        preseed = {
+          networks = [
+            {
+              config = {
+                "ipv4.address" = "10.0.100.1/24";
+                "ipv4.nat" = "true";
+                "ipv6.address" = "fd00:100::1/64";
+                "ipv6.nat" = "true";
+              };
+              name = "incusbr0";
+              type = "bridge";
+            }
+          ];
+          profiles = [
+            {
+              devices = {
+                eth0 = {
+                  name = "eth0";
+                  network = "incusbr0";
+                  type = "nic";
+                };
+                root = {
+                  path = "/";
+                  pool = "default";
+                  size = "35GiB";
+                  type = "disk";
+                };
+              };
+              name = "default";
+            }
+          ];
+          storage_pools = [
+            {
+              config = {
+                source = "/var/lib/incus/storage-pools/default";
+              };
+              driver = "dir";
+              name = "default";
+            }
+          ];
         };
       };
+      networking.nftables.enable = true;
+      # networking.firewall.interfaces.incusbr0.allowedTCPPorts = [
+      #   53
+      #   67
+      # ];
+      # networking.firewall.interfaces.incusbr0.allowedUDPPorts = [
+      #   53
+      #   67
+      # ];
+      networking.firewall.trustedInterfaces = [ "incusbr0" ];
+
+      users.extraGroups.incus-admin.members = userNames;
+
     })
     (mkIf cfg.kube.enable {
       environment.systemPackages = with pkgs; [
