@@ -19,6 +19,21 @@ with types;
   ];
 
   config = mkMerge [
+    {
+      assertions = [
+        {
+          assertion =
+            cfg.enable
+            || !(
+              cfg.pkgs.messages.enable
+              || cfg.pkgs.programming.enable
+              || cfg.pkgs.art.enable
+              || cfg.pkgs.gaming.enable
+            );
+          message = "flcraft.gui.enable is false but one or more flcraft.gui.pkgs.*.enable flags are true.";
+        }
+      ];
+    }
     (mkIf cfg.enable {
       # Configure keymap in X11
       services.xserver.xkb = {

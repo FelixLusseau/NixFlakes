@@ -58,7 +58,7 @@ with types;
       # Custom SDDM theme
       services.displayManager.sddm.theme = "sddm-vivid-theme-dialog";
     })
-    (mkIf cfg.pkgs.messages.enable {
+    (mkIf (cfg.enable && cfg.pkgs.messages.enable) {
       environment.systemPackages = with pkgs; [
         thunderbird
         element-desktop
@@ -66,14 +66,14 @@ with types;
         discord
       ];
     })
-    (mkIf cfg.pkgs.programming.enable {
+    (mkIf (cfg.enable && cfg.pkgs.programming.enable) {
       environment.systemPackages = with pkgs; [
         bruno
         python3
         nodejs_25
       ];
     })
-    (mkIf cfg.pkgs.art.enable {
+    (mkIf (cfg.enable && cfg.pkgs.art.enable) {
       environment.systemPackages = with pkgs; [
         krita
         gimp3
@@ -83,7 +83,7 @@ with types;
         shotwell
       ];
     })
-    (mkIf cfg.pkgs.gaming.enable {
+    (mkIf (cfg.enable && cfg.pkgs.gaming.enable) {
       hardware.xone.enable = true; # Enable Xbox One controller support
       environment.systemPackages = with pkgs; [
         # minecraft # Broken 25/01/2025

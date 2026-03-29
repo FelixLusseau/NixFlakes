@@ -66,320 +66,317 @@ in
           username = name;
         };
 
-        home.packages = with pkgs; [
-          nixpkgs-fmt # nix formatting tool
-          nix-prefetch-git
+        home.packages =
+          with pkgs;
+          [
+            nixpkgs-fmt # nix formatting tool
+            nix-prefetch-git
 
-          wl-clipboard
-          wf-recorder
+            # archives
+            zip
+            unzip
 
-          # archives
-          zip
-          unzip
-
-          brightnessctl # control screen brightness
-
-          xclip
-
-          # libreoffice
-          dnsutils
-        ];
+            # libreoffice
+            dnsutils
+          ]
+          ++ lib.optionals guiCfg.enable [
+            wl-clipboard
+            wf-recorder
+            brightnessctl # control screen brightness
+            xclip
+          ];
 
         # xsession.numlock.enable = true; # -> I'm on Wayland...
 
-        xdg.configFile."autostart/conky.desktop".text = ''
-          [Desktop Entry]
-          Type=Application
-          Name=Conky
-          Exec=bash -c "cd /run/current-system/sw/share/conky/themes/auzia-conky && conky -c conkyrc"
-          X-KDE-autostart-after=panel
-          X-KDE-autostart-enabled=true
-        '';
+        xdg.configFile = mkIf guiCfg.enable {
+          "autostart/conky.desktop".text = ''
+            [Desktop Entry]
+            Type=Application
+            Name=Conky
+            Exec=bash -c "cd /run/current-system/sw/share/conky/themes/auzia-conky && conky -c conkyrc"
+            X-KDE-autostart-after=panel
+            X-KDE-autostart-enabled=true
+          '';
 
-        xdg.configFile."autostart/kdrive.desktop".text = ''
-          [Desktop Entry]
-          Type=Application
-          Exec=kDrive
-          Hidden=false
-          NoDisplay=false
-          X-GNOME-Autostart-enabled=true
-          Name=kDrive
-          Comment=Infomaniak kDrive client de synchronisation
-        '';
+          "autostart/kdrive.desktop".text = ''
+            [Desktop Entry]
+            Type=Application
+            Exec=kDrive
+            Hidden=false
+            NoDisplay=false
+            X-GNOME-Autostart-enabled=true
+            Name=kDrive
+            Comment=Infomaniak kDrive client de synchronisation
+          '';
+        };
 
-        programs = {
-          # Let Home Manager install and manage itself.
-          home-manager.enable = true;
+        programs = mkMerge [
+          {
+            # Let Home Manager install and manage itself.
+            home-manager.enable = true;
 
-          neovim = {
-            enable = true;
-            extraConfig = ''
-              set number relativenumber
-            '';
-          };
-
-          plasma = {
-            enable = true;
-            overrideConfig = true;
-            resetFilesExclude = [
-              "kglobalshortcutsrc"
-            ];
-
-            workspace = {
-              theme = "Vivid-Dark-Plasma";
-              colorScheme = "VividCyanDarkColorscheme";
-              # lookAndFeel = "Vivid-Dark-Global-6"; #"org.kde.breezedark.desktop"
-              iconTheme = "Vivid-Dark-Icons";
-              windowDecorations = {
-                theme = "__aurorae__svg__Gently-Blur-Dark-Aurorae-6";
-                library = "org.kde.kwin.aurorae";
-              };
-              splashScreen = {
-                theme = "Vivid-Splash-6";
-              };
-              wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
+            neovim = {
+              enable = true;
+              extraConfig = ''
+                set number relativenumber
+              '';
             };
 
-            input = {
-              touchpads = [
-                {
-                  # Swift
-                  name = "SYNA7DAB:01 06CB:CD40 Touchpad";
-                  naturalScroll = true;
-                  vendorId = "06cb";
-                  productId = "cd40";
-                }
-                {
-                  # MSI
-                  name = "SynPS/2 Synaptics TouchPad";
-                  naturalScroll = true;
-                  vendorId = "0002";
-                  productId = "0007";
-                }
+            difftastic = {
+              enable = true;
+              git.enable = true;
+            };
+          }
+          (mkIf guiCfg.enable {
+            plasma = {
+              enable = true;
+              overrideConfig = true;
+              resetFilesExclude = [
+                "kglobalshortcutsrc"
               ];
-            };
 
-            panels = [
-              {
-                location = "top";
-                screen = "all";
-                floating = true;
-                widgets = [
-                  "org.kde.plasma.kickoff"
-                  "org.kde.plasma.pager"
-                  # "org.kde.plasma.icontasks"
-                  "org.kde.plasma.panelspacer"
-                  "org.kde.plasma.marginsseparator"
-                  "org.kde.plasma.systemtray"
-                  "org.kde.plasma.digitalclock"
-                  {
-                    name = "org.kde.plasma.weather";
-                    config = {
-                      WeatherStation = {
-                        updateInterval = 30; # (Mins)
-                        source = config.flcraft.gui.weatherSource;
-                      };
-                      Appearance = {
-                        showTemperatureInCompactMode = true;
-                        showTemperatureInBadge = true;
-                        showPressureInTooltip = true;
-                      };
-                      Units = {
-                        temperatureUnit = 6001;
-                        speedUnit = 9001;
-                      };
-                    };
-                  }
-                  "org.kde.plasma.showdesktop"
-                ];
-              }
-              {
-                location = "bottom";
-                screen = "all";
-                floating = true;
-                lengthMode = "fit";
-                height = 48;
-                widgets = [
-                  {
-                    iconTasks = {
-                      launchers = [
-                        "applications:org.kde.dolphin.desktop"
-                        "file://${pkgs.firefox}/share/applications/firefox.desktop"
-                        "file://${pkgs.google-chrome}/share/applications/google-chrome.desktop"
-                        "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
-                        "file://${pkgs.kdePackages.systemsettings}/share/applications/systemsettings.desktop"
-                        # "file://${pkgs.spotify}/share/applications/spotify.desktop"
-                        "applications:deezer-desktop.desktop"
-                        # "applications:org.kde.plasma-systemmonitor.desktop"
-                        "applications:net.nokyan.Resources.desktop"
-                        "file://${pkgs.discord}/share/applications/discord.desktop"
-                        "file://${pkgs.brave}/share/applications/brave-browser.desktop"
-                        "applications:code.desktop"
-                        # "applications:code-url-handler.desktop"
-                        "file://${pkgs.keepassxc}/share/applications/org.keepassxc.KeePassXC.desktop"
-                        "applications:signal.desktop"
-                        "file://${pkgs.element-desktop}/share/applications/element-desktop.desktop"
-                      ];
-                    };
-                  }
-                ];
-              }
-            ];
-
-            kscreenlocker = {
-              autoLock = true;
-              lockOnResume = true;
-              passwordRequired = true;
-              timeout = 15;
-              appearance = {
-                alwaysShowClock = true;
-                showMediaControls = true;
+              workspace = {
+                theme = "Vivid-Dark-Plasma";
+                colorScheme = "VividCyanDarkColorscheme";
+                # lookAndFeel = "Vivid-Dark-Global-6"; #"org.kde.breezedark.desktop"
+                iconTheme = "Vivid-Dark-Icons";
+                windowDecorations = {
+                  theme = "__aurorae__svg__Gently-Blur-Dark-Aurorae-6";
+                  library = "org.kde.kwin.aurorae";
+                };
+                splashScreen = {
+                  theme = "Vivid-Splash-6";
+                };
                 wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
               };
-            };
 
-            powerdevil = {
-              AC = {
-                whenSleepingEnter = "hybridSleep";
-                autoSuspend = {
-                  action = "nothing";
-                };
-                turnOffDisplay = {
-                  idleTimeout = 900;
-                  idleTimeoutWhenLocked = "immediately";
+              input = {
+                touchpads = [
+                  {
+                    # Swift
+                    name = "SYNA7DAB:01 06CB:CD40 Touchpad";
+                    naturalScroll = true;
+                    vendorId = "06cb";
+                    productId = "cd40";
+                  }
+                  {
+                    # MSI
+                    name = "SynPS/2 Synaptics TouchPad";
+                    naturalScroll = true;
+                    vendorId = "0002";
+                    productId = "0007";
+                  }
+                ];
+              };
+
+              panels = [
+                {
+                  location = "top";
+                  screen = "all";
+                  floating = true;
+                  widgets = [
+                    "org.kde.plasma.kickoff"
+                    "org.kde.plasma.pager"
+                    # "org.kde.plasma.icontasks"
+                    "org.kde.plasma.panelspacer"
+                    "org.kde.plasma.marginsseparator"
+                    "org.kde.plasma.systemtray"
+                    "org.kde.plasma.digitalclock"
+                    {
+                      name = "org.kde.plasma.weather";
+                      config = {
+                        WeatherStation = {
+                          updateInterval = 30; # (Mins)
+                          source = config.flcraft.gui.weatherSource;
+                        };
+                        Appearance = {
+                          showTemperatureInCompactMode = true;
+                          showTemperatureInBadge = true;
+                          showPressureInTooltip = true;
+                        };
+                        Units = {
+                          temperatureUnit = 6001;
+                          speedUnit = 9001;
+                        };
+                      };
+                    }
+                    "org.kde.plasma.showdesktop"
+                  ];
+                }
+                {
+                  location = "bottom";
+                  screen = "all";
+                  floating = true;
+                  lengthMode = "fit";
+                  height = 48;
+                  widgets = [
+                    {
+                      iconTasks = {
+                        launchers = [
+                          "applications:org.kde.dolphin.desktop"
+                          "file://${pkgs.firefox}/share/applications/firefox.desktop"
+                          "file://${pkgs.google-chrome}/share/applications/google-chrome.desktop"
+                          "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
+                          "file://${pkgs.kdePackages.systemsettings}/share/applications/systemsettings.desktop"
+                          # "file://${pkgs.spotify}/share/applications/spotify.desktop"
+                          "applications:deezer-desktop.desktop"
+                          # "applications:org.kde.plasma-systemmonitor.desktop"
+                          "applications:net.nokyan.Resources.desktop"
+                          "file://${pkgs.discord}/share/applications/discord.desktop"
+                          "file://${pkgs.brave}/share/applications/brave-browser.desktop"
+                          "applications:code.desktop"
+                          # "applications:code-url-handler.desktop"
+                          "file://${pkgs.keepassxc}/share/applications/org.keepassxc.KeePassXC.desktop"
+                          "applications:signal.desktop"
+                          "file://${pkgs.element-desktop}/share/applications/element-desktop.desktop"
+                        ];
+                      };
+                    }
+                  ];
+                }
+              ];
+
+              kscreenlocker = {
+                autoLock = true;
+                lockOnResume = true;
+                passwordRequired = true;
+                timeout = 15;
+                appearance = {
+                  alwaysShowClock = true;
+                  showMediaControls = true;
+                  wallpaper = "/run/current-system/sw/share/plasma/wallpapers/Vivid\ Wallpapers/Vivid-Line\ Wallpaper\ With\ Plasma\ Logo.png";
                 };
               };
-              battery = {
-                whenSleepingEnter = "hybridSleep";
-                autoSuspend = {
-                  action = "sleep";
-                  idleTimeout = 900;
+
+              powerdevil = {
+                AC = {
+                  whenSleepingEnter = "hybridSleep";
+                  autoSuspend = {
+                    action = "nothing";
+                  };
+                  turnOffDisplay = {
+                    idleTimeout = 900;
+                    idleTimeoutWhenLocked = "immediately";
+                  };
                 };
-                turnOffDisplay = {
-                  idleTimeout = 300;
-                  idleTimeoutWhenLocked = "immediately";
+                battery = {
+                  whenSleepingEnter = "hybridSleep";
+                  autoSuspend = {
+                    action = "sleep";
+                    idleTimeout = 900;
+                  };
+                  turnOffDisplay = {
+                    idleTimeout = 300;
+                    idleTimeoutWhenLocked = "immediately";
+                  };
                 };
               };
-            };
 
-            kwin = {
-              effects = {
-                wobblyWindows = {
+              kwin = {
+                effects = {
+                  wobblyWindows = {
+                    enable = true;
+                  };
+                };
+                nightLight = {
                   enable = true;
+                  mode = "location";
+                  location = {
+                    # Paris
+                    latitude = "48.862725";
+                    longitude = "2.287592";
+                  };
+                  transitionTime = 5;
                 };
               };
-              nightLight = {
-                enable = true;
-                # mode = "times";
-                # temperature = {
-                #   day = 6500;
-                #   night = 4500;
-                # };
-                # time = {
-                #   evening = "21:00";
-                #   morning = "07:00";
-                # };
-                mode = "location";
-                location = {
-                  # Paris
-                  latitude = "48.862725";
-                  longitude = "2.287592";
-                };
-                transitionTime = 5;
-              };
-            };
-            configFile = {
-              kwinrc = {
-                Desktops = {
-                  Number = {
-                    value = 9;
-                    # Forces kde to not change this value (even through the settings app).
-                    immutable = true;
+              configFile = {
+                kwinrc = {
+                  Desktops = {
+                    Number = {
+                      value = 9;
+                      # Forces kde to not change this value (even through the settings app).
+                      immutable = true;
+                    };
+                    Rows = {
+                      value = 3;
+                      immutable = true;
+                    };
                   };
-                  Rows = {
-                    value = 3;
-                    immutable = true;
-                  };
-                };
-                EdgeBarrier = {
                   EdgeBarrier = {
-                    value = 0;
-                    immutable = true; # Disable edge barriers
+                    EdgeBarrier = {
+                      value = 0;
+                      immutable = true; # Disable edge barriers
+                    };
+                  };
+                };
+                klipperrc = {
+                  General = {
+                    MaxClipItems = {
+                      value = 2000;
+                      immutable = true;
+                    };
+                  };
+                };
+                kcminputrc = {
+                  Keyboard = {
+                    NumLock = {
+                      value = 0;
+                      immutable = true;
+                    };
+                  };
+                };
+                plasmaparc = {
+                  General = {
+                    AudioFeedback = {
+                      value = false; # Disable audio feedback at volume change
+                      immutable = true;
+                    };
+                  };
+                };
+                kdeglobals = {
+                  General = {
+                    TerminalApplication = {
+                      value = "alacritty";
+                    };
+                    TerminalService = {
+                      value = "Alacritty.desktop";
+                    };
+                  };
+                };
+                baloofilerc = {
+                  "Basic Settings" = {
+                    "Indexing-Enabled" = false; # Disable baloo indexing
                   };
                 };
               };
-              klipperrc = {
-                General = {
-                  MaxClipItems = {
-                    value = 2000;
-                    immutable = true;
-                  };
-                };
-              };
-              kcminputrc = {
-                Keyboard = {
-                  NumLock = {
-                    value = 0;
-                    immutable = true;
-                  };
-                };
-              };
-              plasmaparc = {
-                General = {
-                  AudioFeedback = {
-                    value = false; # Disable audio feedback at volume change
-                    immutable = true;
-                  };
-                };
-              };
-              kdeglobals = {
-                General = {
-                  TerminalApplication = {
-                    value = "alacritty";
-                  };
-                  TerminalService = {
-                    value = "Alacritty.desktop";
-                  };
-                };
-              };
-              baloofilerc = {
-                "Basic Settings" = {
-                  "Indexing-Enabled" = false; # Disable baloo indexing
+
+              shortcuts = {
+                "services/Alacritty.desktop" = {
+                  _launch = "Ctrl+Alt+T";
                 };
               };
             };
 
-            shortcuts = {
-              "services/Alacritty.desktop" = {
-                _launch = "Ctrl+Alt+T";
+            kitty = {
+              enable = true;
+              settings = {
+                confirm_os_window_close = 0;
               };
             };
-          };
-
-          kitty = {
-            enable = true;
-            settings = {
-              confirm_os_window_close = 0;
-            };
-          };
-          firefox.enable = true;
-          alacritty = {
-            enable = true;
-            settings = {
-              window.dimensions = {
-                lines = 30;
-                columns = 125;
+            firefox.enable = true;
+            alacritty = {
+              enable = true;
+              settings = {
+                window.dimensions = {
+                  lines = 30;
+                  columns = 125;
+                };
               };
             };
-          };
-          floorp.enable = false;
-
-          difftastic = {
-            enable = true;
-            git.enable = true;
-          };
-          git = (
-            mkIf cfg.git.enable {
+            floorp.enable = false;
+          })
+          (mkIf cfg.git.enable {
+            git = {
               enable = true;
               signing = {
                 format = null;
@@ -402,15 +399,15 @@ in
                   format = "ssh";
                 };
               };
-            }
-          );
-          vscode = (
-            mkIf guiCfg.pkgs.programming.enable {
+            };
+          })
+          (mkIf (guiCfg.enable && guiCfg.pkgs.programming.enable) {
+            vscode = {
               enable = true;
               # profiles.default.enableUpdateCheck = false;
-            }
-          );
-        };
+            };
+          })
+        ];
         dconf.settings = (
           mkIf config.flcraft.system.virt.vm.enable {
             "org/virt-manager/virt-manager/connections" = {
