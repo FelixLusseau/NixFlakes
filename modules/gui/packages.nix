@@ -40,23 +40,18 @@ with types;
         resources
       ];
 
-      nixpkgs.config.permittedInsecurePackages = [
-        "qtwebengine-5.15.19"
-      ];
-
       programs.kdeconnect.enable = true;
 
-      # Enable the X11 windowing system.
-      # You can disable this if you're only using the Wayland session.
-      # services.xserver.enable = true;
-      services.displayManager.sddm.wayland.enable = true;
-      services.displayManager.sddm.autoNumlock = true;
+      services.displayManager.sddm = {
+        # Enable the KDE Plasma Desktop Environment.
+        enable = true;
+        wayland.enable = true;
+        autoNumlock = true;
+        # Custom SDDM theme
+        theme = "sddm-vivid-theme-dialog";
+      };
 
-      # Enable the KDE Plasma Desktop Environment.
-      services.displayManager.sddm.enable = true;
       services.desktopManager.plasma6.enable = true;
-      # Custom SDDM theme
-      services.displayManager.sddm.theme = "sddm-vivid-theme-dialog";
     })
     (mkIf (cfg.enable && cfg.pkgs.messages.enable) {
       environment.systemPackages = with pkgs; [
