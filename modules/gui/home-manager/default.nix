@@ -120,6 +120,8 @@ in
               extraConfig = ''
                 set number relativenumber
               '';
+              withRuby = false;
+              withPython3 = false;
             };
 
             difftastic = {
