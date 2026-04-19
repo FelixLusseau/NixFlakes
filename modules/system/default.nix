@@ -61,6 +61,7 @@ in
         dig
         trippy
         traceroute
+        snitch # Boosted ss
       ];
     })
     (mkIf cfg.ssh.enable {
