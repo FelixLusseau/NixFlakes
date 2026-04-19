@@ -1,7 +1,12 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
-let 
+let
   cfg = config.flcraft.shell.zsh;
   userNames = builtins.attrNames (lib.filterAttrs (name: _: name != "root") config.flcraft.users);
 in
@@ -10,22 +15,23 @@ in
     (mkIf cfg.enable {
       nixpkgs.overlays = [
         (self: super: {
-          zsh-forgit              = super.callPackage ./plugin/zsh-forgit.nix { };
-          zsh-autopair            = super.callPackage ./plugin/zsh-autopair.nix { };
-          zsh-auto-notify         = super.callPackage ./plugin/zsh-auto-notify.nix { };
-          zsh-fzf-history-search  = super.callPackage ./plugin/zsh-fzf-history-search.nix { };
+          zsh-forgit = super.callPackage ./plugin/zsh-forgit.nix { };
+          zsh-autopair = super.callPackage ./plugin/zsh-autopair.nix { };
+          zsh-auto-notify = super.callPackage ./plugin/zsh-auto-notify.nix { };
+          zsh-fzf-history-search = super.callPackage ./plugin/zsh-fzf-history-search.nix { };
         })
       ];
 
       # programs.command-not-found.enable = true;
       programs.nix-index.enable = true;
       programs.mtr.enable = true;
-      services.locate = { # https://search.nixos.org/options?channel=unstable&show=services.locate.interval&from=0&size=50&sort=relevance&type=packages&query=services.locate
+      services.locate = {
+        # https://search.nixos.org/options?channel=unstable&show=services.locate.interval&from=0&size=50&sort=relevance&type=packages&query=services.locate
         enable = true;
         package = pkgs.plocate;
       };
       users.extraGroups.plocate.members = userNames;
-      
+
       environment.systemPackages = with pkgs; [
         bat
         broot
@@ -41,21 +47,24 @@ in
         fzf
         glances # system monitoring
         glow # markdown previewer in terminal
+        doxx # Word reader in terminal
         htop
-        neohtop
+        # neohtop # Not working
         nmon
         iftop # network monitoring
         iotop # io monitoring
         jq
+        lazygit
         libnotify
         lolcat
         ncdu
-        nnn
-        ranger # terminal file manager
+        # nnn # terminal file manager
+        # ranger # terminal file manager
         ripgrep
         tldr
         tree
         w3m # Display image in terminal
+        xan # CSV viewer in terminal
         yazi # terminal file manager
         zellij # tmux alternative
         zoxide
@@ -69,7 +78,7 @@ in
 
           shellAliases = {
             nixswitch = "sudo nixos-rebuild switch --flake .#$HOST";
-            nixgc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
+            nixgc = "nix-collect-garbage -d && sudo nix-collect-garbage -d && nix store optimise";
             nixfu = "nix flake update";
             cd = "z";
             ls = "eza --icons --group-directories-first";
@@ -77,11 +86,11 @@ in
             tree = "eza --tree --icons";
             cat = "bat";
             clip = "wl-copy";
-            whatismyip = "curl https://ipinfo.io/ip";
+            whatismyip = "echo -e '\e[1;34mIPv6:\e[0m' && curl -6 https://ifconfig.me/ip && echo -e '\e[1;34m\nIPv4:\e[0m' && curl -4 https://ifconfig.me/ip";
             mtr = "mtr -e -b -t -z";
             diff = "difft";
-            kx    = "kubectx";
-            kns     = "kubens";
+            kx = "kubectx";
+            kns = "kubens";
             kubectl = "kubecolor";
             trip = "sudo trip -r cloudflare -z --tui-locale fr --tui-icmp-extension-mode full -e -a both";
           };
@@ -123,7 +132,7 @@ in
         source ${./zshrc.sh}
       '';
 
-      environment.variables = { 
+      environment.variables = {
         EDITOR = "vim";
       };
 
@@ -137,7 +146,7 @@ in
 
       programs.zsh.interactiveShellInit = ''
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin
-        
+
         # Display before instant prompt to avoid warnings
         if [ -z ''${IN_NIX_SHELL+x} ]; then
           fastfetch
@@ -151,7 +160,7 @@ in
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source ${./p10k.zsh}
       '';
-      
+
       programs.zsh.interactiveShellInit = mkAfter ''
         source ${./p10k-instant-prompt.zsh}
       '';

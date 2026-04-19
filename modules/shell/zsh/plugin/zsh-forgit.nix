@@ -1,21 +1,34 @@
-{ lib, stdenvNoCC, fetchFromGitHub, makeWrapper
-, bash, coreutils, findutils, fzf, git, gnugrep, gnused, difftastic, delta }:
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  makeWrapper,
+  bash,
+  coreutils,
+  findutils,
+  fzf,
+  git,
+  gnugrep,
+  gnused,
+  difftastic,
+  delta,
+}:
 
 stdenvNoCC.mkDerivation rec {
   pname = "zsh-forgit";
-  version = "25.08.0";
+  version = "26.01.0";
 
   src = fetchFromGitHub {
     owner = "wfxr";
     repo = "forgit";
     rev = version;
-    sha256 = "sha256-45NeIRSTNiCqctdwBaS/qOeOI/8f4L+KVI/I6grYm+0=";
+    sha256 = "sha256-3PjKFARsN3BE5c3/JonNj+LpKBPT1N3hc1bK6NdWDTQ=";
   };
 
   dontConfigure = true;
-  strictDeps    = true;
-  dontUnpack    = true;
-  dontBuild     = true;
+  strictDeps = true;
+  dontUnpack = true;
+  dontBuild = true;
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -25,7 +38,19 @@ stdenvNoCC.mkDerivation rec {
     # install -D $src/completions/git-forgit.zsh --target-directory=$out/share/zsh/plugins/forgit/completions/git-forgit.zsh
     install -Dm0444 $src/forgit.plugin.zsh --target-directory=$out/share/zsh/plugins/forgit
     wrapProgram $out/share/zsh/plugins/forgit/bin/git-forgit \
-      --prefix PATH : ${lib.makeBinPath [ bash coreutils findutils fzf git gnugrep gnused difftastic delta ]}
+      --prefix PATH : ${
+        lib.makeBinPath [
+          bash
+          coreutils
+          findutils
+          fzf
+          git
+          gnugrep
+          gnused
+          difftastic
+          delta
+        ]
+      }
     substituteInPlace $out/share/zsh/plugins/forgit/forgit.plugin.zsh \
       --replace "\$INSTALL_DIR/bin/git-forgit" "$out/share/zsh/plugins/forgit/bin/git-forgit"
   '';

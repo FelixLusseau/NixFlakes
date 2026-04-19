@@ -1,59 +1,44 @@
-{ stdenv
-, lib
-, fetchurl
-, autoPatchelfHook
-, gcc-unwrapped
-, cairo
-, pango
-, gtk3
-, nss
-, libdrm
-, alsa-lib
-, libgbm
-, libGL
+{
+  stdenv,
+  lib,
+  fetchurl,
+  makeWrapper,
+  electron,
+  writeScript,
 }:
 
 let
-  version = "7.0.150";
-  
+  # nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.1.100/deezer-desktop-7.1.100-x64.tar.xz --json | jq -r .hash && nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.1.100/deezer-desktop-7.1.100-arm64.tar.xz --json | jq -r .hash
+  version = "7.1.110";
   srcs = {
     x86_64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-x64.tar.xz";
-      hash = "sha256-J7gg5G0LLhQiTQw1MppVhFx9zp9F2chxOZ8Wf2AkMpg=";
+      hash = "sha256-g8HAAp36l0GrAg/bJOjlvNT13Z9p/geDbA5XQCk3QvM=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-arm64.tar.xz";
-      hash = "sha256-xFox81W3jOlhhMTyp56wHVJjyEya62tHYiBgNMO1v3E="; 
+      hash = "sha256-W6br5bvRwgrfSiwwO5OMwfReev7t3mvI6L0zTIIDiwI=";
     };
   };
-  
-  src = srcs.${stdenv.hostPlatform.system}
-    or (throw "${stdenv.hostPlatform.system} not supported");
-    
+
+  src = srcs.${stdenv.hostPlatform.system} or (throw "${stdenv.hostPlatform.system} not supported");
+
   # Architecture string for directory names
-  archDir = if stdenv.hostPlatform.isx86_64 then "x64" 
-           else if stdenv.hostPlatform.isAarch64 then "arm64"
-           else throw "Unsupported architecture";
+  archDir =
+    if stdenv.hostPlatform.isx86_64 then
+      "x64"
+    else if stdenv.hostPlatform.isAarch64 then
+      "arm64"
+    else
+      throw "Unsupported architecture";
 in
 
-stdenv.mkDerivation rec {
-  pname = "deezer";
+stdenv.mkDerivation (finalAttrs: {
+  pname = "deezer-desktop";
   inherit version src;
 
   nativeBuildInputs = [
-    autoPatchelfHook
-  ];
-
-  buildInputs = [
-    gcc-unwrapped
-    cairo
-    pango
-    gtk3
-    nss
-    libdrm
-    alsa-lib
-    libgbm
-    libGL
+    makeWrapper
   ];
 
   sourceRoot = ".";
@@ -61,27 +46,50 @@ stdenv.mkDerivation rec {
   dontBuild = true;
   installPhase = ''
     runHook preInstall
-    install -d $out/bin $out/opt $out/share $out/share/applications $out/share/icons/hicolor/scalable/apps
+    install -d $out/bin $out/share/deezer-desktop/resources $out/share/applications $out/share/icons/hicolor/scalable/apps
 
-    sed -i 's/run\.sh/deezer/g' deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop
-    sed -i 's/dev.aunetx.deezer/deezer/g' deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop
-    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop $out/share/applications/deezer.desktop
-    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.svg $out/share/icons/hicolor/scalable/apps/deezer.svg
+    substituteInPlace deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop \
+      --replace-fail "run.sh" "deezer-desktop" \
+      --replace-fail "dev.aunetx.deezer" "deezer-desktop"
+    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop $out/share/applications/deezer-desktop.desktop
+    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.svg $out/share/icons/hicolor/scalable/apps/deezer-desktop.svg
+    cp -r deezer-desktop-${version}-${archDir}/resources/{app.asar,linux} $out/share/deezer-desktop/resources/
 
-    cp -r deezer-desktop-${version}-${archDir} $out/opt/
-    chmod -R 755 $out/opt/deezer-desktop-${version}-${archDir}
-    ln -s $out/opt/deezer-desktop-${version}-${archDir}/deezer-desktop $out/bin/deezer
-    
+    makeWrapper "${lib.getExe electron}" "$out/bin/deezer-desktop" \
+      --inherit-argv0 \
+      --add-flags "$out/share/deezer-desktop/resources/app.asar" \
+      --set-default ELECTRON_FORCE_IS_PACKAGED 1 \
+      --set DZ_RESOURCES_PATH "$out/share/deezer-desktop/resources"
+
     runHook postInstall
   '';
 
-  meta = with lib; {
-    description = "Deezer is a music streaming service";
+  passthru = {
+    inherit srcs;
+    updateScript = writeScript "update-deezer-desktop" ''
+      #!/usr/bin/env nix-shell
+      #!nix-shell -i bash -p curl jq common-updater-scripts
+      set -eu -o pipefail
+
+      latest_version="$(
+        curl --fail --silent --show-error --location \
+          'https://api.github.com/repos/aunetx/deezer-linux/releases/latest' |
+          jq -r '.tag_name | ltrimstr("v")'
+      )"
+
+      for platform in ${lib.escapeShellArgs (lib.attrNames srcs)}; do
+        update-source-version "${finalAttrs.pname}" "$latest_version" --ignore-same-version --source-key="passthru.srcs.$platform"
+      done
+    '';
+  };
+
+  meta = {
+    description = "Unofficial Linux port of the music streaming application";
     homepage = "https://github.com/aunetx/deezer-linux";
     downloadPage = "https://github.com/aunetx/deezer-linux/releases";
-    platforms = [ "x86_64-linux" "aarch64-linux" ];
-    license = licenses.unfree;
-    maintainers = with maintainers; [ FelixLusseau ];
-    mainProgram = "deezer";
+    platforms = lib.platforms.linux;
+    license = lib.licenses.unfree;
+    maintainers = with lib.maintainers; [ FelixLusseau ];
+    mainProgram = "deezer-desktop";
   };
-}
+})

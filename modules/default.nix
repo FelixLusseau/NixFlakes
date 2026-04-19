@@ -3,26 +3,31 @@
 with lib;
 with types;
 let
-  userModule = { name, config, ... }:
-  {
-    options = {
-      description = mkOption {
-        type = types.str;
-        default = "";
-      };
-      git = {
-        enable = mkEnableOption "Activate git";
-        userName = mkOption {
-          type = types.str;
-          default = name;
-        };
-        userEmail = mkOption {
+  userModule =
+    { name, config, ... }:
+    {
+      options = {
+        description = mkOption {
           type = types.str;
           default = "";
         };
+        git = {
+          enable = mkEnableOption "Activate git";
+          userName = mkOption {
+            type = types.str;
+            default = name;
+          };
+          userEmail = mkOption {
+            type = types.str;
+            default = "";
+          };
+          userSigningKey = mkOption {
+            type = types.str;
+            default = "";
+          };
+        };
       };
     };
-  };
 in
 {
   imports = [
@@ -32,8 +37,8 @@ in
   ];
 
   options.flcraft = {
-    users  = mkOption {
-      type = attrsOf ( submodule userModule );
+    users = mkOption {
+      type = attrsOf (submodule userModule);
     };
     shell = {
       zsh = {
@@ -46,7 +51,7 @@ in
     system = {
       docker.enable = mkEnableOption "Activate Docker";
       virt.vm.enable = mkEnableOption "Activate VM Virtualisation tools";
-      virt.lxd.enable = mkEnableOption "Activate LXD Virtualisation tools";
+      virt.lxc.enable = mkEnableOption "Activate LXC Virtualisation tools with Incus";
       kube.enable = mkEnableOption "Activate Kubernetes tools";
       ssh.enable = mkEnableOption "Activate SSH server";
       network-tools.enable = mkEnableOption "Install network tools";
@@ -85,6 +90,10 @@ in
     };
     gui = {
       enable = mkEnableOption "Activate GUI";
+      weatherSource = mkOption {
+        type = types.str;
+        default = "";
+      };
       pkgs = {
         messages.enable = mkEnableOption "Activate messages apps";
         programming.enable = mkEnableOption "Activate programming";

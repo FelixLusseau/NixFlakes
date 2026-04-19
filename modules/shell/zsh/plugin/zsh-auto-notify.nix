@@ -1,4 +1,8 @@
-{ lib, stdenvNoCC, fetchFromGitHub }:
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+}:
 
 stdenvNoCC.mkDerivation rec {
   pname = "zsh-auto-notify";
@@ -12,9 +16,9 @@ stdenvNoCC.mkDerivation rec {
   };
 
   dontConfigure = true;
-  strictDeps    = true;
-  dontUnpack    = true;
-  dontBuild     = true;
+  strictDeps = true;
+  dontUnpack = true;
+  dontBuild = true;
 
   installPhase = ''
     install -Dm0444 $src/auto-notify.plugin.zsh --target-directory=$out/share/zsh/plugins/auto-notify
