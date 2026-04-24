@@ -202,9 +202,19 @@ let
 
       mount --bind /tmp/fake-etc/os-release /etc/os-release
 
-      # Lancer l'agent depuis le merged FS ou ouvrir un shell
-      ${cortexAgent}/opt/traps/bin/pmd
-      # /bin/bash
+      # Monter le répertoire de config Cortex depuis l'hôte
+      mkdir -p /etc/panw
+      if [[ -d /.host-etc/panw ]]; then
+        mount --bind /.host-etc/panw /etc/panw
+      fi
+
+      # Si des arguments sont passés, les exécuter dans le FHS
+      # Sinon, lancer un shell interactif
+      if [[ $# -gt 0 ]]; then
+        exec "$@"
+      else
+        exec /bin/bash
+      fi
     '';
     extraBuildCommands = ''
       mkdir -p $out/var/{log,cache/ldconfig}
