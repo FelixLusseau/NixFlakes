@@ -365,7 +365,10 @@ in
                 confirm_os_window_close = 0;
               };
             };
-            firefox.enable = true;
+            firefox = {
+              enable = true;
+              # configPath = "${config.xdg.configHome}/mozilla/firefox"; # from evaluation warning
+            };
             alacritty = {
               enable = true;
               settings = {

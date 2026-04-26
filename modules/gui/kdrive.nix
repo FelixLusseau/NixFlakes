@@ -12,7 +12,7 @@
   openssl,
   zlib,
   log4cplus,
-  xxHash,
+  xxhash,
   sqlite,
   libsecret,
   libGL,
@@ -66,7 +66,7 @@ stdenv.mkDerivation (finalAttrs: {
     openssl
     zlib
     log4cplus
-    xxHash
+    xxhash
     sqlite
     libsecret
     libGL
@@ -112,15 +112,15 @@ stdenv.mkDerivation (finalAttrs: {
           --replace-fail 'get_library_dirs("OpenSSL" "openssl")' \
                          'set(_OpenSSL_LIB_DIRS "${openssl.out}/lib")' \
           --replace-fail 'get_library_dirs("xxHash" "xxhash")' \
-                         'set(_xxHash_LIB_DIRS "${xxHash}/lib")'
+                         'set(_xxHash_LIB_DIRS "${xxhash}/lib")'
         
         # Replace variable paths with actual values using correct filenames (use Unicode version)
         substituteInPlace CMakeLists.txt \
           --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so"' '"${log4cplus}/lib/liblog4cplusU.so"' \
           --replace-fail '"''${_log4cplus_LIB_DIRS}/liblog4cplus.so.9"' '"${log4cplus}/lib/liblog4cplusU-2.1.so.9"' \
-          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so"' '"${xxHash}/lib/libxxhash.so"' \
-          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0"' '"${xxHash}/lib/libxxhash.so.0"' \
-          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0.8.2"' '"${xxHash}/lib/libxxhash.so.0.8.3"'
+          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so"' '"${xxhash}/lib/libxxhash.so"' \
+          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0"' '"${xxhash}/lib/libxxhash.so.0"' \
+          --replace-fail '"''${_xxHash_LIB_DIRS}/libxxhash.so.0.8.2"' '"${xxhash}/lib/libxxhash.so.0.8.3"'
         
         # Patch CMakeLists to add RelWithDebInfo configuration for libzip
         for file in src/libcommon/CMakeLists.txt src/libcommonserver/CMakeLists.txt; do
@@ -145,7 +145,7 @@ stdenv.mkDerivation (finalAttrs: {
     ln -sf ${openssl.out}/lib/* build-linux/conan/dependencies/ || true
     ln -sf ${zlib.out}/lib/* build-linux/conan/dependencies/ || true
     ln -sf ${log4cplus}/lib/* build-linux/conan/dependencies/ || true
-    ln -sf ${xxHash}/lib/* build-linux/conan/dependencies/ || true
+    ln -sf ${xxhash}/lib/* build-linux/conan/dependencies/ || true
   '';
 
   cmakeFlags = [
@@ -163,7 +163,7 @@ stdenv.mkDerivation (finalAttrs: {
     "-DCMAKE_PREFIX_PATH=${
       lib.concatStringsSep ";" [
         log4cplus
-        xxHash
+        xxhash
         poco
         sentry-native
         libzip
