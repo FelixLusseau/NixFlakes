@@ -29,7 +29,7 @@ in
       { }
   );
 
-  # Configuration spécifique pour les VMs (build-vm)
+  # Specific configuration for VMs (build-vm)
   virtualisation.vmVariant = {
     users.users = mapUsers (
       name: cfg:
@@ -41,11 +41,11 @@ in
         { }
     );
 
-    # Augmentation des ressources VM
+    # Increase VM resources
     virtualisation = {
-      memorySize = 8192; # 8 Go de RAM
-      cores = 4; # 4 cœurs CPU
-      diskSize = 40960; # 40 Go d'espace disque
+      memorySize = 8192; # 8 GB RAM
+      cores = 4; # 4 CPU cores
+      diskSize = 40960; # 40 GB disk space
       resolution = {
         x = 1920;
         y = 1080;

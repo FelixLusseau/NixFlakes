@@ -66,7 +66,7 @@ fun TextYOffset() {
 }
 
 fun ProportionalY(pixel_value) {
-    return Window.GetHeight() * (pixel_value / 1080); # 1080 est la hauteur de référence
+    return Window.GetHeight() * (pixel_value / 1080); # 1080 is the reference height
 }
 
 

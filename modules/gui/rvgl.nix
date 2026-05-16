@@ -25,7 +25,7 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "rvgl";
   version = "23.1030a1";
 
-  # Récupérer les binaires depuis GitLab
+  # Fetch binaries from GitLab
   platform = fetchFromGitLab {
     owner = "re-volt";
     repo = "rvgl-platform";
@@ -33,7 +33,7 @@ stdenv.mkDerivation (finalAttrs: {
     sha256 = "sha256-OlCNBUbyu/hA75qk27xSldjKXsPyaGLXxthtogdmfkQ=";
   };
 
-  # Récupérer les assets depuis GitLab
+  # Fetch assets from GitLab
   assets = fetchFromGitLab {
     owner = "re-volt";
     repo = "rvgl-assets";
@@ -41,7 +41,7 @@ stdenv.mkDerivation (finalAttrs: {
     sha256 = "sha256-9CARqvRS2+r9T+s3uWE7PZLiPluypH8eOOUEGr9S8UQ=";
   };
 
-  # Récupérer les fichiers de jeu de base
+  # Fetch base game files
   gameFiles = fetchFromGitLab {
     owner = "re-volt";
     repo = "game_files";
@@ -49,7 +49,7 @@ stdenv.mkDerivation (finalAttrs: {
     sha256 = "sha256-pX/bxesie6+Pw6A/T8Mn38kMIV89oyxFcKPgBxfw0zg=";
   };
 
-  # Récupérer la bande sonore originale
+  # Fetch original soundtrack
   ost = fetchFromGitLab {
     owner = "re-volt";
     repo = "ost";
@@ -57,7 +57,7 @@ stdenv.mkDerivation (finalAttrs: {
     sha256 = "sha256-js3HWU8a4Xc44YW2jROwZgDrCnDHp7tvlXb3TghmjiM=";
   };
 
-  # Pas de src car on construit à partir de plusieurs sources
+  # No src because we build from multiple sources
   dontUnpack = true;
 
   nativeBuildInputs = [
@@ -90,20 +90,20 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/bin
     mkdir -p $out/share/rvgl
 
-    # Copier d'abord les fichiers de jeu de base (game_files)
+    # Copy base game files first (game_files)
     echo "Installing game files..."
     cp -r ${finalAttrs.gameFiles}/* $out/share/rvgl/
     chmod -R +w $out/share/rvgl
 
-    # Copier les binaires selon l'architecture (peut patcher game_files)
+    # Copy binaries by architecture (may patch game_files)
     ${
       if stdenv.hostPlatform.system == "x86_64-linux" then
         ''
           install -Dm755 ${finalAttrs.platform}/linux/rvgl.64 $out/share/rvgl/rvgl
-          # Copier les bibliothèques spécifiques
+          # Copy specific libraries
           mkdir -p $out/share/rvgl/lib
           cp -r ${finalAttrs.platform}/linux/lib/lib64/* $out/share/rvgl/lib/
-          # Copier les autres fichiers du platform qui peuvent patcher
+          # Copy other platform files that may patch
           cp -r ${finalAttrs.platform}/linux/*.* $out/share/rvgl/ 2>/dev/null || true
         ''
       else if stdenv.hostPlatform.system == "i686-linux" then
@@ -132,16 +132,16 @@ stdenv.mkDerivation (finalAttrs: {
     }
     chmod -R +w $out/share/rvgl
 
-    # Copier les assets (peuvent patcher game_files et platform)
+    # Copy assets (may patch game_files and platform)
     echo "Installing assets..."
     cp -r ${finalAttrs.assets}/* $out/share/rvgl/
     chmod -R +w $out/share/rvgl
 
-    # Copier la bande sonore originale
+    # Copy original soundtrack
     echo "Installing OST..."
     cp -r ${finalAttrs.ost}/* $out/share/rvgl/
 
-    # Copier les icônes
+    # Copy icons
     mkdir -p $out/share/icons/hicolor
     for size in 16x16 24x24 32x32 48x48 256x256; do
       if [ -d ${finalAttrs.assets}/icons/$size/apps ]; then
@@ -150,7 +150,7 @@ stdenv.mkDerivation (finalAttrs: {
       fi
     done
 
-    # Créer un fichier .desktop
+    # Create a .desktop file
     mkdir -p $out/share/applications
     cat > $out/share/applications/rvgl.desktop <<EOF
     [Desktop Entry]
@@ -163,22 +163,22 @@ stdenv.mkDerivation (finalAttrs: {
     Terminal=false
     EOF
 
-    # Créer le script wrapper
+    # Create the wrapper script
     cat > $out/bin/rvgl-wrapper <<'WRAPPER'
     #!/bin/sh
     RVGL_HOME="$HOME/.rvgl"
     RVGL_DATA="/run/current-system/sw/share/rvgl"
 
-    # Créer le répertoire utilisateur s'il n'existe pas
+    # Create the user directory if it doesn't exist
     if [ ! -d "$RVGL_HOME" ]; then
       mkdir -p "$RVGL_HOME"
-      # Créer des liens symboliques vers les données en lecture seule
+      # Create symlinks to read-only data
       for dir in cars levels gfx strings wavs edit gallery models redbook cups licenses packs shaders; do
         if [ -d "$RVGL_DATA/$dir" ]; then
           ln -sf "$RVGL_DATA/$dir" "$RVGL_HOME/"
         fi
       done
-      # Copier les fichiers de configuration
+      # Copy configuration files
       for file in "$RVGL_DATA"/*.txt "$RVGL_DATA"/*.ini "$RVGL_DATA"/*.rpl; do
         if [ -f "$file" ]; then
           cp "$file" "$RVGL_HOME/" 2>/dev/null || true
@@ -194,7 +194,7 @@ stdenv.mkDerivation (finalAttrs: {
     sed -i "s|@out@|$out|g" $out/bin/rvgl-wrapper
     chmod +x $out/bin/rvgl-wrapper
 
-    # Créer le lien final
+    # Create the final link
     ln -s $out/bin/rvgl-wrapper $out/bin/rvgl
 
     runHook postInstall
