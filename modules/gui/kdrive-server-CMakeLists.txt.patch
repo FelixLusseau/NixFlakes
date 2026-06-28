@@ -1,0 +1,13 @@
+diff --git a/src/server/CMakeLists.txt b/src/server/CMakeLists.txt
+index c300d43cd..e9e5d0337 100644
+--- a/src/server/CMakeLists.txt
++++ b/src/server/CMakeLists.txt
+@@ -345,7 +345,7 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
+         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+-        BUNDLE  DESTINATION "."
++        BUNDLE  DESTINATION ${CMAKE_INSTALL_BINDIR}
+ )
+ 
+ if(NOT BUILD_KDRIVE_OSX_BUNDLE AND NOT WIN32)
