@@ -27,6 +27,7 @@ with types;
         vlc
         mpv
         keepassxc
+        proton-pass
         brave
         xournalpp
         kmymoney
