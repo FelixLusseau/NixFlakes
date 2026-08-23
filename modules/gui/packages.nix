@@ -39,6 +39,7 @@ with types;
         gparted
         ntfs3g
         resources
+        # miraclecast
       ];
 
       programs.kdeconnect.enable = true;

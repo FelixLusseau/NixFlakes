@@ -189,7 +189,8 @@ in
     (mkIf (cfg.kube.enable && config.flcraft.gui.enable) {
       environment.systemPackages = with pkgs; [
         # lens
-        (callPackage ./freelens.nix { })
+        # (callPackage ./freelens.nix { })
+        freelens-bin
       ];
     })
     (mkIf cfg.blocky.enable {
