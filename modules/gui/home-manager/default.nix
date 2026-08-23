@@ -367,7 +367,7 @@ in
             };
             firefox = {
               enable = true;
-              # configPath = "${config.xdg.configHome}/mozilla/firefox"; # from evaluation warning
+              configPath = ".config/mozilla/firefox"; # from evaluation warning then do `mv ~/.mozilla/firefox ~/.config/mozilla/firefox`
             };
             alacritty = {
               enable = true;

@@ -24,7 +24,7 @@ in
         ffmpeg
         sbctl
         # nix-index # Find which package contains a bin / a lib
-        jmtpfs
+        # jmtpfs # Removed as unmaintained
         sshfs
         file # To display file types
         nixfmt
