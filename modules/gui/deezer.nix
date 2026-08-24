@@ -8,16 +8,16 @@
 }:
 
 let
-  # nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.1.100/deezer-desktop-7.1.100-x64.tar.xz --json | jq -r .hash && nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.1.100/deezer-desktop-7.1.100-arm64.tar.xz --json | jq -r .hash
-  version = "7.1.110";
+  # nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.1.310/deezer-desktop-7.1.310-x64.tar.xz --json | jq -r .hash && nix store prefetch-file https://github.com/aunetx/deezer-linux/releases/download/v7.1.310/deezer-desktop-7.1.310-arm64.tar.xz --json | jq -r .hash
+  version = "7.1.310";
   srcs = {
     x86_64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-x64.tar.xz";
-      hash = "sha256-g8HAAp36l0GrAg/bJOjlvNT13Z9p/geDbA5XQCk3QvM=";
+      hash = "sha256-G1nrkyQR3pduZulFE30DTCTfVMmZe7X6nl6bcDfSf8E=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/aunetx/deezer-linux/releases/download/v${version}/deezer-desktop-${version}-arm64.tar.xz";
-      hash = "sha256-W6br5bvRwgrfSiwwO5OMwfReev7t3mvI6L0zTIIDiwI=";
+      hash = "sha256-fMShKodtD8/icEcpRIVZZ9H3KlF/GEpMyuihcDkviWk=";
     };
   };
 
@@ -49,10 +49,9 @@ stdenv.mkDerivation (finalAttrs: {
     install -d $out/bin $out/share/deezer-desktop/resources $out/share/applications $out/share/icons/hicolor/scalable/apps
 
     substituteInPlace deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop \
-      --replace-fail "run.sh" "deezer-desktop" \
-      --replace-fail "dev.aunetx.deezer" "deezer-desktop"
-    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop $out/share/applications/deezer-desktop.desktop
-    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.svg $out/share/icons/hicolor/scalable/apps/deezer-desktop.svg
+      --replace-fail "run.sh" "deezer-desktop" 
+    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.desktop $out/share/applications/
+    cp deezer-desktop-${version}-${archDir}/resources/dev.aunetx.deezer.svg $out/share/icons/hicolor/scalable/apps/
     cp -r deezer-desktop-${version}-${archDir}/resources/{app.asar,linux} $out/share/deezer-desktop/resources/
 
     makeWrapper "${lib.getExe electron}" "$out/bin/deezer-desktop" \

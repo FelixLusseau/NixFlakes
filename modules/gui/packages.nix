@@ -19,6 +19,7 @@ with types;
         kdePackages.kate
         kdePackages.kalk
         spotify
+        # (callPackage ./deezer.nix { electron = electron_42; })
         # (callPackage ./deezer.nix { })
         deezer-desktop
         nextcloud-client
