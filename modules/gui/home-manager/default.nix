@@ -221,7 +221,7 @@ in
                           "file://${pkgs.thunderbird}/share/applications/thunderbird.desktop"
                           "file://${pkgs.kdePackages.systemsettings}/share/applications/systemsettings.desktop"
                           # "file://${pkgs.spotify}/share/applications/spotify.desktop"
-                          "applications:deezer-desktop.desktop"
+                          "applications:dev.aunetx.deezer.desktop"
                           # "applications:org.kde.plasma-systemmonitor.desktop"
                           "applications:net.nokyan.Resources.desktop"
                           "file://${pkgs.discord}/share/applications/discord.desktop"

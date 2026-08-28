@@ -15,7 +15,7 @@ with types;
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
         google-chrome
-        font-manager
+        # font-manager
         kdePackages.kate
         kdePackages.kalk
         spotify
