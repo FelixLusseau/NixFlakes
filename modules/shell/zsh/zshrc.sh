@@ -5,6 +5,9 @@ AUTO_NOTIFY_IGNORE+=(
   "npm"
 )
 
+# Enable cancellation of notifications on SIGINT
+export AUTO_NOTIFY_CANCEL_ON_SIGINT=1
+
 setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
 setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
 
