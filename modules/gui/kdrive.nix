@@ -47,13 +47,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "kdrive";
-  version = "3.8.5";
+  version = "3.8.7";
 
   src = fetchFromGitHub {
     owner = "Infomaniak";
     repo = "desktop-kDrive";
     tag = "${finalAttrs.version}";
-    hash = "sha256-sg2lN08T41Gxloh/rozIwcDWI7r5B9pJq7Bai2vJ+ZQ=";
+    hash = "sha256-DbVrq/7V03OcQGnohlGpbDlTyaiS73+xKnpXvvz9Nrs=";
     fetchSubmodules = true;
   };
 
@@ -123,9 +123,7 @@ stdenv.mkDerivation (finalAttrs: {
   # Prevent compilation error of keychain submodule.
   env.NIX_CFLAGS_COMPILE = "-Wno-error=uninitialized";
 
-  # Move sync-exclude.lst to the bin directory since kDrive fails to start without it at this location.
   postInstall = ''
-    mv $out/kDrive/sync-exclude.lst $out/bin
     rm -rf $out/kDrive
   '';
 
