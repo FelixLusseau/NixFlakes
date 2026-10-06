@@ -223,7 +223,7 @@ in
                           # "file://${pkgs.spotify}/share/applications/spotify.desktop"
                           "applications:dev.aunetx.deezer.desktop"
                           # "applications:org.kde.plasma-systemmonitor.desktop"
-                          "applications:net.nokyan.Resources.desktop"
+                          "applications:org.gnome.Resources.desktop"
                           "file://${pkgs.discord}/share/applications/discord.desktop"
                           "file://${pkgs.brave}/share/applications/brave-browser.desktop"
                           "applications:code.desktop"
