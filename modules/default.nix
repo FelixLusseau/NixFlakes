@@ -52,6 +52,7 @@ in
       docker.enable = mkEnableOption "Activate Docker";
       virt.vm.enable = mkEnableOption "Activate VM Virtualisation tools";
       virt.lxc.enable = mkEnableOption "Activate LXC Virtualisation tools with Incus";
+      virt.waydroid.enable = mkEnableOption "Activate Waydroid";
       kube.enable = mkEnableOption "Activate Kubernetes tools";
       ssh.enable = mkEnableOption "Activate SSH server";
       network-tools.enable = mkEnableOption "Install network tools";

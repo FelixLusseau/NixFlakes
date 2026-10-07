@@ -104,6 +104,13 @@ in
         virtiofsd
       ];
     })
+    (mkIf cfg.virt.waydroid.enable {
+      # https://gist.github.com/newtolinux23/522755a66d8ebd7eed1b3c410bc4319d
+      virtualisation.waydroid = {
+        enable = true;
+        package = pkgs.waydroid-nftables;
+      };
+    })
     (mkIf cfg.virt.lxc.enable {
       virtualisation.incus = {
         enable = true;
