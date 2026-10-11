@@ -7,6 +7,7 @@
 
 let
   cfg = config.flcraft.gui;
+  userNames = builtins.attrNames (lib.filterAttrs (name: _: name != "root") config.flcraft.users);
 in
 with lib;
 with types;
@@ -89,9 +90,33 @@ with types;
         (callPackage ./rvgl.nix { })
         heroic
       ];
-      programs.steam = {
-        enable = true;
+      users.extraGroups.gamemode.members = userNames;
+      programs = {
+        steam = {
+          enable = true;
+        };
+        gamemode = {
+          enable = true;
+        };
       };
+    })
+    (mkIf (cfg.enable && cfg.pkgs.music.enable) {
+      users.groups.audio.members = userNames;
+      musnix = {
+        enable = true;
+        alsaSeq.enable = true;
+        kernel.packages = pkgs.linuxPackages_latest;
+        kernel.realtime = false;
+        rtcqs.enable = true;
+        rtirq.enable = true;
+      };
+      services.pipewire.jack.enable = true;
+      environment.systemPackages = with pkgs; [
+        ardour
+        audacity
+        qjackctl
+        qpwgraph
+      ];
     })
   ];
 }

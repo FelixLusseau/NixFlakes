@@ -16,6 +16,7 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    musnix.url = "github:musnix/musnix";
   };
 
   outputs =
@@ -25,6 +26,7 @@
       home-manager,
       plasma-manager,
       nix-index-database,
+      musnix,
     }@inputs:
     let
       system = "x86_64-linux";
@@ -45,6 +47,7 @@
               home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
             }
             nix-index-database.nixosModules.nix-index
+            musnix.nixosModules.musnix
           ];
         };
       };

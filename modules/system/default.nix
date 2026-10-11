@@ -38,7 +38,7 @@ in
         # useTmpfs = true; # Use tmpfs for /tmp
       };
       boot.kernel.sysctl = {
-        "vm.swappiness" = 10;
+        "vm.swappiness" = mkDefault 10;
       };
       services.orca.enable = false;
       services.speechd.enable = false;

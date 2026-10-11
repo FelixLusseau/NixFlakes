@@ -29,6 +29,7 @@ with types;
               || cfg.pkgs.programming.enable
               || cfg.pkgs.art.enable
               || cfg.pkgs.gaming.enable
+              || cfg.pkgs.music.enable
             );
           message = "flcraft.gui.enable is false but one or more flcraft.gui.pkgs.*.enable flags are true.";
         }
