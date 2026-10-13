@@ -95,18 +95,6 @@ stdenv.mkDerivation (finalAttrs: {
     zlib
   ];
 
-  patches = [
-    # Patch to disable Sentry's crashpad handler. Nixpkgs' sentry-native uses breakpad handler (which should be fine).
-    ./kdrive-CMakeLists.txt.patch
-  ];
-
-  # "Hack" to have SYSCONFDIR point to the Nix store path thanks to ${outputBin}. This is needed because kDrive
-  # installs sentry's shared library and sync-exclude.lst at this location. If unset, cmake will attempt to install
-  # those at fs root, which is not permitted.
-  preConfigure = ''
-    prependToVar cmakeFlags "-DSYSCONFDIR=''${!outputBin}"
-  '';
-
   cmakeFlags = [
     # Prevent dev warnings from ECM.
     "-Wno-dev"
@@ -115,8 +103,7 @@ stdenv.mkDerivation (finalAttrs: {
     #       nixpkgs' cmake build environment.
     "-DQT_FEATURE_neon=OFF"
     "-DKDRIVE_THEME_DIR=${finalAttrs.src}/infomaniak"
-    # Disables unit tests. Requires cppunit.
-    # TODO: enable?
+    # Disables unit tests because they rely on the network. This is not compatible with Nix sandboxing.
     "-DBUILD_UNIT_TESTS=0"
   ];
 
