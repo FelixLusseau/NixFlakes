@@ -44,7 +44,10 @@ with types;
         # miraclecast
       ];
 
-      programs.kdeconnect.enable = true;
+      programs = {
+        kdeconnect.enable = true;
+        partition-manager.enable = true;
+      };
 
       services.displayManager.sddm = {
         # Enable the KDE Plasma Desktop Environment.
