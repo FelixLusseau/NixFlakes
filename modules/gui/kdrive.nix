@@ -95,6 +95,16 @@ stdenv.mkDerivation (finalAttrs: {
     zlib
   ];
 
+  postPatch = ''
+    substituteInPlace src/libcommon/log/sentry/handler.cpp \
+      --replace-fail \
+        'static sentry_value_t crashCallback(const sentry_ucontext_t *uctx, sentry_value_t event, void *closure)' \
+        'static sentry_value_t crashCallback(const sentry_ucontext_t *uctx, sentry_value_t event, sentry_hint_t *hint [[maybe_unused]], void *closure)' \
+      --replace-fail \
+        'sentry_value_t beforeSendCallback(sentry_value_t event, void *hint, void *closure)' \
+        'sentry_value_t beforeSendCallback(sentry_value_t event, sentry_hint_t *hint, void *closure)'
+  '';
+
   cmakeFlags = [
     # Prevent dev warnings from ECM.
     "-Wno-dev"
