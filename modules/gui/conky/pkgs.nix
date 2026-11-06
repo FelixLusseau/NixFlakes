@@ -45,7 +45,7 @@ pkgs.stdenv.mkDerivation {
     substituteInPlace $out/share/conky/themes/${theme}/start.lua \
       --replace-warn \
         'get_public_ip == nil or (updates()%public_ip_refresh_rate) == 0' \
-        'get_public_ip() == nil or (tonumber(updates()) % public_ip_refresh_rate) == 0'
+        'get_public_ip() == nil or (tonumber(updates()) % public_ip_refresh_rate) == 0' \
       --replace-warn \
         '"Public IP:      " .. get_public_ip()' \
         '"Public IP:      " .. (get_public_ip() or "No Address")'
